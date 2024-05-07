@@ -1,4 +1,4 @@
-import ProfileCard from "./Componenets/ProfileCard/ProfileCard";
+import ProfileCard from "../../Componenets/ProfileCard/ProfileCard";
 
 const Profile = () => {
     return(
