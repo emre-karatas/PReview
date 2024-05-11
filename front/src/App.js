@@ -5,6 +5,8 @@ import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
 import API from './pages/API/API';
 import Profile from './pages/Profile/Profile';
+import AnalyticDashboardsMain from "./pages/AnalyticDashboardsMain";
+import ChatbotTotalCostDashboard from "./pages/ChatbotTotalCostDashboard";
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/api' element={<API />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/ChatbotTotalCostDashboard' element={<ChatbotTotalCostDashboard />} />
       </Routes>
     </Router>
   );

@@ -1,11 +1,12 @@
 import React, {useEffect} from "react";
-import NavBar from "./NavBar";
+//import NavBar from "./NavBar";
 import AnalyticDashboardsSidebar from "./AnalyticDashboardsSidebar";
 import "./ChatbotTotalCostDashboard.css"
 import Highcharts from 'highcharts';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
+
 
 
 export const ChatbotTotalCostDashboard = () => {
@@ -138,7 +139,7 @@ useEffect(() => {
 
     return (
         <div>
-            <NavBar activeSection="Dashboards"/>
+            {/* <NavBar activeSection="Dashboards"/> */}
             <AnalyticDashboardsSidebar selectedDashboard={"Chatbot/TotalCostDashboard"}/>
             <div className="dashboard-wrapper">
                 <div  id="container" ></div>
