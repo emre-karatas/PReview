@@ -23,14 +23,14 @@ router.post("/signup", async (req, res) => {
 
 // Login route without password hashing
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
   
     try {
       // Retrieve user directly by email
       const { data: users, error } = await supabase
         .from("users")
         .select("*")
-        .eq("email", email)
+        .eq("username", username)
         .limit(1);
   
       if (error || users.length === 0) {
@@ -51,59 +51,59 @@ router.post("/login", async (req, res) => {
 });
   
 // Get user route
-router.get("/user/:id", async (req, res) => {
-    const userId = req.params.id;
-  
-    try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", userId)
-        .single();
-  
-      if (error) throw error;
-  
-      res.status(200).json({ user: data });
-    } catch (error) {
-      res.status(404).json({ error: "User not found", details: error.message });
-    }
-  });
+router.get("/user/:username", async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("username", username)
+      .single();
+
+    if (error) throw error;
+
+    res.status(200).json({ user: data });
+  } catch (error) {
+    res.status(404).json({ error: "User not found", details: error.message });
+  }
+});
   
   // Edit user route
-  router.put("/user/:id", async (req, res) => {
-    const userId = req.params.id;
-    const { username, fullName, email, userType } = req.body;
+router.put("/user/:username", async (req, res) => {
+  const { fullName, email, userType } = req.body;
+  const username = req.params.username;
   
-    try {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .update({ username, full_name: fullName, email, user_type: userType })
+      .eq("username", username);
+
+    if (error) throw error;
+
+    res.status(200).json({ message: "User updated", user: data });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user", details: error.message });
+  }
+});
+  
+// Delete user route
+router.delete("/user/:username", async (req, res) => {
+  const username = req.params.username;
+
+  try {
       const { data, error } = await supabase
-        .from("users")
-        .update({ username, full_name: fullName, email, user_type: userType })
-        .eq("id", userId);
-  
+      .from("users")
+      .delete()
+      .eq("username", username);
+
       if (error) throw error;
-  
-      res.status(200).json({ message: "User updated", user: data });
-    } catch (error) {
-      res.status(500).json({ error: "Failed to update user", details: error.message });
-    }
-  });
-  
-  // Delete user route
-router.delete("/user/:id", async (req, res) => {
-    const userId = req.params.id;
 
-    try {
-        const { data, error } = await supabase
-        .from("users")
-        .delete()
-        .eq("id", userId);
-
-        if (error) throw error;
-
-        res.status(200).json({ message: "User deleted", user: data });
-    } catch (error) {
-        res.status(500).json({ error: "Failed to delete user", details: error.message });
-    }
+      res.status(200).json({ message: "User deleted", user: data });
+  } catch (error) {
+      res.status(500).json({ error: "Failed to delete user", details: error.message });
+  }
 });
   
 module.exports = router;
