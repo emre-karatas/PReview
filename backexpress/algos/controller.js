@@ -10,6 +10,7 @@ const { fetchLatestPullRequestTitle} = require('./helpers/latestPRTitle');
 const { fetchNumberOfChangedFilesInLatestPR } = require('./helpers/latestPRChangeNo');
 const { fetchAllContributors } = require('./helpers/fetchContributorsAll');
 const { fetchCommentsByDeveloperOnLatestPR } = require('./helpers/commentsbydevLatestPR');
+const { getTotalLinesOfCode } = require('./helpers/getRepoStats');
 
 // API route for fetching the teams a user belongs to
 router.post('/userTeams', async (req, res) => {
@@ -169,5 +170,6 @@ router.post('/average-pr-time', async (req, res) => {
         res.status(500).send('Server error occurred while fetching PRs.');
     }
 });
+
 
 module.exports = router;
