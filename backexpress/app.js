@@ -3,10 +3,13 @@ require("dotenv").config();
 const express = require('express');
 const cors = require("cors");
 const errorHandler = require("./middlewares/errorhandler");
-const algos = require("./algos/controller");
+
 const port = '8080';
 const app = express();
 const router = express.Router();
+
+const algos = require("./algos/controller");
+const users = require("./users/controller");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -31,6 +34,8 @@ app.use("/api", router);
 app.use(errorHandler);
 
 router.use("/algos", algos);
+router.use("/users", users);
+
 router.get("/test", (req, res) => {
   console.log("Hello world");
   return res.status(200).send("Hello the world");
