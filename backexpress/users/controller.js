@@ -5,13 +5,13 @@ const supabase = require("./supabaseClient");
 
 // Signup route without password hashing
 router.post("/signup", async (req, res) => {
-    const { username, fullName, email, password, userType } = req.body;
+    const { username, fullName, email, password, userType, github_repo, github_token } = req.body;
   
     try {
       // Insert user directly with plain text password
       const { data, error } = await supabase
         .from("users")
-        .insert([{ username, full_name: fullName, email, password, user_type: userType }]);
+        .insert([{ username, full_name: fullName, email, password, user_type: userType, github_repo, github_token }]);
   
       if (error) throw error;
   
@@ -71,13 +71,13 @@ router.get("/user/:username", async (req, res) => {
   
   // Edit user route
 router.put("/user/:username", async (req, res) => {
-  const { fullName, email, userType } = req.body;
+  const { fullName, email, userType, github_repo, github_token } = req.body;
   const username = req.params.username;
   
   try {
     const { data, error } = await supabase
       .from("users")
-      .update({ username, full_name: fullName, email, user_type: userType })
+      .update({ username, full_name: fullName, email, user_type: userType, github_repo, github_token })
       .eq("username", username);
 
     if (error) throw error;
