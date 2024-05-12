@@ -16,8 +16,8 @@ async function fetchHelper(url, options) {
 }
 
 // Function to handle user signup
-async function signupUser({ username, fullName, email, password, userType }) {
-  const payload = { username, fullName, email, password, userType };
+async function signupUser({ username, fullName, email, password, userType, github_repo, github_token }) {
+  const payload = { username, fullName, email, password, userType, github_repo, github_token };
 
   return await fetchHelper(`${apiBaseUrl}/signup`, {
     method: "POST",
@@ -45,8 +45,8 @@ async function getUserByUserName(userName) {
 }
 
 // Function to update a user by their ID
-async function updateUserByUserName(userName, { username, fullName, email, password, userType }) {
-  const payload = { username, fullName, email, password, userType };
+async function updateUserByUserName(userName, { username, fullName, email, password, userType, github_repo, github_token }) {
+  const payload = { username, fullName, email, password, userType, github_repo, github_token };
 
   return await fetchHelper(`${apiBaseUrl}/user/${userName}`, {
     method: "PUT",
