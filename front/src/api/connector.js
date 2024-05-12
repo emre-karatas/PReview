@@ -72,6 +72,27 @@ export const fetchProductivity = (owner, repo, authToken, openaiApiKey) =>
     apiRequest('getProductivity', 'POST', { owner, repo, authToken, openaiApiKey});     
 
     
- // Fetch productivity
+ // Fetch fetchAllPRCount
  export const fetchAllPRCount = (owner, repo, authToken) =>
  apiRequest('getAllPRCount', 'POST', { owner, repo, authToken});     
+ 
+  // Fetch prCountLastQuarter
+export const fetchPRCountLastQuarter = (owner, repo, authToken) =>
+  apiRequest('prCountLastQuarter', 'POST', { owner, repo, authToken});     
+ 
+  // Fetch prCountLastQuarter
+  export const fetchmergedPrCntLastQuarter = (owner, repo, authToken) =>
+  apiRequest('mergedPrCntLastQuarter', 'POST', { owner, repo, authToken});      
+  
+  
+    // Fetch prCountLastQuarter
+    export const fetchopenPrCntLastQuarter = (owner, repo, authToken) =>
+    apiRequest('openPrCntLastQuarter', 'POST', { owner, repo, authToken});     
+    
+    
+      
+    // Fetch prCountLastQuarter
+    export const fetchgetrepodashboard = (repoOwner, repoName, prNumber, authToken) =>
+    apiRequest('getrepodashboard', 'POST', { repoOwner, repoName, prNumber, authToken});     
+    
+  

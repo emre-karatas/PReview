@@ -14,6 +14,63 @@ const getTotalLinesOfCode  = require('./helpers/getTotalLinesOfCode');
 const countCommits = require('./helpers/countCommits');
 const calculateProjectProductivity = require('./helpers/calculateProjectProductivity');
 const countAllPRs = require('./helpers/countAllPRs');
+const countPRsLastQuarter = require('./helpers/countPRsLastQuarter');
+const countMergedPRsLastQuarter = require('./helpers/countMergedPRsLastQuarter');
+const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
+const repodashboard = require('./helpers/repodashboard');
+
+
+
+
+// API route for fetching repodashboard
+router.post('/getrepodashboard', async (req, res) => {
+    const { org, username, authToken } = req.body;
+    if (!org || !username || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await repodashboard(repoOwner, repoName, prNumber, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching repodashboard:', error);
+        res.status(500).send('Server error occurred while repodashboard.');
+    }
+});
+
+// API route for fetching openPrCntLastQuarter
+router.post('/openPrCntLastQuarter', async (req, res) => {
+    const { org, username, authToken } = req.body;
+    if (!org || !username || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await countOpenPRsLastQuarter(org, username, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching openPrCntLastQuarter:', error);
+        res.status(500).send('Server error occurred while openPrCntLastQuarter.');
+    }
+});
+
+
+
+
+// API route for fetching countMergedPRsLastQuarter
+router.post('/mergedPrCntLastQuarter', async (req, res) => {
+    const { org, username, authToken } = req.body;
+    if (!org || !username || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await countMergedPRsLastQuarter(org, username, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching countMergedPRsLastQuarter:', error);
+        res.status(500).send('Server error occurred while fetchingcountMergedPRsLastQuarter.');
+    }
+});
+
+
 
 
 // API route for fetching the teams a user belongs to
@@ -30,6 +87,25 @@ router.post('/userTeams', async (req, res) => {
         res.status(500).send('Server error occurred while fetching user teams.');
     }
 });
+
+
+
+// API route for fetching the teams a user belongs to
+router.post('/prCountLastQuarter', async (req, res) => {
+    const { org, username, authToken } = req.body;
+    if (!org || !username || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await countPRsLastQuarter(org, username, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching user teams:', error);
+        res.status(500).send('Server error occurred while fetching user teams.');
+    }
+});
+
+
 
 // API route for fetching the latest PR title
 router.post('/latestPRTitle', async (req, res) => {

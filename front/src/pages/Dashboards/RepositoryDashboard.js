@@ -6,6 +6,8 @@ import Highcharts from 'highcharts';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
+import { useState } from 'react';
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard } from "../../api/connector";
 
 
 
@@ -23,22 +25,19 @@ const rows = [
     { id: 4, x: new Date('2023-01-04'), y: 1600 },
 ];
 
-const aiReviews = [
-    {
-        id: 1,
-        date: '2023-01-01',
-        comment: "Great implementation of the new caching logic.",
-        score: 8.5
-    },
-    {
-        id: 2,
-        date: '2023-01-02',
-        comment: "Needs improvement in thread safety during cache updates.",
-        score: 7.0
-    },
-    // Add more reviews as needed...
-];
 
+const [aiReviews, setAiReviews] = useState([]);
+const [prCnt, setPRCnt] = useState([]);
+const [mergedCnt, setMergedCnt] = useState([]);
+const [openCnt, setOpenCnt] = useState([]);
+//const [date, setDate] = useState([]);
+const [owner, setOwner] = useState(null);
+const [repo, setRepo] = useState(null);
+const [authToken, setAuthToken] = useState(null);
+const [openaiApiKey, setOpenAiAPIKey] = useState(null);
+const [prNumber, setprNumber] = useState(null);
+
+ 
 
 const theme = createTheme({
   palette: {
@@ -88,6 +87,77 @@ const theme = createTheme({
     },
   },
 });
+
+
+
+
+
+useEffect(() => {
+    setAiReviews([
+        {
+            id: 1,
+            date: '2023-01-01',
+            comment: "Great implementation of the new caching logic.",
+            score: 8.5
+        },
+        {
+            id: 2,
+            date: '2023-01-02',
+            comment: "Needs improvement in thread safety during cache updates.",
+            score: 7.0
+        },
+        // Add more reviews as needed...
+    ]);
+    
+    
+    const fetchPRLastQ = async () => {
+        try {
+            const response = await fetchPRCountLastQuarter(owner, repo, authToken );
+            console.log("Signup Response:", response);
+            setPRCnt(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    
+    const fetchMergedLastQ = async () => {
+        try {
+            const response = await fetchmergedPrCntLastQuarter(owner, repo, authToken);
+            console.log("Signup Response:", response);
+            setMergedCnt(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    
+        
+    const fetchOpenLastQ = async () => {
+        try {
+            const response = await fetchopenPrCntLastQuarter(owner, repo, authToken);
+            console.log("Signup Response:", response);
+            setOpenCnt(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    const fetchRepoDashboard = async () => {
+        try {
+            const response = await fetchgetrepodashboard(owner, repo, prNumber, authToken);
+            console.log("Signup Response:", response);
+            setAiReviews(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    
+
+    
+    
+    fetchPRLastQ();
+    fetchMergedLastQ();
+    fetchOpenLastQ();
+    fetchRepoDashboard();
+}, []);
 
 
 
@@ -164,13 +234,20 @@ useEffect(() => {
              <Accordion defaultActiveKey="0" className="my-3">
     <Accordion.Item eventKey="0">
         <Accordion.Header>AI Reviews</Accordion.Header>
+        
         <Accordion.Body>
+        <p><strong>Total PR Count (Last Quarter): {prCnt}</strong></p>
+        <p><strong>Merged (Last Quarter): {mergedCnt}</strong></p>
+        <p><strong>Open (Last Quarter): {openCnt}</strong></p>
+
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                 {aiReviews.map(review => (
                     <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
                         <p><strong>Date:</strong> {review.date}</p>
                         <p><strong>Comment:</strong> {review.comment}</p>
                         <p><strong>Score:</strong> {review.score}/10</p>
+                        <p><strong>Summarized:</strong> {review.highlights}</p>
+
                     </div>
                 ))}
             </div>
