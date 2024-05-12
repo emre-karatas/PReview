@@ -27,9 +27,9 @@ export const AnalyticDashboardsMain = () => {
 
     const [totalLOC, setTotalLOC] = useState(null);
 
-
     const [annualTickets, setAnnualTickets] = useState(null);
     const [completionRate, setCompletionRate] = useState(null);
+    const [performanceScore, setPerformanceScore] = useState(null);
     const [error, setError] = useState(null);
 
         useEffect(() => {
@@ -104,9 +104,24 @@ export const AnalyticDashboardsMain = () => {
             }
         };
 
+        const fetchPerformanceScore = async () => {
+            try {
+                const response = await axios.post('/projectPerformance', {
+                    owner: 'ownerName',
+                    repo: 'repoName',
+                    githubToken: 'yourGitHubAuthToken', // Provide your GitHub personal access token
+                    openaiApiKey: 'yourOpenAIAuthToken' // Provide your OpenAI API key
+                });
+                setPerformanceScore(response.data.performanceScore);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
 
         fetchCompletionRate();
         fetchTickets();
+        fetchPerformanceScore();
         fetchPRCNT();
         fetchCommitCNT();
         fetchProductivityData();
@@ -131,7 +146,7 @@ export const AnalyticDashboardsMain = () => {
                         <StatBox title="Line of Code" number={totalLOC}/>
                     </div>
                     <ProjectSummary ticketsCreated= {annualTickets} reviewDate="July 24, 2024" avgPRTime="4" completionRate={completionRate}/>
-                    <PerformanceScore score="78" />
+                    <PerformanceScore score={performanceScore} />
                 </div>
             </div>
         </div>

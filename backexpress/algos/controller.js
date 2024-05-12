@@ -275,5 +275,24 @@ router.post('/prCompletionRate', async (req, res) => {
     }
 });
 
+router.post('/projectPerformance', async (req, res) => {
+    const { owner, repo, githubToken, openaiApiKey } = req.body;
+
+    if (!owner || !repo || !githubToken || !openaiApiKey) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken, openaiApiKey');
+    }
+
+    try {
+        // Calculate project performance using the provided function
+        const performanceScore = await calculateProjectPerformance(owner, repo, githubToken, openaiApiKey);
+
+        // Send the performance score as the response
+        res.status(200).json({ performanceScore });
+    } catch (error) {
+        console.error('Error calculating project performance:', error);
+        res.status(500).send('Server error occurred while calculating project performance.');
+    }
+});
+
 
 module.exports = router;
