@@ -7,6 +7,8 @@ import './AnalyticDashboardMain.css';
 import TotalPRChart from "./TotalPRChart";
 import PRTable from "./PRTable";
 import PerformanceScore from "./PerformanceScore";
+import { useState, useEffect } from 'react';
+import { fetchProductivity, fetchTotalNoOfCommits, fetchTotalLinesOfCodes, fetchAllPRCount } from "../../api/connector";
 
 
 export const AnalyticDashboardsMain = () => {
@@ -17,9 +19,66 @@ export const AnalyticDashboardsMain = () => {
     const [totalPRTrend, setTotalPRTrend] = useState(null);
     const [totalCommitCount, setTotalCommitCount] = useState(null);
     const [totalCommitTrend, setTotalCommitTrend] = useState(null);
+    const [owner, setOwner] = useState(null);
+    const [repo, setRepo] = useState(null);
+    const [authToken, setAuthToken] = useState(null);
+    const [openaiApiKey, setOpenAiAPIKey] = useState(null);
 
     const [totalLOC, setTotalLOC] = useState(null);
 
+    useEffect(() => {
+        const fetchProductivityData = async () => {
+            try {
+                const response = await fetchProductivity({owner, repo, authToken, openaiApiKey });
+                console.log("Signup Response:", response);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to signup');
+            }
+        };
+        
+        
+        const fetchCommitCNT = async () => {
+            try {
+                const response = await fetchTotalNoOfCommits({owner, repo, authToken });
+                console.log("Signup Response:", response);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to signup');
+            }
+        };
+        
+        
+        const fetchLOC = async () => {
+            try {
+                const response = await fetchTotalLinesOfCodes({owner, repo, authToken });
+                console.log("Signup Response:", response);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to signup');
+            }
+        };
+        
+                
+        const fetchPRCNT = async () => {
+            try {
+                const response = await fetchAllPRCount({owner, repo, authToken });
+                console.log("Signup Response:", response);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to signup');
+            }
+        };
+        
+        
+        
+        fetchPRCNT();
+        fetchCommitCNT();
+        fetchProductivityData();
+        fetchLOC();
+    }, []);
+    
+    
     return (
         <div className="dashboard-container">
             <Navbar />
