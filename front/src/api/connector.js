@@ -63,6 +63,10 @@ export const fetchAveragePRTime = (owner, repo) =>
 export const fetchTotalLinesOfCodes = (owner, repo) =>
     apiRequest('getTotalLinesOfCode', 'POST', { owner, repo, authToken});  
     
- // Fetch total no of commits
+// Fetch total no of commits
 export const fetchTotalNoOfCommits = (owner, repo) =>
-apiRequest('getCommitCount', 'POST', { owner, repo, authToken});  
+    apiRequest('getCommitCount', 'POST', { owner, repo, authToken});  
+    
+ // Fetch productivity
+export const fetchProductivity = (owner, repo) =>
+    apiRequest('getProductivity', 'POST', { owner, repo, githubToken, openaiApiKey});     

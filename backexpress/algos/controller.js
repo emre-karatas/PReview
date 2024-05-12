@@ -12,6 +12,8 @@ const { fetchAllContributors } = require('./helpers/fetchContributorsAll');
 const { fetchCommentsByDeveloperOnLatestPR } = require('./helpers/commentsbydevLatestPR');
 const { fetchTotalLinesOfCodes } = require('./helpers/getTotalLinesOfCode');
 const { fetchCountCommits } = require('./helpers/countCommits');
+const { fetchProductivity } = require('./helpers/calculateProjectProductivity');
+
 
 
 // API route for fetching the teams a user belongs to
@@ -74,7 +76,22 @@ router.post('/getCommitCount', async (req, res) => {
         res.status(500).send('Server error occurred while fetching the no of commits.');
     }
 });
-async function countCommits(owner, repo, token) {
+
+
+// API route for fetching productivity
+router.post('/getProductivity', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+    try {
+        const title = await fetchProductivity(owner, repo, githubToken, openaiApiKey);
+        res.status(200).json({ title });
+    } catch (error) {
+        console.error('Error fetching productivity:', error);
+        res.status(500).send('Server error occurred while fetching productivity.');
+    }
+});
 
 
 
