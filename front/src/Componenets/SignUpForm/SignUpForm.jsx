@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './SignUpForm.css';
 import { FaUser, FaLock, FaEnvelope, FaGithub } from "react-icons/fa";
 import { signupUser } from "../../api/authAdapter";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
     const [userType, setUserType] = useState('');
@@ -12,6 +13,7 @@ const SignUpForm = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [githubRepo, setGithubRepo] = useState(null);
     const [githubToken, setGithubToken] = useState(null);
+    const navigate = useNavigate();
 
     const handleUserTypeChange = (e) => {
         setUserType(e.target.value);
@@ -32,13 +34,22 @@ const SignUpForm = () => {
         try {
             const response = await signupUser({ username, fullName, email, password, userType, githubRepo, githubToken });
             console.log("Signup Response:", response);
+
+            if (response.message === "User created")
+            {
+                const confirmLogin = window.confirm("Signup was successful! Would you like to login?");
+                if (confirmLogin) {
+                    navigate("/");
+                }
+            }
+
         } catch (error) {
             console.error('Error:', error);
-           // alert('Failed to signup');
+           // // alert('Failed to signup');
            return;
         }
     };
-
+   
     return (
         <div className="wrapper">
             <form onSubmit={handleSubmit}>
@@ -134,7 +145,9 @@ const SignUpForm = () => {
                     <FaGithub className="icon" />
                 </div>
 
-                <button type="submit">
+                <button 
+                    type="submit"
+                >
                     Register
                 </button>
 
