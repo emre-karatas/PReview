@@ -59,7 +59,10 @@ export const fetchCommentsByDeveloperOnLatestPR = (owner, repo, developer, authT
 export const fetchAveragePRTime = (owner, repo) =>
     apiRequest('average-pr-time', 'POST', { owner, repo });
 
-  // Fetch total line of code
+// Fetch total line of code
 export const fetchTotalLinesOfCodes = (owner, repo) =>
     apiRequest('getTotalLinesOfCode', 'POST', { owner, repo, authToken});  
     
+ // Fetch total no of commits
+export const fetchTotalNoOfCommits = (owner, repo) =>
+apiRequest('getCommitCount', 'POST', { owner, repo, authToken});  

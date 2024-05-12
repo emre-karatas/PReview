@@ -11,6 +11,8 @@ const { fetchNumberOfChangedFilesInLatestPR } = require('./helpers/latestPRChang
 const { fetchAllContributors } = require('./helpers/fetchContributorsAll');
 const { fetchCommentsByDeveloperOnLatestPR } = require('./helpers/commentsbydevLatestPR');
 const { fetchTotalLinesOfCodes } = require('./helpers/getTotalLinesOfCode');
+const { fetchCountCommits } = require('./helpers/countCommits');
+
 
 // API route for fetching the teams a user belongs to
 router.post('/userTeams', async (req, res) => {
@@ -57,6 +59,22 @@ router.post('/getTotalLinesOfCode', async (req, res) => {
         res.status(500).send('Server error occurred while fetching the total line of code.');
     }
 });
+
+// API route for fetching the total no of commits
+router.post('/getCommitCount', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+    try {
+        const title = await fetchCountCommits(owner, repo, authToken);
+        res.status(200).json({ title });
+    } catch (error) {
+        console.error('Error fetching no of commits:', error);
+        res.status(500).send('Server error occurred while fetching the no of commits.');
+    }
+});
+async function countCommits(owner, repo, token) {
 
 
 
