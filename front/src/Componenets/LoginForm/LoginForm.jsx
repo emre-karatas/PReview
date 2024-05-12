@@ -18,16 +18,21 @@ const LoginForm = () => {
             console.log("Login Response:", response);
             
             const user = response.user;
-            console.log("user", user);
             const repo_owner = extractOwnerFromRepoUrl(user.github_repo);
             console.log("repo owner", repo_owner);
 
             if (response.message === "Login successful")
             {
-                localStorage.setItem("repo_owner", repo_owner);
+                localStorage.setItem("username", user.username);
+                localStorage.setItem("full_name", user.full_name);
+                localStorage.setItem("password", user.password);
+                localStorage.setItem("user_type", user.user_type);
+                localStorage.setItem("email", user.email);
                 localStorage.setItem("github_repo", user.github_repo);
-                localStorage.setItem("github_token", user.github_token)
+                localStorage.setItem("github_token", user.github_link);
+                localStorage.setItem("repo_owner", repo_owner);
                 navigate("/analyticDashboards");
+                // navigate("/profile");
             } else {
                 //alert("Username or password cannot be found! Please try again.")
             }
