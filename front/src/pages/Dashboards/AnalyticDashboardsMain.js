@@ -9,6 +9,7 @@ import PRTable from "./PRTable";
 import PerformanceScore from "./PerformanceScore";
 import { useState, useEffect } from 'react';
 import { fetchProductivity, fetchTotalNoOfCommits, fetchTotalLinesOfCodes, fetchAllPRCount } from "../../api/connector";
+import axios from 'axios';
 
 
 export const AnalyticDashboardsMain = () => {
@@ -26,8 +27,7 @@ export const AnalyticDashboardsMain = () => {
 
     const [totalLOC, setTotalLOC] = useState(null);
 
-    import React, { useState, useEffect } from "react";
-    import axios from 'axios';
+
 
 
     const [annualTickets, setAnnualTickets] = useState(null);
