@@ -12,8 +12,14 @@ import PerformanceScore from "./PerformanceScore";
 export const AnalyticDashboardsMain = () => {
     
     
-    
-    
+    const [productivity, setProductivity] = useState(null);
+    const [totalPRCount, setTotalPRCount] = useState(null);
+    const [totalPRTrend, setTotalPRTrend] = useState(null);
+    const [totalCommitCount, setTotalCommitCount] = useState(null);
+    const [totalCommitTrend, setTotalCommitTrend] = useState(null);
+
+    const [totalLOC, setTotalLOC] = useState(null);
+
     return (
         <div className="dashboard-container">
             <Navbar />
@@ -25,10 +31,10 @@ export const AnalyticDashboardsMain = () => {
                         <PRTable/>
                     </div>
                     <div className="dashboard-stats">
-                        <StatBox title="Total PR Created" number="1,286" trend="-13.24%"/>
-                        <StatBox title="Productivity" number="75%"/>
-                        <StatBox title="Commit" number="14854" trend="+28.14%"/>
-                        <StatBox title="Line of Code" number="482000"/>
+                        <StatBox title="Total PR Created" number={totalCommitCount} trend="-13.24%"/>
+                        <StatBox title="Productivity" number={productivity}/>
+                        <StatBox title="Commit" number={totalCommitCount} trend="+28.14%"/>
+                        <StatBox title="Line of Code" number={totalLOC}/>
                     </div>
                     <ProjectSummary ticketsCreated="512" reviewDate="July 24, 2024" avgPRTime="4" completionRate="75"/>
                     <PerformanceScore score="78" />
