@@ -9,10 +9,6 @@ const ProjectSummary = ({ ticketsCreated, reviewDate, avgPRTime, completionRate 
         <div>{ticketsCreated}</div>
       </div>
       <div className="summary-item">
-        <label>Next Project Review Date</label>
-        <div>{reviewDate}</div>
-      </div>
-      <div className="summary-item">
         <label>Average PR Time</label>
         <div>{avgPRTime} days</div>
       </div>

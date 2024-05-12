@@ -8,7 +8,15 @@ import TotalPRChart from "./TotalPRChart";
 import PRTable from "./PRTable";
 import PerformanceScore from "./PerformanceScore";
 import { useState, useEffect } from 'react';
-import { fetchProductivity, fetchTotalNoOfCommits, fetchTotalLinesOfCodes, fetchAllPRCount } from "../../api/connector";
+import {
+    fetchProductivity,
+    fetchTotalNoOfCommits,
+    fetchTotalLinesOfCodes,
+    fetchAllPRCount,
+    fetchPRCompletionRate,
+    fetchTickets,
+    fetchPerformance
+} from "../../api/connector";
 import axios from 'axios';
 
 
@@ -31,12 +39,14 @@ export const AnalyticDashboardsMain = () => {
     const [completionRate, setCompletionRate] = useState(null);
     const [performanceScore, setPerformanceScore] = useState(null);
     const [error, setError] = useState(null);
+    const [year, setYear] = useState(null);
 
         useEffect(() => {
         const fetchProductivityData = async () => {
             try {
-                const response = await fetchProductivity({owner, repo, authToken, openaiApiKey });
+                const response = await fetchProductivity(owner, repo, authToken, openaiApiKey);
                 console.log("Signup Response:", response);
+                setProductivity(response.title);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -45,8 +55,9 @@ export const AnalyticDashboardsMain = () => {
         
         const fetchCommitCNT = async () => {
             try {
-                const response = await fetchTotalNoOfCommits({owner, repo, authToken });
-                console.log("Signup Response:", response);
+                const response = await fetchTotalNoOfCommits(owner, repo, authToken );
+                console.log("Commit Count Response:", response);
+                setTotalCommitCount(response.title);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -67,7 +78,7 @@ export const AnalyticDashboardsMain = () => {
                 const response = await fetchTotalLinesOfCodes(owner, repo, authToken );
                 console.log(response.title);
                 setTotalLOC(response.title);
-                console.log("Signup Response:", response);
+                console.log("LOC Response:", response);
             } catch (error) {
                 console.error('Error:', error); 
             }
@@ -75,63 +86,70 @@ export const AnalyticDashboardsMain = () => {
         
                 
         const fetchPRCNT = async () => {
+            setOwner("EvanLi");
+            setAuthToken("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");
+            setRepo("Github-Ranking");
+
             try {
-                const response = await fetchAllPRCount({owner, repo, authToken });
-                console.log("Signup Response:", response);
+                const response = await fetchAllPRCount(owner, repo, authToken);
+                console.log("PR Count Response:", response);
+                setTotalPRCount(response.title);
             } catch (error) {
                 console.error('Error:', error);
             }
         };
 
         const fetchCompletionRate = async () => {
+            setOwner("EvanLi");
+            setAuthToken("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");
+            setRepo("Github-Ranking");
+
             try {
-                const response = await axios.post('/prCompletionRate', {
-                    owner: 'ownerName',
-                    repo: 'repoName',
-                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
-                });
-                setCompletionRate(response.data.completionRate);
+                const response = await fetchPRCompletionRate(owner, repo, authToken);
+                console.log("PR Comp Rate Response:", response);
+                setCompletionRate(response.title);
             } catch (error) {
-                setError(error.message);
+                console.error('Error:', error);
             }
         };
 
-
         const fetchTickets = async () => {
+            setOwner("EvanLi");
+            setAuthToken("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");
+            setRepo("Github-Ranking");
+            setYear(2024);
+
             try {
-                const response = await axios.post('/annualTickets', {
-                    owner: 'ownerName',
-                    repo: 'repoName',
-                    year: 2024, // Specify the year you want to retrieve the ticket count for
-                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
-                });
-                setAnnualTickets(response.data.totalIssues);
+                const response = await fetchTickets(owner, repo, authToken, year);
+                console.log("Ticket Response:", response);
+                setAnnualTickets(response.title);
             } catch (error) {
-                setError(error.message);
+                console.error('Error:', error);
             }
         };
 
         const fetchPerformanceScore = async () => {
+            setOwner("EvanLi");
+            setAuthToken("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");
+            setRepo("Github-Ranking");
+            setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn")
+
             try {
-                const response = await axios.post('/projectPerformance', {
-                    owner: 'ownerName',
-                    repo: 'repoName',
-                    githubToken: 'yourGitHubAuthToken', // Provide your GitHub personal access token
-                    openaiApiKey: 'yourOpenAIAuthToken' // Provide your OpenAI API key
-                });
-                setPerformanceScore(response.data.performanceScore);
+                const response = await fetchPerformance(owner, repo, authToken, openaiApiKey);
+                console.log("Performance Response:", response);
+                setPerformanceScore(response.title);
             } catch (error) {
-                setError(error.message);
+                console.error('Error:', error);
             }
         };
 
 
-        //fetchCompletionRate();
+        fetchCompletionRate();
         //fetchTickets();
-        //fetchPerformanceScore();
-        //fetchPRCNT();
-        //fetchCommitCNT();
-        //fetchProductivityData();
+        fetchPerformanceScore();
+        fetchPRCNT();
+        fetchCommitCNT();
+        fetchProductivityData();
         fetchLOC();
     }, []);
     
@@ -145,14 +163,15 @@ export const AnalyticDashboardsMain = () => {
                     <div className="dashboard-main-content">
                         <TotalPRChart/>
                         <PRTable/>
+tab
                     </div>
                     <div className="dashboard-stats">
-                        <StatBox title="Total PR Created" number={totalCommitCount} trend="-13.24%"/>
+                        <StatBox title="Total PR Created" number={totalPRCount}/>
                         <StatBox title="Productivity" number={productivity}/>
-                        <StatBox title="Commit" number={totalCommitCount} trend="+28.14%"/>
+                        <StatBox title="Commit" number={totalCommitCount}/>
                         <StatBox title="Line of Code" number={totalLOC}/>
                     </div>
-                    <ProjectSummary ticketsCreated= {annualTickets} reviewDate="July 24, 2024" avgPRTime="4" completionRate={completionRate}/>
+                    <ProjectSummary ticketsCreated= {annualTickets} avgPRTime="4" completionRate={completionRate}/>
                     <PerformanceScore score={performanceScore} />
                 </div>
             </div>

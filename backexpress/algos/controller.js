@@ -14,6 +14,9 @@ const getTotalLinesOfCode  = require('./helpers/getTotalLinesOfCode');
 const countCommits = require('./helpers/countCommits');
 const calculateProjectProductivity = require('./helpers/calculateProjectProductivity');
 const countAllPRs = require('./helpers/countAllPRs');
+const computePRCompletionRate = require('./helpers/computePRCompletionRate');
+const fetchTickets = require('./helpers/computeAnnualTicketCreation');
+const fetchPerformance = require('./helpers/calculateProjectPerformance')
 
 
 // API route for fetching the teams a user belongs to
@@ -250,7 +253,7 @@ router.post('/annualTickets', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, year, authToken');
     }
     try {
-        const totalIssues = await computeAnnualTicketCreation(owner, repo, authToken, year);
+        const totalIssues = await fetchTickets(owner, repo, authToken, year);
         res.status(200).json({ totalIssues });
     } catch (error) {
         console.error('Error computing annual ticket creation:', error);
@@ -287,7 +290,7 @@ router.post('/projectPerformance', async (req, res) => {
 
     try {
         // Calculate project performance using the provided function
-        const performanceScore = await calculateProjectPerformance(owner, repo, githubToken, openaiApiKey);
+        const performanceScore = await fetchPerformance(owner, repo, githubToken, openaiApiKey);
 
         // Send the performance score as the response
         res.status(200).json({ performanceScore });
