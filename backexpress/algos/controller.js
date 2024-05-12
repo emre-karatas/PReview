@@ -10,10 +10,10 @@ const { fetchLatestPullRequestTitle} = require('./helpers/latestPRTitle');
 const { fetchNumberOfChangedFilesInLatestPR } = require('./helpers/latestPRChangeNo');
 const { fetchAllContributors } = require('./helpers/fetchContributorsAll');
 const { fetchCommentsByDeveloperOnLatestPR } = require('./helpers/commentsbydevLatestPR');
-const { getTotalLinesOfCode } = require('./helpers/getTotalLinesOfCode');
-const { countCommits } = require('./helpers/countCommits');
-const { calculateProjectProductivity } = require('./helpers/calculateProjectProductivity');
-const { countAllPRs } = require('./helpers/countAllPRs');
+const getTotalLinesOfCode  = require('./helpers/getTotalLinesOfCode');
+const countCommits = require('./helpers/countCommits');
+const calculateProjectProductivity = require('./helpers/calculateProjectProductivity');
+const countAllPRs = require('./helpers/countAllPRs');
 
 
 // API route for fetching the teams a user belongs to
