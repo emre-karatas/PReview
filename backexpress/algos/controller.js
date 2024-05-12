@@ -50,6 +50,11 @@ router.post('/latestPRTitle', async (req, res) => {
 // API route for fetching the total line of code
 router.post('/getTotalLinesOfCode', async (req, res) => {
     const { owner, repo, authToken } = req.body;
+    console.log("the owner ", owner);
+        console.log("the repo ", repo);
+
+    console.log("the authToken ", authToken);
+
     if (!owner || !repo || !authToken) {
         return res.status(400).send('Missing required parameters: owner, repo, authToken');
     }
