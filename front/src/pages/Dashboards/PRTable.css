@@ -1,0 +1,12 @@
+
+.data-grid-container .MuiDataGrid-root {
+  background-color: white;
+}
+
+.data-grid-container .MuiDataGrid-cell {
+  background-color: white;
+}
+
+.data-grid-container .MuiDataGrid-columnHeader {
+  background-color: white;
+}

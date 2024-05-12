@@ -1,5 +1,4 @@
 import React from 'react';
-// import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
@@ -17,6 +16,7 @@ function App() {
         <Route path='/api' element={<API />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/ChatbotTotalCostDashboard' element={<ChatbotTotalCostDashboard />} />
+        <Route path='/analyticDashboards' element={<AnalyticDashboardsMain />} />
       </Routes>
     </Router>
   );

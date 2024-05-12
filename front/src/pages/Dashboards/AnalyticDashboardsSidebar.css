@@ -1,59 +1,32 @@
-/* Sidebar styles */
 .analytic-sidebar {
-  height: 100%;
-  width: 32vh;
-  position: fixed;
-  top: 0;
+  width: 250px; /* Adjust based on your preference */
+  height: 100vh; /* Full height */
+  position: fixed; /* Fixed position */
+  top: 4vh; /* Height of the navbar */
   left: 0;
-  z-index: 1;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  transition: width 0.5s, transform 0.3s;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow-x: hidden;
-  overflow-y: hidden;
-
-  background: white;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 0.4vh solid rgba(195, 7, 249, 0.9);
-
+  background-color: #1e1e2d; /* Adjust color as needed */
+  overflow-y: auto; /* Allows scrolling within the sidebar */
+  z-index: 500; /* Lower than navbar but high enough for layering */
 }
 
 
 .analytic-sidebar-section {
-  margin-top: 1vh;
+  margin-top: 20px;
 }
 
-.analytic-sidebar-title-container
-{
-  padding-top: 10vh;
+.analytic-sidebar-title-container {
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow to distinguish the fixed section */
-  z-index: 2; /* Ensure it's above the scrollable content */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px 0;
+  margin-top: 6vh;
 }
 
 .analytic-sidebar-title {
-  font-size: 18px;
-  text-align: center  !important;
+  font-size: 24px;
   font-weight: bold;
-  margin-top: 10px;
-  color: black;
+  color: white;
 }
 
-.menu-item {
-  color: #d359ff;
+.menu-item.active {
+  background-color: #2A2C38 !important;
 }
-
-.menu-item-selected {
-  pointer-events: none;
-  color: white !important;
-  background-color: #C307F9;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-  font-weight: bold;
-
-}
-
