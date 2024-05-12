@@ -57,13 +57,17 @@ export const AnalyticDashboardsMain = () => {
             setOwner("EvanLi");
             setAuthToken("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");
             setRepo("https://github.com/EvanLi/Github-Ranking");
-            
-            
+             
+            console.log("the owner ", owner); 
+            console.log("the token ", authToken);
+ 
+            console.log("the repo ", repo); 
+ 
             try {
                 const response = await fetchTotalLinesOfCodes({owner, repo, authToken });
                 console.log("Signup Response:", response);
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error:', error); 
             }
         };
         
