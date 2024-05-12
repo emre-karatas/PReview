@@ -241,5 +241,39 @@ router.post('/average-pr-time', async (req, res) => {
     }
 });
 
+router.post('/annualTickets', async (req, res) => {
+    const { owner, repo, year, authToken } = req.body;
+    if (!owner || !repo || !year || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, year, authToken');
+    }
+    try {
+        const totalIssues = await computeAnnualTicketCreation(owner, repo, authToken, year);
+        res.status(200).json({ totalIssues });
+    } catch (error) {
+        console.error('Error computing annual ticket creation:', error);
+        res.status(500).send('Server error occurred while computing annual ticket creation.');
+    }
+});
+
+// Controller method for computing the completion rate of all open PRs in a GitHub repository
+router.post('/prCompletionRate', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+
+    try {
+        // Fetch the completion rate using the provided function
+        const completionRate = await computePRCompletionRate(owner, repo, authToken);
+
+        // Send the completion rate as the response
+        res.status(200).json({ completionRate });
+    } catch (error) {
+        console.error('Error fetching PR completion rate:', error);
+        res.status(500).send('Server error occurred while fetching PR completion rate.');
+    }
+});
+
 
 module.exports = router;
