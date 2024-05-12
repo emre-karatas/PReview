@@ -5,8 +5,8 @@ import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
 import API from './pages/API/API';
 import Profile from './pages/Profile/Profile';
-import AnalyticDashboardsMain from "./pages/AnalyticDashboardsMain";
-import ChatbotTotalCostDashboard from "./pages/ChatbotTotalCostDashboard";
+import AnalyticDashboardsMain from "./pages/Dashboards/AnalyticDashboardsMain";
+import ChatbotTotalCostDashboard from "./pages/Dashboards/ChatbotTotalCostDashboard";
 
 function App() {
   return (
