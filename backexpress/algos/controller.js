@@ -40,11 +40,23 @@ router.post('/getrepodashboard', async (req, res) => {
 // API route for fetching openPrCntLastQuarter
 router.post('/openPrCntLastQuarter', async (req, res) => {
     const { org, username, authToken } = req.body;
-    if (!org || !username || !authToken) {
+
+
+
+
+        console.log("req", req.body)
+        let owner = req.body.owner;
+                let repo = req.body.repo;
+
+        console.log("The repo", repo);
+        console.log("The owner", owner);
+
+        console.log("The authToken", authToken);
+    if (!owner || !repo || !authToken) {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await countOpenPRsLastQuarter(org, username, authToken);
+        const teams = await countOpenPRsLastQuarter(repo, owner, authToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching openPrCntLastQuarter:', error);
@@ -58,11 +70,21 @@ router.post('/openPrCntLastQuarter', async (req, res) => {
 // API route for fetching countMergedPRsLastQuarter
 router.post('/mergedPrCntLastQuarter', async (req, res) => {
     const { org, username, authToken } = req.body;
-    if (!org || !username || !authToken) {
+
+        console.log("req", req.body)
+        let owner = req.body.owner;
+                let repo = req.body.repo;
+
+        console.log("The repo", repo);
+        console.log("The owner", owner);
+
+        console.log("The authToken", authToken);
+
+    if (!req.body.repo || !req.body.owner || !authToken) {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await countMergedPRsLastQuarter(org, username, authToken);
+        const teams = await countMergedPRsLastQuarter(repo, owner, authToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching countMergedPRsLastQuarter:', error);
@@ -92,12 +114,18 @@ router.post('/userTeams', async (req, res) => {
 
 // API route for fetching the teams a user belongs to
 router.post('/prCountLastQuarter', async (req, res) => {
-    const { org, username, authToken } = req.body;
-    if (!org || !username || !authToken) {
+    const { owner, repo, authToken } = req.body;
+    console.log("req", req.body)
+    console.log("The repo", repo);
+    console.log("The owner", owner);
+
+    console.log("The authToken", authToken);
+
+    if (!owner || !repo || !authToken) {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await countPRsLastQuarter(org, username, authToken);
+        const teams = await countPRsLastQuarter(repo, owner, authToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching user teams:', error);

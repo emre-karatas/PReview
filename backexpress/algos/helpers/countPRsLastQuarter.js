@@ -1,34 +1,26 @@
 const axios = require('axios');
 
 /**
- * Helper function to calculate the start date of the last quarter.
- * @returns {Date} - The start date of the last quarter.
+ * Helper function to calculate the start date of the current year.
+ * @returns {Date} - The start date of the current year.
  */
-function getLastQuarterStartDate() {
+function getStartOfYearDate() {
     const now = new Date();
-    const month = now.getMonth();
-    const quarterStartMonth = month - (month % 3) - 3; // Calculate the start month of the last quarter
-    const start = new Date(now.getFullYear(), quarterStartMonth, 1);
-    if (quarterStartMonth < 0) {
-        // Adjust for last year if quarter starts in negative month index
-        start.setFullYear(now.getFullYear() - 1);
-        start.setMonth(quarterStartMonth + 12);
-    }
-    return start;
+    return new Date(now.getFullYear(), 0, 1); // January 1st of the current year
 }
 
 /**
- * Counts pull requests opened in the last quarter in a GitHub repository.
+ * Counts pull requests opened since the beginning of the current year in a GitHub repository.
  * @param {string} owner - The username of the repository owner.
  * @param {string} repo - The name of the repository.
  * @param {string} token - Your GitHub personal access token.
- * @returns {Promise<number>} - A promise that resolves to the number of pull requests opened in the last quarter.
+ * @returns {Promise<number>} - A promise that resolves to the number of pull requests opened since the beginning of the year.
  */
-async function countPRsLastQuarter(owner, repo, token) {
+async function countPRsSinceStartOfYear(owner, repo, token) {
     let totalCount = 0;
     let page = 1;
     let hasNextPage = true;
-    const lastQuarterStart = getLastQuarterStartDate().toISOString();
+    const startOfYear = getStartOfYearDate().toISOString();
 
     while (hasNextPage) {
         const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/pulls`, {
@@ -37,13 +29,13 @@ async function countPRsLastQuarter(owner, repo, token) {
                 state: 'all', // Fetch both open and closed pull requests
                 per_page: 100,
                 page: page,
-                since: lastQuarterStart
+                since: startOfYear
             }
         });
 
         response.data.forEach(pr => {
             const prCreatedAt = new Date(pr.created_at);
-            if (prCreatedAt >= new Date(lastQuarterStart)) {
+            if (prCreatedAt >= new Date(startOfYear)) {
                 totalCount++;
             }
         });
@@ -55,4 +47,4 @@ async function countPRsLastQuarter(owner, repo, token) {
     return totalCount;
 }
 
-module.exports = countPRsLastQuarter;
+module.exports = countPRsSinceStartOfYear;

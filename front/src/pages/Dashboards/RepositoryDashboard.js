@@ -7,7 +7,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount } from "../../api/connector";
 
 
 
@@ -110,15 +110,27 @@ useEffect(() => {
     ]);
     
     
+    
     const fetchPRLastQ = async () => {
+        console.log("the owner ", owner);  
+        console.log("the token ", authToken); 
+    
+        console.log("the repo ", repo);  
+
+        
+
         try {
-            const response = await fetchPRCountLastQuarter(owner, repo, authToken );
+            const response = await fetchAllPRCount("EvanLi", "Github-Ranking", "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" );
             console.log("Signup Response:", response);
-            setPRCnt(response);
+            setPRCnt(response.title);
+            
         } catch (error) {
             console.error('Error:', error);
         }
     };
+    
+    
+    
     
     const fetchMergedLastQ = async () => {
         try {
@@ -150,17 +162,22 @@ useEffect(() => {
         }
     };
     
+     
+      
+    setOwner("EvanLi");
+    setAuthToken("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");
+    setRepo("Github-Ranking");
+         
 
-    
-    
     fetchPRLastQ();
-    fetchMergedLastQ();
-    fetchOpenLastQ();
-    fetchRepoDashboard();
+    //fetchMergedLastQ(); bu metod back te hata veriyor tekrar kontrol
+   
+    fetchOpenLastQ(); //error in this backend method
+    //fetchRepoDashboard();
 }, []);
-
-
-
+  
+       
+ 
 
 Highcharts.addEvent(Highcharts.Point, 'click', function () {
     if (this.series.options.className.indexOf('popup-on-click') !== -1) {

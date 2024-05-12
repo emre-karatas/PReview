@@ -1,20 +1,13 @@
-
-
 const axios = require('axios');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI, Configuration } = require('openai');
 
+// Initialize OpenAI client properly
 const openaiToken = 'sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn';
-const openaiClient = new OpenAIApi(new Configuration({
+const openai = new OpenAI({
     apiKey: openaiToken
-}));
+});
 
-
-async function summarizeComment(comment, openaiApiKey) {
-    const configuration = new Configuration({
-        apiKey: openaiApiKey
-    });
-    const openai = new OpenAIApi(configuration);
-
+async function summarizeComment(comment) {
     try {
         const response = await openai.createCompletion({
             model: "text-davinci-002",
@@ -29,8 +22,6 @@ async function summarizeComment(comment, openaiApiKey) {
     }
 }
 
-
-
 async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken) {
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${prNumber}/comments`;
     const githubHeaders = {
@@ -44,7 +35,7 @@ async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken)
         const response = await axios.get(url, githubHeaders);
         const commentsData = await Promise.all(response.data.map(async (comment) => {
             // Analyze the quality of the comment
-            const qualityResponse = await openaiClient.createCompletion({
+            const qualityResponse = await openai.createCompletion({
                 model: "text-davinci-002",
                 prompt: `Analyze the quality of this review comment: "${comment.body}"`,
                 max_tokens: 150
@@ -53,7 +44,7 @@ async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken)
             const score = interpretOpenAIFeedback(qualityFeedback);
 
             // Get summary of the comment
-            const summaryResponse = await openaiClient.createCompletion({
+            const summaryResponse = await openai.createCompletion({
                 model: "text-davinci-002",
                 prompt: `Provide a summary for the following comment: "${comment.body}"`,
                 max_tokens: 60
@@ -83,5 +74,4 @@ function interpretOpenAIFeedback(feedback) {
     return 1;
 }
 
-module.exports = { fetchAndAnalyzeComments };
-
+module.exports = { fetchAndAnalyzeComments, summarizeComment };
