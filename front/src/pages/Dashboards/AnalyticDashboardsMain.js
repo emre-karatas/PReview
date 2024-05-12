@@ -65,6 +65,8 @@ export const AnalyticDashboardsMain = () => {
   
             try { 
                 const response = await fetchTotalLinesOfCodes(owner, repo, authToken );
+                console.log(response.title);
+                setTotalLOC(response.title);
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error); 
