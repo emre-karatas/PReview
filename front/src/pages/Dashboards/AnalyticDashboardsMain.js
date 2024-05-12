@@ -27,31 +27,12 @@ export const AnalyticDashboardsMain = () => {
 
     const [totalLOC, setTotalLOC] = useState(null);
 
-
-
-
     const [annualTickets, setAnnualTickets] = useState(null);
+    const [completionRate, setCompletionRate] = useState(null);
+    const [performanceScore, setPerformanceScore] = useState(null);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchTickets = async () => {
-            try {
-                const response = await axios.post('/annualTickets', {
-                    owner: 'ownerName',
-                    repo: 'repoName',
-                    year: 2024, // Specify the year you want to retrieve the ticket count for
-                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
-                });
-                setAnnualTickets(response.data.totalIssues);
-            } catch (error) {
-                setError(error.message);
-            }
-        };
-
-        fetchTickets();
-    }, []);
-
-    useEffect(() => {
+        useEffect(() => {
         const fetchProductivityData = async () => {
             try {
                 const response = await fetchProductivity({owner, repo, authToken, openaiApiKey });
@@ -94,9 +75,53 @@ export const AnalyticDashboardsMain = () => {
                 alert('Failed to signup');
             }
         };
-        
-        
-        
+
+        const fetchCompletionRate = async () => {
+            try {
+                const response = await axios.post('/prCompletionRate', {
+                    owner: 'ownerName',
+                    repo: 'repoName',
+                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
+                });
+                setCompletionRate(response.data.completionRate);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+
+        const fetchTickets = async () => {
+            try {
+                const response = await axios.post('/annualTickets', {
+                    owner: 'ownerName',
+                    repo: 'repoName',
+                    year: 2024, // Specify the year you want to retrieve the ticket count for
+                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
+                });
+                setAnnualTickets(response.data.totalIssues);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        const fetchPerformanceScore = async () => {
+            try {
+                const response = await axios.post('/projectPerformance', {
+                    owner: 'ownerName',
+                    repo: 'repoName',
+                    githubToken: 'yourGitHubAuthToken', // Provide your GitHub personal access token
+                    openaiApiKey: 'yourOpenAIAuthToken' // Provide your OpenAI API key
+                });
+                setPerformanceScore(response.data.performanceScore);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+
+        fetchCompletionRate();
+        fetchTickets();
+        fetchPerformanceScore();
         fetchPRCNT();
         fetchCommitCNT();
         fetchProductivityData();
@@ -120,8 +145,8 @@ export const AnalyticDashboardsMain = () => {
                         <StatBox title="Commit" number={totalCommitCount} trend="+28.14%"/>
                         <StatBox title="Line of Code" number={totalLOC}/>
                     </div>
-                    <ProjectSummary ticketsCreated= {annualTickets} reviewDate="July 24, 2024" avgPRTime="4" completionRate="75"/>
-                    <PerformanceScore score="78" />
+                    <ProjectSummary ticketsCreated= {annualTickets} reviewDate="July 24, 2024" avgPRTime="4" completionRate={completionRate}/>
+                    <PerformanceScore score={performanceScore} />
                 </div>
             </div>
         </div>
