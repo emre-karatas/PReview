@@ -1,59 +1,136 @@
 import React, { useState } from "react";
 import './SignUpForm.css';
-import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
+import { FaUser, FaLock, FaEnvelope, FaGithub } from "react-icons/fa";
+import { signupUser } from "../../api/authAdapter";
 
 const SignUpForm = () => {
     const [userType, setUserType] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [githubRepo, setGithubRepo] = useState(null);
+    const [githubToken, setGithubToken] = useState(null);
 
     const handleUserTypeChange = (e) => {
         setUserType(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (userType === '') {
             alert('Please select a user type');
             return;
         }
-        // Handle form submission
+        
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        try {
+            const response = await signupUser({ username, fullName, email, password, userType, githubRepo, githubToken });
+            console.log("Signup Response:", response);
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to signup');
+        }
     };
 
     return (
         <div className="wrapper">
-            <form action="">
+            <form onSubmit={handleSubmit}>
                 <h1 className="preview-name">PReview</h1>
                 <h3>Register</h3>
 
                 <div className="input-box-name">
-                    <input type="text" placeholder="Full Name" required />
+                    <input 
+                        type="text" 
+                        placeholder="Full Name" 
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        required 
+                    />
                 </div>
 
                 <div className="input-box">
-                    <input type="email" placeholder="E-mail Address" required />
+                    <input 
+                        type="email" 
+                        placeholder="E-mail Address" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required 
+                    />
                     <FaEnvelope className="icon"/>
                 </div>
 
                 <div className="input-box">
-                    <input type="text" placeholder="Username" required />
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
                     <FaUser className="icon" />
                 </div>
 
                 <div className="input-box">
-                    <input type="password" placeholder="Password" required />
+                    <input 
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required 
+                    />
                     <FaLock className="icon" />
                 </div>
 
                 <div className="input-box">
-                    <input type="password" placeholder="Re-Enter Password" required />
+                    <input 
+                        type="password" 
+                        placeholder="Re-Enter Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
                     <FaLock className="icon" />
                 </div>
 
                 <div className="input-box">
-                    <select className="input-select" value={userType} onChange={handleUserTypeChange} required>
+                    <select 
+                        className="input-select" 
+                        value={userType} 
+                        onChange={handleUserTypeChange} 
+                        required
+                    >
                         <option className="input-option" value="" default>User Type</option>
                         <option className="input-option" value="developer">Developer</option>
                         <option className="input-option" value="team-lead">Team Lead</option>
                     </select>
+                </div>
+
+                <div className="input-box">
+                    <input 
+                        type="text" 
+                        placeholder="GitHub Repo Link"
+                        value={githubRepo}
+                        onChange={(e) => setGithubRepo(e.target.value)}
+                        required
+                    />
+                    <FaGithub className="icon" />
+                </div>
+
+                <div className="input-box">
+                    <input 
+                        type="text" 
+                        placeholder="GitHub Token"
+                        value={githubToken}
+                        onChange={(e) => setGithubToken(e.target.value)}
+                        required
+                    />
+                    <FaGithub className="icon" />
                 </div>
 
                 <button type="submit">
