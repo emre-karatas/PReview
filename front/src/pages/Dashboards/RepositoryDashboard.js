@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-//import NavBar from "./NavBar";
+import Navbar from "./Navbar";
 import AnalyticDashboardsSidebar from "./AnalyticDashboardsSidebar";
-import "./ChatbotTotalCostDashboard.css"
+import "./RepositoryDashboard.css"
 import Highcharts from 'highcharts';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -9,7 +9,7 @@ import Accordion from 'react-bootstrap/Accordion';
 
 
 
-export const ChatbotTotalCostDashboard = () => {
+export const RepositoryDashboard= () => {
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
   { field: 'x', headerName: 'Date', width: 130, type: 'Date' },
@@ -23,17 +23,34 @@ const rows = [
     { id: 4, x: new Date('2023-01-04'), y: 1600 },
 ];
 
+const aiReviews = [
+    {
+        id: 1,
+        date: '2023-01-01',
+        comment: "Great implementation of the new caching logic.",
+        score: 8.5
+    },
+    {
+        id: 2,
+        date: '2023-01-02',
+        comment: "Needs improvement in thread safety during cache updates.",
+        score: 7.0
+    },
+    // Add more reviews as needed...
+];
+
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#C307F9', // A green shade as the primary action color
+      main: '#2A2C38',
     },
     background: {
-      default: '#2B0AFF', // Dark background for the overall layout
-      paper: '#2B0AFF', // Slightly lighter for components background like DataGrid
+      default: '#2A2C38',
+      paper: '#f0f0f0',
     },
     text: {
-      primary: '#C307F9',
+      primary: '#2A2C38',
       secondary: '3',
     },
   },
@@ -50,18 +67,18 @@ const theme = createTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(','),
-    fontSize: 14, // Adjust base font size to match the dashboard's design
+    fontSize: 14,
   },
   components: {
-    // Customizing DataGrid look to fit into the dark theme
+
     MuiDataGrid: {
       styleOverrides: {
         root: {
-          border: 'none', // Remove default border
+          border: 'none',
         },
         columnHeader: {
-          backgroundColor: '#2B0AFF', // Column headers background
-          color: '#ffffff', // Column headers text color to match primary color
+          backgroundColor: '#2A2C38',
+          color: '#ffffff',
         },
         row: {
           backgroundColor: '#ffffff',
@@ -115,10 +132,10 @@ useEffect(() => {
             type: 'line'
         },
         title: {
-            text: 'CODED AI Daily Cost Overview'
+            text: 'Developer Performance Dashboard'
         },
         subtitle: {
-            text: "GPT models' cost are calculated based on token generated."
+            text: "Track performance of each individual developer."
         },
         xAxis: {
             type: 'datetime',
@@ -126,11 +143,11 @@ useEffect(() => {
         },
         yAxis: {
             title: {
-                text: 'Cost in USD'
+                text: 'TEXT'
             }
         },
         series: [{
-            name: 'Daily Cost',
+            name: 'TEXT',
             data: rows
         }]
     });
@@ -139,39 +156,56 @@ useEffect(() => {
 
     return (
         <div>
-            {/* <NavBar activeSection="Dashboards"/> */}
+             <Navbar/>
             <AnalyticDashboardsSidebar selectedDashboard={"Chatbot/TotalCostDashboard"}/>
             <div className="dashboard-wrapper">
                 <div  id="container" ></div>
             </div>
              <Accordion defaultActiveKey="0" className="my-3">
-  <Accordion.Item eventKey="0">
-      <Accordion.Header>Generate Comments with AI<div className="dashboard-loader"></div></Accordion.Header>
-      <Accordion.Body>
-      Here you can generate AI-based comments for your data analysis. Use the controls below to customize the generation process:
-      <div className="py-2">
-        {/* Example controls or description here */}
-        <p>Select the data points you wish to analyze or enter specific queries for the AI.</p>
-        {/* Assuming you might add a form or controls here */}
-      </div>
-    </Accordion.Body>
-  </Accordion.Item>
+    <Accordion.Item eventKey="0">
+        <Accordion.Header>AI Reviews</Accordion.Header>
+        <Accordion.Body>
+            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                {aiReviews.map(review => (
+                    <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
+                        <p><strong>Date:</strong> {review.date}</p>
+                        <p><strong>Comment:</strong> {review.comment}</p>
+                        <p><strong>Score:</strong> {review.score}/10</p>
+                    </div>
+                ))}
+            </div>
+        </Accordion.Body>
+    </Accordion.Item>
 </Accordion>
-            <ThemeProvider theme={theme}>
-                <div style={{ height: '50vh', marginLeft:'50vh',  width: '60%', backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5, 10]}
-                    checkboxSelection
 
-                />
-                </div>
-            </ThemeProvider>
+            <ThemeProvider theme={theme}>
+    <div style={{
+        height: '50vh',
+        width: '60%',
+        backgroundColor: 'white',
+        padding: '20px',
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        margin: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '5vh'
+    }}>
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5, 10]}
+            checkboxSelection
+        />
+    </div>
+</ThemeProvider>
+
 
         </div>
     );
 };
 
-export default ChatbotTotalCostDashboard;
+export default RepositoryDashboard;

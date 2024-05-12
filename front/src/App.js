@@ -5,7 +5,8 @@ import SignUp from './pages/SignUp/SignUp';
 import API from './pages/API/API';
 import Profile from './pages/Profile/Profile';
 import AnalyticDashboardsMain from "./pages/Dashboards/AnalyticDashboardsMain";
-import ChatbotTotalCostDashboard from "./pages/Dashboards/ChatbotTotalCostDashboard";
+import DeveloperPerformanceDashboard from "./pages/Dashboards/DeveloperPerformanceDashboard";
+import RepositoryDashboard from "./pages/Dashboards/RepositoryDashboard";
 
 function App() {
   return (
@@ -15,8 +16,9 @@ function App() {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/api' element={<API />} />
         <Route path='/profile' element={<Profile />} />
-        <Route path='/ChatbotTotalCostDashboard' element={<ChatbotTotalCostDashboard />} />
         <Route path='/analyticDashboards' element={<AnalyticDashboardsMain />} />
+         <Route path='/DeveloperPerformanceDashboard' element={<DeveloperPerformanceDashboard />} />
+          <Route path='/RepositoryDashboard' element={<RepositoryDashboard />} />
       </Routes>
     </Router>
   );

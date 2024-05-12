@@ -1,12 +1,12 @@
 .analytic-sidebar {
-  width: 250px; /* Adjust based on your preference */
-  height: 100vh; /* Full height */
-  position: fixed; /* Fixed position */
-  top: 4vh; /* Height of the navbar */
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 4vh;
   left: 0;
-  background-color: #1e1e2d; /* Adjust color as needed */
-  overflow-y: auto; /* Allows scrolling within the sidebar */
-  z-index: 500; /* Lower than navbar but high enough for layering */
+  background-color: #1e1e2d;
+  overflow-y: auto;
+  z-index: 500;
 }
 
 
