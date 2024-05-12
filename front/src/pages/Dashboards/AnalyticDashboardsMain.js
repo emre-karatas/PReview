@@ -39,7 +39,6 @@ export const AnalyticDashboardsMain = () => {
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error);
-                //alert('Failed to signup');
             }
         };
         
@@ -50,18 +49,21 @@ export const AnalyticDashboardsMain = () => {
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error);
-               // alert('Failed to signup');
             }
         };
         
         
         const fetchLOC = async () => {
+            setOwner("EvanLi");
+            setAuthToken("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");
+            setRepo("https://github.com/EvanLi/Github-Ranking");
+            
+            
             try {
                 const response = await fetchTotalLinesOfCodes({owner, repo, authToken });
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error);
-                //alert('Failed to signup');
             }
         };
         
@@ -72,7 +74,6 @@ export const AnalyticDashboardsMain = () => {
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error);
-                //alert('Failed to signup');
             }
         };
 
@@ -119,12 +120,12 @@ export const AnalyticDashboardsMain = () => {
         };
 
 
-        fetchCompletionRate();
-        fetchTickets();
-        fetchPerformanceScore();
-        fetchPRCNT();
-        fetchCommitCNT();
-        fetchProductivityData();
+        //fetchCompletionRate();
+        //fetchTickets();
+        //fetchPerformanceScore();
+        //fetchPRCNT();
+        //fetchCommitCNT();
+        //fetchProductivityData();
         fetchLOC();
     }, []);
     
