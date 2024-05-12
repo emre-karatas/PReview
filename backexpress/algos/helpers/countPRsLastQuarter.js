@@ -16,21 +16,18 @@ function getStartOfYearDate() {
  * @param {string} token - Your GitHub personal access token.
  * @returns {Promise<number>} - A promise that resolves to the number of pull requests opened since the beginning of the year.
  */
-async function countPRsSinceStartOfYear(owner, repo, token) {
+async function countPRsLastQuarter(owner, repo, token) {
     let totalCount = 0;
     let page = 1;
     let hasNextPage = true;
     const startOfYear = getStartOfYearDate().toISOString();
 
     while (hasNextPage) {
-        const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/pulls`, {
-            headers: { Authorization: `token ${token}` },
-            params: {
-                state: 'all', // Fetch both open and closed pull requests
-                per_page: 100,
-                page: page,
-                since: startOfYear
-            }
+        const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/pulls?state=all&per_page=20`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+            },
         });
 
         response.data.forEach(pr => {
@@ -41,10 +38,11 @@ async function countPRsSinceStartOfYear(owner, repo, token) {
         });
 
         hasNextPage = response.data.length === 100; // Continue if there are more pages
+        break;
         page++;
     }
 
     return totalCount;
 }
 
-module.exports = countPRsSinceStartOfYear;
+module.exports = countPRsLastQuarter;

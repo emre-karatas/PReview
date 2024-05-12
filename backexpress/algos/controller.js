@@ -17,9 +17,7 @@ const countAllPRs = require('./helpers/countAllPRs');
 const countPRsLastQuarter = require('./helpers/countPRsLastQuarter');
 const countMergedPRsLastQuarter = require('./helpers/countMergedPRsLastQuarter');
 const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
-const repodashboard = require('./helpers/repodashboard');
-
-
+const {fetchAndAnalyzeComments, summarizeComment} = require('./helpers/repodashboard');
 
 
 // API route for fetching repodashboard
@@ -29,7 +27,7 @@ router.post('/getrepodashboard', async (req, res) => {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await repodashboard(repoOwner, repoName, prNumber, authToken);
+        const teams = await fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching repodashboard:', error);
@@ -41,12 +39,9 @@ router.post('/getrepodashboard', async (req, res) => {
 router.post('/openPrCntLastQuarter', async (req, res) => {
     const { org, username, authToken } = req.body;
 
-
-
-
         console.log("req", req.body)
         let owner = req.body.owner;
-                let repo = req.body.repo;
+        let repo = req.body.repo;
 
         console.log("The repo", repo);
         console.log("The owner", owner);
@@ -115,17 +110,12 @@ router.post('/userTeams', async (req, res) => {
 // API route for fetching the teams a user belongs to
 router.post('/prCountLastQuarter', async (req, res) => {
     const { owner, repo, authToken } = req.body;
-    console.log("req", req.body)
-    console.log("The repo", repo);
-    console.log("The owner", owner);
-
-    console.log("The authToken", authToken);
-
+    
     if (!owner || !repo || !authToken) {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await countPRsLastQuarter(repo, owner, authToken);
+        const teams = await countPRsLastQuarter(owner, repo, authToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching user teams:', error);
