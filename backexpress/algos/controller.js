@@ -10,7 +10,13 @@ const { fetchLatestPullRequestTitle} = require('./helpers/latestPRTitle');
 const { fetchNumberOfChangedFilesInLatestPR } = require('./helpers/latestPRChangeNo');
 const { fetchAllContributors } = require('./helpers/fetchContributorsAll');
 const { fetchCommentsByDeveloperOnLatestPR } = require('./helpers/commentsbydevLatestPR');
-const { getTotalLinesOfCode } = require('./helpers/getRepoStats');
+const { fetchTotalLinesOfCodes } = require('./helpers/getTotalLinesOfCode');
+const { fetchCountCommits } = require('./helpers/countCommits');
+const { fetchProductivity } = require('./helpers/calculateProjectProductivity');
+const { fetchPRCount } = require('./helpers/countAllPRs');
+
+
+
 
 // API route for fetching the teams a user belongs to
 router.post('/userTeams', async (req, res) => {
@@ -41,6 +47,70 @@ router.post('/latestPRTitle', async (req, res) => {
         res.status(500).send('Server error occurred while fetching the latest PR title.');
     }
 });
+
+
+// API route for fetching the total line of code
+router.post('/getTotalLinesOfCode', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+    try {
+        const title = await fetchTotalLinesOfCodes(owner, repo, authToken);
+        res.status(200).json({ title });
+    } catch (error) {
+        console.error('Error fetching the total line of code:', error);
+        res.status(500).send('Server error occurred while fetching the total line of code.');
+    }
+});
+
+// API route for fetching the total no of commits
+router.post('/getCommitCount', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+    try {
+        const title = await fetchCountCommits(owner, repo, authToken);
+        res.status(200).json({ title });
+    } catch (error) {
+        console.error('Error fetching no of commits:', error);
+        res.status(500).send('Server error occurred while fetching the no of commits.');
+    }
+});
+
+
+// API route for fetching productivity
+router.post('/getProductivity', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+    try {
+        const title = await fetchProductivity(owner, repo, authToken, openaiApiKey);
+        res.status(200).json({ title });
+    } catch (error) {
+        console.error('Error fetching productivity:', error);
+        res.status(500).send('Server error occurred while fetching productivity.');
+    }
+});
+
+// API route for counting all prs
+router.post('/getAllPRCount', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+    try {
+        const title = await fetchPRCount(owner, repo, authToken);
+        res.status(200).json({ title });
+    } catch (error) {
+        console.error('Error fetching counting all prs:', error);
+        res.status(500).send('Server error occurred while fetching counting all prs.');
+    }
+});
+
+
 
 // API route for fetching the latest PR status of a developer
 router.post('/latestPRStatus', async (req, res) => {
@@ -168,6 +238,59 @@ router.post('/average-pr-time', async (req, res) => {
     } catch (error) {
         console.error('Error fetching PRs:', error);
         res.status(500).send('Server error occurred while fetching PRs.');
+    }
+});
+
+router.post('/annualTickets', async (req, res) => {
+    const { owner, repo, year, authToken } = req.body;
+    if (!owner || !repo || !year || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, year, authToken');
+    }
+    try {
+        const totalIssues = await computeAnnualTicketCreation(owner, repo, authToken, year);
+        res.status(200).json({ totalIssues });
+    } catch (error) {
+        console.error('Error computing annual ticket creation:', error);
+        res.status(500).send('Server error occurred while computing annual ticket creation.');
+    }
+});
+
+// Controller method for computing the completion rate of all open PRs in a GitHub repository
+router.post('/prCompletionRate', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+
+    try {
+        // Fetch the completion rate using the provided function
+        const completionRate = await computePRCompletionRate(owner, repo, authToken);
+
+        // Send the completion rate as the response
+        res.status(200).json({ completionRate });
+    } catch (error) {
+        console.error('Error fetching PR completion rate:', error);
+        res.status(500).send('Server error occurred while fetching PR completion rate.');
+    }
+});
+
+router.post('/projectPerformance', async (req, res) => {
+    const { owner, repo, githubToken, openaiApiKey } = req.body;
+
+    if (!owner || !repo || !githubToken || !openaiApiKey) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken, openaiApiKey');
+    }
+
+    try {
+        // Calculate project performance using the provided function
+        const performanceScore = await calculateProjectPerformance(owner, repo, githubToken, openaiApiKey);
+
+        // Send the performance score as the response
+        res.status(200).json({ performanceScore });
+    } catch (error) {
+        console.error('Error calculating project performance:', error);
+        res.status(500).send('Server error occurred while calculating project performance.');
     }
 });
 

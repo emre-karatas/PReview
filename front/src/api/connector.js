@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/token';
+const API_BASE_URL = 'http://localhost:3000/api/algos/';
 
 // Helper function to perform API requests
 const apiRequest = async (endpoint, method, data) => {
@@ -58,3 +58,20 @@ export const fetchCommentsByDeveloperOnLatestPR = (owner, repo, developer, authT
 // Fetch average PR time
 export const fetchAveragePRTime = (owner, repo) =>
     apiRequest('average-pr-time', 'POST', { owner, repo });
+
+// Fetch total line of code
+export const fetchTotalLinesOfCodes = (owner, repo, authToken) =>
+    apiRequest('getTotalLinesOfCode', 'POST', { owner, repo, authToken});  
+    
+// Fetch total no of commits
+export const fetchTotalNoOfCommits = (owner, repo, authToken) =>
+    apiRequest('getCommitCount', 'POST', { owner, repo, authToken});  
+    
+ // Fetch productivity
+export const fetchProductivity = (owner, repo, authToken, openaiApiKey) =>
+    apiRequest('getProductivity', 'POST', { owner, repo, authToken, openaiApiKey});     
+
+    
+ // Fetch productivity
+ export const fetchAllPRCount = (owner, repo, authToken) =>
+ apiRequest('getAllPRCount', 'POST', { owner, repo, authToken});     
