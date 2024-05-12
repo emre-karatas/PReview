@@ -241,5 +241,20 @@ router.post('/average-pr-time', async (req, res) => {
     }
 });
 
+router.post('/annualTickets', async (req, res) => {
+    const { owner, repo, year, authToken } = req.body;
+    if (!owner || !repo || !year || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, year, authToken');
+    }
+    try {
+        const totalIssues = await computeAnnualTicketCreation(owner, repo, authToken, year);
+        res.status(200).json({ totalIssues });
+    } catch (error) {
+        console.error('Error computing annual ticket creation:', error);
+        res.status(500).send('Server error occurred while computing annual ticket creation.');
+    }
+});
+
+
 
 module.exports = router;

@@ -26,6 +26,31 @@ export const AnalyticDashboardsMain = () => {
 
     const [totalLOC, setTotalLOC] = useState(null);
 
+    import React, { useState, useEffect } from "react";
+    import axios from 'axios';
+
+
+    const [annualTickets, setAnnualTickets] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchTickets = async () => {
+            try {
+                const response = await axios.post('/annualTickets', {
+                    owner: 'ownerName',
+                    repo: 'repoName',
+                    year: 2024, // Specify the year you want to retrieve the ticket count for
+                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
+                });
+                setAnnualTickets(response.data.totalIssues);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        fetchTickets();
+    }, []);
+
     useEffect(() => {
         const fetchProductivityData = async () => {
             try {
@@ -95,7 +120,7 @@ export const AnalyticDashboardsMain = () => {
                         <StatBox title="Commit" number={totalCommitCount} trend="+28.14%"/>
                         <StatBox title="Line of Code" number={totalLOC}/>
                     </div>
-                    <ProjectSummary ticketsCreated="512" reviewDate="July 24, 2024" avgPRTime="4" completionRate="75"/>
+                    <ProjectSummary ticketsCreated= {annualTickets} reviewDate="July 24, 2024" avgPRTime="4" completionRate="75"/>
                     <PerformanceScore score="78" />
                 </div>
             </div>
