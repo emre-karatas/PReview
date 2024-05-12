@@ -100,7 +100,7 @@ router.post('/getAllPRCount', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, authToken');
     }
     try {
-        const title = await fetchPRCount(owner, repo, authToken);
+        const title = await countAllPRs(owner, repo, authToken);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching counting all prs:', error);
