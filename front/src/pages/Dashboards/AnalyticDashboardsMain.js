@@ -39,7 +39,7 @@ export const AnalyticDashboardsMain = () => {
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error);
-                alert('Failed to signup');
+                //alert('Failed to signup');
             }
         };
         
@@ -50,7 +50,7 @@ export const AnalyticDashboardsMain = () => {
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error);
-                alert('Failed to signup');
+               // alert('Failed to signup');
             }
         };
         
@@ -61,7 +61,7 @@ export const AnalyticDashboardsMain = () => {
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error);
-                alert('Failed to signup');
+                //alert('Failed to signup');
             }
         };
         
@@ -72,7 +72,7 @@ export const AnalyticDashboardsMain = () => {
                 console.log("Signup Response:", response);
             } catch (error) {
                 console.error('Error:', error);
-                alert('Failed to signup');
+                //alert('Failed to signup');
             }
         };
 

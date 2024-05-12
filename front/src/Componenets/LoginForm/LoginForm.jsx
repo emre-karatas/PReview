@@ -29,7 +29,7 @@ const LoginForm = () => {
                 localStorage.setItem("github_token", user.github_token)
                 navigate("/analyticDashboards");
             } else {
-                alert("Username or password cannot be found! Please try again.")
+                //alert("Username or password cannot be found! Please try again.")
             }
 
         } catch (error) {
