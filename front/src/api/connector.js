@@ -90,10 +90,13 @@ export const fetchPRCountLastQuarter = (owner, repo, authToken) =>
     apiRequest('openPrCntLastQuarter', 'POST', { owner, repo, authToken});     
     
     
-      
     // Fetch prCountLastQuarter
     export const fetchgetrepodashboard = (repoOwner, repoName, prNumber, authToken) =>
     apiRequest('getrepodashboard', 'POST', { repoOwner, repoName, prNumber, authToken});     
     
     
-  
+        
+      
+    // Fetch prCountLastQuarter
+    export const fetchgetAllDevelopers = (owner, repo, authToken) =>
+    apiRequest('getAllDeveloperss', 'POST', { owner, repo, authToken});     

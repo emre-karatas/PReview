@@ -7,7 +7,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers } from "../../api/connector";
 
 
 
@@ -27,9 +27,9 @@ const rows = [
 
 
 const [aiReviews, setAiReviews] = useState([]);
-const [prCnt, setPRCnt] = useState([]);
-const [mergedCnt, setMergedCnt] = useState([]);
-const [openCnt, setOpenCnt] = useState([]);
+const [prCnt, setPRCnt] = useState(0);
+const [mergedCnt, setMergedCnt] = useState(0);
+const [openCnt, setOpenCnt] = useState(0);
 //const [date, setDate] = useState([]);
 const [owner, setOwner] = useState(null);
 const [repo, setRepo] = useState(null);
@@ -121,7 +121,7 @@ useEffect(() => {
 
         try {
             const response = await fetchAllPRCount("EvanLi", "Github-Ranking", "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" );
-            console.log("Signup Response:", response);
+            console.log("fetchPRLastQ:", response);
             setPRCnt(response.title);
             
         } catch (error) {
@@ -132,10 +132,11 @@ useEffect(() => {
     
     
     
+    
     const fetchMergedLastQ = async () => {
         try {
-            const response = await fetchmergedPrCntLastQuarter(owner, repo, authToken);
-            console.log("Signup Response:", response);
+            const response = await fetchmergedPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
+            console.log("fetchMergedLastQ:", response);
             setMergedCnt(response);
         } catch (error) {
             console.error('Error:', error);
@@ -145,8 +146,8 @@ useEffect(() => {
         
     const fetchOpenLastQ = async () => {
         try {
-            const response = await fetchopenPrCntLastQuarter(owner, repo, authToken);
-            console.log("Signup Response:", response);
+            const response = await fetchopenPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
+            console.log("fetchOpenLastQ:", response);
             setOpenCnt(response);
         } catch (error) {
             console.error('Error:', error);
@@ -154,29 +155,50 @@ useEffect(() => {
     };
     const fetchRepoDashboard = async () => {
         try {
-            const response = await fetchgetrepodashboard(owner, repo, prNumber, authToken);
-            console.log("Signup Response:", response);
-            setAiReviews(response);
+            const response = await fetchgetrepodashboard("EvanLi", "Github-Ranking", 3, "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");
+            console.log("fetchRepoDashboard:", response);
+            
+            //setAiReviews(response);
         } catch (error) {
             console.error('Error:', error);
         }
-    };
+    }; 
     
-     
+    
+    const fetchAllDevelopers = async () => {
+        try {
+            const response = await fetchgetAllDevelopers("EvanLi", "Github-Ranking", "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");
+            console.log("fetchAllDevelopers:", response);
+            
+            //setAiReviews(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };  
+    
       
+    
+    
+    
+    
+    
+    
     setOwner("EvanLi");
     setAuthToken("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");
     setRepo("Github-Ranking");
          
 
     fetchPRLastQ();
-    //fetchMergedLastQ(); bu metod back te hata veriyor tekrar kontrol
+    fetchMergedLastQ(); //bu metod back te hata veriyor tekrar kontrol
    
     fetchOpenLastQ(); //error in this backend method
     //fetchRepoDashboard();
+    
+    fetchAllDevelopers();
 }, []);
   
-       
+        
+
  
 
 Highcharts.addEvent(Highcharts.Point, 'click', function () {
@@ -253,10 +275,12 @@ useEffect(() => {
         <Accordion.Header>AI Reviews</Accordion.Header>
         
         <Accordion.Body>
-        <p><strong>Total PR Count (Last Quarter): {prCnt}</strong></p>
-        <p><strong>Merged (Last Quarter): {mergedCnt}</strong></p>
-        <p><strong>Open (Last Quarter): {openCnt}</strong></p>
 
+<div>
+        <p><strong>Total PR Count (Last Quarter): prCnt</strong></p>
+        <p><strong>Merged (Last Quarter): mergedCnt</strong></p>
+        <p><strong>Open (Last Quarter): openCnt</strong></p>
+        </div>
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                 {aiReviews.map(review => (
                     <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
@@ -264,7 +288,6 @@ useEffect(() => {
                         <p><strong>Comment:</strong> {review.comment}</p>
                         <p><strong>Score:</strong> {review.score}/10</p>
                         <p><strong>Summarized:</strong> {review.highlights}</p>
-
                     </div>
                 ))}
             </div>

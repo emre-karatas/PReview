@@ -18,16 +18,52 @@ const countPRsLastQuarter = require('./helpers/countPRsLastQuarter');
 const countMergedPRsLastQuarter = require('./helpers/countMergedPRsLastQuarter');
 const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
 const {fetchAndAnalyzeComments, summarizeComment} = require('./helpers/repodashboard');
+const getAllDevelopers = require('./helpers/getAllDevelopers');
 
 
-// API route for fetching repodashboard
-router.post('/getrepodashboard', async (req, res) => {
+
+// API route for fetching getAllDevelopers
+router.post('/getAllDeveloperss', async (req, res) => {
     const { org, username, authToken } = req.body;
-    if (!org || !username || !authToken) {
+
+            console.log("inside getAllDeveloperss " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("authToken " , authToken);
+    if (!req.body.owner || !req.body.repo || !authToken) {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken);
+        const teams = await getAllDevelopers(req.body.owner, req.body.repo, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching getAllDevelopers:', error);
+        res.status(500).send('Server error occurred while getAllDevelopers.');
+    }
+});
+
+// API route for fetching repodashboard
+router.post('/getrepodashboard', async (req, res) => {
+    const { org, username, prNumber, authToken } = req.body;
+        console.log("inside getrepodashboard " );
+
+    console.log("req.body.repoOwner " , req.body.repoOwner);
+    console.log("req " , req.body);
+
+    console.log("req.body.repoName " , req.body.repoName);
+    console.log("prNumber " , prNumber);
+
+    console.log("authToken " , authToken);
+
+    if (!req.body.repoOwner || !req.body.repoName || !authToken || !prNumber) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await fetchAndAnalyzeComments(req.body.repoOwner, req.body.repoName, prNumber, authToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching repodashboard:', error);
@@ -51,7 +87,7 @@ router.post('/openPrCntLastQuarter', async (req, res) => {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await countOpenPRsLastQuarter(repo, owner, authToken);
+        const teams = await countOpenPRsLastQuarter(owner, repo, authToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching openPrCntLastQuarter:', error);
@@ -79,7 +115,7 @@ router.post('/mergedPrCntLastQuarter', async (req, res) => {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await countMergedPRsLastQuarter(repo, owner, authToken);
+        const teams = await countMergedPRsLastQuarter( owner, repo, authToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching countMergedPRsLastQuarter:', error);

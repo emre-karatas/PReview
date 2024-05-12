@@ -50,6 +50,7 @@ async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken)
                 max_tokens: 60
             });
             const summary = summaryResponse.data.choices[0].text.trim();
+        console.log("inside fetchAndAnalyzeComments 1 ")
 
             return {
                 date: comment.created_at,
@@ -58,6 +59,9 @@ async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken)
                 summary
             };
         }));
+        console.log("inside fetchAndAnalyzeComments 2 ")
+        console.log("the commentsdata ", commentsData)
+        console.log("the response ", response)
 
         return commentsData;
     } catch (error) {
