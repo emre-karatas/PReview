@@ -10,12 +10,10 @@ const { fetchLatestPullRequestTitle} = require('./helpers/latestPRTitle');
 const { fetchNumberOfChangedFilesInLatestPR } = require('./helpers/latestPRChangeNo');
 const { fetchAllContributors } = require('./helpers/fetchContributorsAll');
 const { fetchCommentsByDeveloperOnLatestPR } = require('./helpers/commentsbydevLatestPR');
-const { fetchTotalLinesOfCodes } = require('./helpers/getTotalLinesOfCode');
-const { fetchCountCommits } = require('./helpers/countCommits');
-const { fetchProductivity } = require('./helpers/calculateProjectProductivity');
-const { fetchPRCount } = require('./helpers/countAllPRs');
-
-
+const { getTotalLinesOfCode } = require('./helpers/getTotalLinesOfCode');
+const { countCommits } = require('./helpers/countCommits');
+const { calculateProjectProductivity } = require('./helpers/calculateProjectProductivity');
+const { countAllPRs } = require('./helpers/countAllPRs');
 
 
 // API route for fetching the teams a user belongs to
@@ -56,7 +54,7 @@ router.post('/getTotalLinesOfCode', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, authToken');
     }
     try {
-        const title = await fetchTotalLinesOfCodes(owner, repo, authToken);
+        const title = await getTotalLinesOfCode(owner, repo, authToken);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching the total line of code:', error);
@@ -71,7 +69,7 @@ router.post('/getCommitCount', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, authToken');
     }
     try {
-        const title = await fetchCountCommits(owner, repo, authToken);
+        const title = await countCommits(owner, repo, authToken);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching no of commits:', error);
@@ -87,7 +85,7 @@ router.post('/getProductivity', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, authToken');
     }
     try {
-        const title = await fetchProductivity(owner, repo, authToken, openaiApiKey);
+        const title = await calculateProjectProductivity(owner, repo, authToken, openaiApiKey);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching productivity:', error);
