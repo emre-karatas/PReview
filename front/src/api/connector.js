@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/token';
+const API_BASE_URL = 'http://localhost:3000/api/';
 
 // Helper function to perform API requests
 const apiRequest = async (endpoint, method, data) => {
