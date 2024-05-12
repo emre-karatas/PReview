@@ -20,12 +20,12 @@ const SignUpForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (userType === '') {
-            alert('Please select a user type');
+            //alert('Please select a user type');
             return;
         }
         
         if (password !== confirmPassword) {
-            alert('Passwords do not match');
+            //alert('Passwords do not match');
             return;
         }
 
@@ -34,7 +34,8 @@ const SignUpForm = () => {
             console.log("Signup Response:", response);
         } catch (error) {
             console.error('Error:', error);
-            alert('Failed to signup');
+           // alert('Failed to signup');
+           return;
         }
     };
 
