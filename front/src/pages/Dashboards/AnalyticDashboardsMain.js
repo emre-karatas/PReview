@@ -10,6 +10,10 @@ import PerformanceScore from "./PerformanceScore";
 
 
 export const AnalyticDashboardsMain = () => {
+    
+    
+    
+    
     return (
         <div className="dashboard-container">
             <Navbar />

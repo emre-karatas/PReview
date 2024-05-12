@@ -10,7 +10,7 @@ const { fetchLatestPullRequestTitle} = require('./helpers/latestPRTitle');
 const { fetchNumberOfChangedFilesInLatestPR } = require('./helpers/latestPRChangeNo');
 const { fetchAllContributors } = require('./helpers/fetchContributorsAll');
 const { fetchCommentsByDeveloperOnLatestPR } = require('./helpers/commentsbydevLatestPR');
-const { getTotalLinesOfCode } = require('./helpers/getRepoStats');
+const { fetchTotalLinesOfCodes } = require('./helpers/getTotalLinesOfCode');
 
 // API route for fetching the teams a user belongs to
 router.post('/userTeams', async (req, res) => {
@@ -41,6 +41,24 @@ router.post('/latestPRTitle', async (req, res) => {
         res.status(500).send('Server error occurred while fetching the latest PR title.');
     }
 });
+
+
+// API route for fetching the total line of code
+router.post('/getTotalLinesOfCode', async (req, res) => {
+    const { owner, repo, authToken } = req.body;
+    if (!owner || !repo || !authToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    }
+    try {
+        const title = await fetchTotalLinesOfCodes(owner, repo, authToken);
+        res.status(200).json({ title });
+    } catch (error) {
+        console.error('Error fetching the total line of code:', error);
+        res.status(500).send('Server error occurred while fetching the total line of code.');
+    }
+});
+
+
 
 // API route for fetching the latest PR status of a developer
 router.post('/latestPRStatus', async (req, res) => {
