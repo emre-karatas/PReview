@@ -32,42 +32,7 @@ export const AnalyticDashboardsMain = () => {
     const [completionRate, setCompletionRate] = useState(null);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchCompletionRate = async () => {
-            try {
-                const response = await axios.post('/prCompletionRate', {
-                    owner: 'ownerName',
-                    repo: 'repoName',
-                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
-                });
-                setCompletionRate(response.data.completionRate);
-            } catch (error) {
-                setError(error.message);
-            }
-        };
-
-        fetchCompletionRate();
-    }, []);
-
-    useEffect(() => {
-        const fetchTickets = async () => {
-            try {
-                const response = await axios.post('/annualTickets', {
-                    owner: 'ownerName',
-                    repo: 'repoName',
-                    year: 2024, // Specify the year you want to retrieve the ticket count for
-                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
-                });
-                setAnnualTickets(response.data.totalIssues);
-            } catch (error) {
-                setError(error.message);
-            }
-        };
-
-        fetchTickets();
-    }, []);
-
-    useEffect(() => {
+        useEffect(() => {
         const fetchProductivityData = async () => {
             try {
                 const response = await fetchProductivity({owner, repo, authToken, openaiApiKey });
@@ -110,9 +75,38 @@ export const AnalyticDashboardsMain = () => {
                 alert('Failed to signup');
             }
         };
-        
-        
-        
+
+        const fetchCompletionRate = async () => {
+            try {
+                const response = await axios.post('/prCompletionRate', {
+                    owner: 'ownerName',
+                    repo: 'repoName',
+                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
+                });
+                setCompletionRate(response.data.completionRate);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+
+        const fetchTickets = async () => {
+            try {
+                const response = await axios.post('/annualTickets', {
+                    owner: 'ownerName',
+                    repo: 'repoName',
+                    year: 2024, // Specify the year you want to retrieve the ticket count for
+                    authToken: 'yourGitHubAuthToken' // Provide your GitHub personal access token
+                });
+                setAnnualTickets(response.data.totalIssues);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+
+        fetchCompletionRate();
+        fetchTickets();
         fetchPRCNT();
         fetchCommitCNT();
         fetchProductivityData();
