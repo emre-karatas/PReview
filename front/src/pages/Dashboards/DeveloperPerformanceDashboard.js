@@ -176,7 +176,7 @@ const fetchDeveloperPRActivities = async () => {
     console.log("fetchDeveloperPRActivities:", response);
 
     // Map the response to the rows format
-    const updatedRows = response.map((developer, index) => ({
+    const updatedRows = response.teams.map((developer, index) => ({
       id: index + 1,                         // Assign an ID based on the array index for uniqueness
       x: developer.username,                 // Map 'username' to 'x'
       y: developer.pullRequestCount,         // Map 'pullRequestCount' to 'y'
