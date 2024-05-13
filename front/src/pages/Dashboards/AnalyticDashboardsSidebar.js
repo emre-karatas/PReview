@@ -24,7 +24,9 @@ const AnalyticDashboardsSidebar = ({ selectedDashboard }) => {
     <div className="analytic-sidebar">
       <div className="analytic-sidebar-section">
         <div className="analytic-sidebar-title-container">
-          <h2 className="analytic-sidebar-title">PReview</h2>
+          <Link to="/analyticDashboards" style={{ textDecoration: 'none' }}>
+            <h2 className="analytic-sidebar-title">PReview</h2>
+          </Link>
         </div>
         <Menu
           defaultSelectedKeys={[selectedDashboard]}
