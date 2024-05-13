@@ -1,6 +1,8 @@
 const axios = require('axios');
 const { Configuration, OpenAIApi } = require('openai');
 
+
+
 /**
  * Calculates the productivity of a developer using their activity data from GitHub and analysis by OpenAI.
  * @param {string} owner - The username of the repository owner.
@@ -29,13 +31,12 @@ async function calculateDeveloperProductivity(owner, repo, developer, githubToke
         const prsCount = await getAllPullRequests(owner, repo, developer, githubToken);
 
         // Analyze developer productivity with OpenAI
-        const analysisResponse = await openai.createCompletion({
-            model: "gpt-4-turbo",
-            prompt: `Evaluate the productivity of a developer with ${commitsCount} commits and ${prsCount} pull requests in the repository. Provide a comprehensive assessment.Give your evaluation as a number in range 1-10.`,
-            max_tokens: 150
+        const analysisResponse = await openai.chat.completions.create({
+            messages: [{ role: "system", content: `Evaluate the productivity of a developer with ${commitsCount} commits and ${prsCount} pull requests in the repository. Provide a comprehensive assessment.Give your evaluation as a number in range 1-10.` }],
+            model: "gpt-4-turbo"
         });
 
-        return analysisResponse.data.choices[0].text.trim();
+        return analysisResponse.choices[0];
     } catch (error) {
         console.error('Error calculating developer productivity:', error);
         throw error;
