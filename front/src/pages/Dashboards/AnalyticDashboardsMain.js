@@ -42,9 +42,7 @@ export const AnalyticDashboardsMain = () => {
     const [repo, setRepo] = useState(repoPart);
     const [authToken, setAuthToken] = useState(localStorage.getItem("github_token"));
     const [year, setYear] = useState(2024);
-
-
-    const [openaiApiKey, setOpenAiAPIKey] = useState(null);
+    const [openaiApiKey, setOpenAiAPIKey] = useState("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
 
     const [totalLOC, setTotalLOC] = useState(null);
 
@@ -65,8 +63,8 @@ export const AnalyticDashboardsMain = () => {
 
         setOwner(localStorage.getItem("repo_owner"));
         setRepo(localStorage.getItem("github_repo"));
-        setAuthToken(localStorage.getItem("github_token"));
-        setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+        //setAuthToken(localStorage.getItem("github_token"));
+
 
 
         const fetchProductivityData = async () => {
