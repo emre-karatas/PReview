@@ -4,6 +4,15 @@
 
 **Deliverable for CS453 - Application Lifecycle Management course project.**
 
+ ## Navigation
+
+- [Changelog](#changelog)
+- [Getting Started](#getting-started)
+- [Prerequisites](#prerequisites)
+- [Installing](#installing)
+- [Troubleshooting](#troubleshooting)
+
+
 ## Changelog
 
 All notable changes to this project will be documented in this section. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](http://semver.org/).
