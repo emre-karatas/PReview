@@ -318,9 +318,9 @@ useEffect(() => {
         <Accordion.Body>
 
 <div>
-        <p><strong>Total PR Count (Last Quarter): prCnt</strong></p>
-        <p><strong>Merged (Last Quarter): mergedCnt</strong></p>
-        <p><strong>Open (Last Quarter): openCnt</strong></p>
+        <p><strong>Total PR Count (Last Quarter): {prCnt}</strong></p>
+        <p><strong>Merged (Last Quarter): {mergedCnt}</strong></p>
+        <p><strong>Open (Last Quarter): {openCnt}</strong></p>
         </div>
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                 {aiReviews.map(review => (
