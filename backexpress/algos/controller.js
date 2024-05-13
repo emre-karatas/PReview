@@ -30,6 +30,33 @@ const fetchPRCommentFrequency = require('./helpers/fetchPRCommentFrequency');
 const fetchTotalPRCommentsByDeveloper = require('./helpers/fetchTotalPRCommentsByDeveloper');
 const analyzeCommentTone = require("./helpers/analyzeCommentTone");
 const fetchDeveloperPRActivities = require('./helpers/fetchDeveloperPRActivities');
+const fetchLatestPRComments = require('./helpers/fetchLatestPRComments');
+
+
+// API route for fetching getTotalPRCommentsByDeveloper
+router.post('/getLatestPRComments', async (req, res) => {
+    const { org, username, developer, authToken } = req.body;
+        console.log("inside fetchLatestPRComments " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("the authToken should work " , authToken);
+
+
+    if (!req.body.owner || !req.body.repo || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await fetchLatestPRComments(req.body.owner, req.body.repo, developer, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching fetchLatestPRComments:', error);
+        res.status(500).send('Server error occurred while fetchLatestPRComments.');
+    }
+});
 
 
 
