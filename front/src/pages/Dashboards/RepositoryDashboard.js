@@ -7,7 +7,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, analyzePR} from "../../api/connector";
 import MenuItem from "antd/lib/menu/MenuItem";
 import {Select} from "antd";
 
@@ -112,8 +112,6 @@ const theme = createTheme({
 
 
 
-
-
 useEffect(() => {
     
     setAiReviews([
@@ -153,8 +151,6 @@ useEffect(() => {
     
     
     
-    
-    
     const fetchMergedLastQ = async () => {
         try {
             const response = await fetchmergedPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
@@ -184,7 +180,7 @@ useEffect(() => {
         } catch (error) {
             console.error('Error repoDashboard:', error);
         }
-    }; 
+    };
     
     
     const fetchAllDevelopers = async () => {
@@ -196,11 +192,7 @@ useEffect(() => {
         } catch (error) {
             console.error('Error:', error);
         }
-    };  
-    
-      
-    
-    
+    };
         
     const fetchcalculateDeveloperProductivity = async () => {
         try {
@@ -238,15 +230,41 @@ useEffect(() => {
             console.error('Error:', error);
         }
     };
-    
-    
-    
-    
+
+    const fetchAllPullRequestsAndAnalyze = async () => {
+        try {
+            // Fetch all pull requests
+            const response = await fetchgetAllPullRequests(owner, repo, authToken);
+            console.log("fetchAllPullRequests:", response);
+
+            // Extract pull request numbers
+            const prNumbers = response.teams.map(pr => pr.id);
+
+            // Analyze each pull request
+            const analysisResults = await Promise.all(
+                prNumbers.map(prNumber =>
+                    analyzePR(owner, repo, prNumber, selectedDeveloper, authToken)
+                )
+            );
+
+            // Log analysis results
+            console.log("Analysis Results:", analysisResults);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+
+
+
+
     setOwner("EvanLi");
     setAuthToken("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");
     
     setRepo("Github-Ranking");
-         
+
+
+    fetchAllPullRequestsAndAnalyze();
 
     fetchPRLastQ();
     fetchMergedLastQ(); //bu metod back te hata veriyor tekrar kontrol
@@ -257,7 +275,7 @@ useEffect(() => {
     fetchAllDevelopers();
     fetchcalculateDeveloperProductivity();
     fetchgetAllPullRequestss();
-}, []);
+}, [owner, repo, authToken, selectedDeveloper]);
  
 
 
