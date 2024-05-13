@@ -210,9 +210,8 @@ export const AnalyticDashboardsMain = () => {
                 <AnalyticDashboardsSidebar className="sidebar"/>
                 <div className="dashboard-main">
                     <div className="dashboard-main-content">
-                        <TotalPRChart/>
-                        <PRTable rows={rows} />
-                        tab
+                        {/* <TotalPRChart/>
+                        <PRTable rows={rows} /> */}
                     </div>
                     <div className="dashboard-stats">
                         <StatBox title="Total PR Created" number={totalPRCount}/>
