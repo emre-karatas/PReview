@@ -118,3 +118,8 @@ export const fetchPRReviewCounts = (owner, repo) =>
 export const fetchPRReviewCommentsCounts = (owner, repo) =>
     apiRequest('countPRReviewComments', 'POST', { owner, repo });
 
+    
+// Fetch fetchgetcalculateDeveloperProductivity
+export const fetchgetcalculateDeveloperProductivity = (owner, repo, authToken,  openaiApiKey) =>
+apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, authToken,  openaiApiKey});
+    

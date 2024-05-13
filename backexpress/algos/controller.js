@@ -22,8 +22,35 @@ const countMergedPRsLastQuarter = require('./helpers/countMergedPRsLastQuarter')
 const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
 const {fetchAndAnalyzeComments, summarizeComment} = require('./helpers/repodashboard');
 const getAllDevelopers = require('./helpers/getAllDevelopers');
+const calculateDeveloperProductivity = require('./helpers/calculateDeveloperProductivity');
 
 
+
+
+// API route for fetching calculateDeveloperProductivity
+router.post('/getcalculateDeveloperProductivity', async (req, res) => {
+    const { org, username, authToken, openAI } = req.body;
+        console.log("inside getAllDeveloperss " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("authToken " , authToken);
+        console.log("openAI " , openAI);
+
+    if (!req.body.owner || !req.body.repo || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await calculateDeveloperProductivity(req.body.owner, req.body.repo, authToken, openAI);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching calculateDeveloperProductivity:', error);
+        res.status(500).send('Server error occurred while calculateDeveloperProductivity.');
+    }
+});
 
 // API route for fetching getAllDevelopers
 router.post('/getAllDeveloperss', async (req, res) => {

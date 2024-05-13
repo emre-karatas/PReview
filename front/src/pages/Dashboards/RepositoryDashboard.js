@@ -7,15 +7,15 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity } from "../../api/connector";
 
 
 
 export const RepositoryDashboard= () => {
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'x', headerName: 'Date', width: 130, type: 'Date' },
-  { field: 'y', headerName: 'Cost (USD)', width: 130, type: 'number' },
+    { field: 'id', headerName: 'Name', width: 70 },
+  { field: 'x', headerName: 'PR Cnt', width: 130, type: 'Date' },
+  { field: 'y', headerName: 'Productivity', width: 130, type: 'number' },
 ];
 
 const rows = [
@@ -179,6 +179,17 @@ useEffect(() => {
       
     
     
+        
+    const fetchcalculateDeveloperProductivity = async () => {
+        try {
+            const response = await fetchgetcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+            console.log("fetchAllDevelopers:", response);
+            
+            //setAiReviews(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };  
     
     
     
@@ -195,6 +206,7 @@ useEffect(() => {
     //fetchRepoDashboard();
     
     fetchAllDevelopers();
+    fetchcalculateDeveloperProductivity();
 }, []);
   
         
@@ -271,6 +283,34 @@ useEffect(() => {
                 <div  id="container" ></div>
             </div>
              <Accordion defaultActiveKey="0" className="my-3">
+                
+                
+             <ThemeProvider theme={theme}>
+    <div style={{
+        height: '50vh',
+        width: '60%',
+        backgroundColor: 'white',
+        padding: '20px',
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        margin: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '5vh'
+    }}>
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5, 10]}
+            checkboxSelection
+        />
+    </div>
+</ThemeProvider>
+                
+                
     <Accordion.Item eventKey="0">
         <Accordion.Header>AI Reviews</Accordion.Header>
         
@@ -295,30 +335,7 @@ useEffect(() => {
     </Accordion.Item>
 </Accordion>
 
-            <ThemeProvider theme={theme}>
-    <div style={{
-        height: '50vh',
-        width: '60%',
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '10px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-        margin: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: '5vh'
-    }}>
-        <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5, 10]}
-            checkboxSelection
-        />
-    </div>
-</ThemeProvider>
+           
 
 
         </div>
