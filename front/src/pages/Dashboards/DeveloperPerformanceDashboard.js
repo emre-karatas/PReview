@@ -8,7 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Select} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import StatBox from "./Statbox";
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper, getDeveloperPRActivities, fetchLatestPRComments } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper, getDeveloperPRActivities, fetchLatestPRComments, fetchcalculateDeveloperProductivity } from "../../api/connector";
 
 
 
@@ -48,6 +48,7 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
         getTotalPRCommentsByDeveloper();
         fetchDeveloperPRActivities();
         getLatestPRComments();
+        fetchgetProductivity();
     };
     const [owner, setOwner] = useState(null);
     const [repo, setRepo] = useState(null);
@@ -208,7 +209,16 @@ const getLatestPRComments = async () => {
   }
 };
 
-
+const fetchgetProductivity = async () => {
+  try {
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await fetchcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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");
+      console.log("fetchgetProductivity:", response);
+      
+  } catch (error) {
+      console.error('Error:', error);
+  }
+}; 
 
 useEffect(() => {
     
@@ -253,7 +263,7 @@ useEffect(() => {
   };  
   
 
-  
+            
   
   
   
