@@ -68,8 +68,8 @@ export const fetchTotalNoOfCommits = (owner, repo, authToken) =>
     apiRequest('getCommitCount', 'POST', { owner, repo, authToken});  
     
  // Fetch productivity
-export const fetchProductivity = (owner, repo, authToken, openaiApiKey) =>
-    apiRequest('getProductivity', 'POST', { owner, repo, authToken, openaiApiKey});
+export const fetchProductivity = (owner, repo, githubToken, openaiApiKey) =>
+    apiRequest('getProductivity', 'POST', { owner, repo, githubToken, openaiApiKey});
     
  
   // Fetch prCountLastQuarter
@@ -123,3 +123,7 @@ export const fetchPRReviewCommentsCounts = (owner, repo) =>
 export const fetchgetcalculateDeveloperProductivity = (owner, repo, authToken,  openaiApiKey) =>
 apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, authToken,  openaiApiKey});
     
+
+// Fetch fetchgetcalculateDeveloperProductivity
+export const fetchgetAllPullRequests = (owner, repo, authToken) =>
+apiRequest('getAllPullRequests', 'POST', { owner, repo, authToken});

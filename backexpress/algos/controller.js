@@ -23,8 +23,33 @@ const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
 const {fetchAndAnalyzeComments, summarizeComment} = require('./helpers/repodashboard');
 const getAllDevelopers = require('./helpers/getAllDevelopers');
 const calculateDeveloperProductivity = require('./helpers/calculateDeveloperProductivity');
+const getAllPullRequests = require('./helpers/getAllPullRequests');
 
 
+// API route for fetching getAllPullRequests
+router.post('/getAllPullRequests', async (req, res) => {
+    const { org, username, authToken, openaiApiKey } = req.body;
+        console.log("inside getAllPullRequests " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("authToken " , authToken);
+
+
+    if (!req.body.owner || !req.body.repo || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await getAllPullRequests(req.body.owner, req.body.repo, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching getAllPullRequests:', error);
+        res.status(500).send('Server error occurred while getAllPullRequests.');
+    }
+});
 
 
 // API route for fetching calculateDeveloperProductivity
@@ -235,12 +260,12 @@ router.post('/getCommitCount', async (req, res) => {
 
 // API route for fetching productivity
 router.post('/getProductivity', async (req, res) => {
-    const { owner, repo, authToken, openaiApiKey } = req.body;
-    if (!owner || !repo || !authToken || !openaiApiKey) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    const { owner, repo, githubToken, openaiApiKey } = req.body;
+    if (!owner || !repo || !githubToken || !openaiApiKey) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const title = await calculateProjectProductivity(owner, repo, authToken, openaiApiKey);
+        const title = await calculateProjectProductivity(owner, repo, githubToken, openaiApiKey);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching productivity:', error);

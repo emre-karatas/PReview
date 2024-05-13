@@ -7,7 +7,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests } from "../../api/connector";
 
 
 
@@ -26,16 +26,27 @@ const rows = [
 ];
 
 
+
+
+
+
+
+
 const [aiReviews, setAiReviews] = useState([]);
 const [prCnt, setPRCnt] = useState(0);
 const [mergedCnt, setMergedCnt] = useState(0);
 const [openCnt, setOpenCnt] = useState(0);
 //const [date, setDate] = useState([]);
-const [owner, setOwner] = useState(null);
-const [repo, setRepo] = useState(null);
-const [authToken, setAuthToken] = useState(null);
+// const [owner, setOwner] = useState(null);
+// const [repo, setRepo] = useState(null);
+// const [authToken, setAuthToken] = useState(null);
+
 const [openaiApiKey, setOpenAiAPIKey] = useState(null);
 const [prNumber, setprNumber] = useState(null);
+
+const [owner, setOwner] = useState("defaultOwner");
+const [repo, setRepo] = useState("defaultRepo");
+const [authToken, setAuthToken] = useState("defaultToken");
 
  
 
@@ -93,6 +104,7 @@ const theme = createTheme({
 
 
 useEffect(() => {
+    
     setAiReviews([
         {
             id: 1,
@@ -191,12 +203,24 @@ useEffect(() => {
         }
     };  
     
-    
+            
+    const fetchgetAllPullRequestss = async () => {
+        try {
+            //console.log("inside fetchgetAllPullRequests");
+            const response = await fetchgetAllPullRequests("EvanLi", "Github-Ranking", "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");
+            console.log("fetchgetAllPullRequests:", response);
+            
+            //setAiReviews(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };  
     
     
     
     setOwner("EvanLi");
     setAuthToken("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");
+    
     setRepo("Github-Ranking");
          
 
@@ -207,11 +231,12 @@ useEffect(() => {
     //fetchRepoDashboard();
     
     fetchAllDevelopers();
-    fetchcalculateDeveloperProductivity();
+    //fetchcalculateDeveloperProductivity();
+    fetchgetAllPullRequestss();
 }, []);
   
-        
 
+        
  
 
 Highcharts.addEvent(Highcharts.Point, 'click', function () {
@@ -273,7 +298,7 @@ useEffect(() => {
             data: rows
         }]
     });
-}, []);
+}, [owner, repo, authToken]);
 
 
     return (
@@ -329,6 +354,9 @@ useEffect(() => {
                         <p><strong>Comment:</strong> {review.comment}</p>
                         <p><strong>Score:</strong> {review.score}/10</p>
                         <p><strong>Summarized:</strong> {review.highlights}</p>
+                        <p><strong>Tone of comment:</strong> {review.tone}</p>
+                        <p><strong>Content of comment and PR match:</strong> {review.contentMatching}</p>
+
                     </div>
                 ))}
             </div>

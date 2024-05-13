@@ -55,12 +55,17 @@ export const AnalyticDashboardsMain = () => {
 
     useEffect(() => {
         const fetchProductivityData = async () => {
+            setOwner("EvanLi");
+            setAuthToken("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");
+            setRepo("Github-Ranking");
+            setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+
             try {
                 const response = await fetchProductivity(owner, repo, authToken, openaiApiKey);
                 console.log("Productivity Response:", response);
                 setProductivity(response.title);
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Productivity Error:', error);
             }
         };
         
@@ -144,14 +149,14 @@ export const AnalyticDashboardsMain = () => {
             setOwner("EvanLi");
             setAuthToken("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");
             setRepo("Github-Ranking");
-            setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn")
+            setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
 
             try {
                 const response = await fetchPerformance(owner, repo, authToken, openaiApiKey);
                 console.log("Performance Response:", response);
                 setPerformanceScore(response.title);
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Performance Error:', error);
             }
         };
 
@@ -188,10 +193,10 @@ export const AnalyticDashboardsMain = () => {
         fetchAveragePRTime();
         fetchCompletionRate();
         fetchTickets();
-        //fetchPerformanceScore();
+        fetchPerformanceScore();
         fetchPRCNT();
         fetchCommitCNT();
-        //fetchProductivityData();
+        fetchProductivityData();
         fetchLOC();
         fetchRows();
     }, [owner, repo, authToken, year]);
