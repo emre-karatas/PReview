@@ -93,6 +93,7 @@ const theme = createTheme({
 
 
 useEffect(() => {
+    
     setAiReviews([
         {
             id: 1,
@@ -329,6 +330,9 @@ useEffect(() => {
                         <p><strong>Comment:</strong> {review.comment}</p>
                         <p><strong>Score:</strong> {review.score}/10</p>
                         <p><strong>Summarized:</strong> {review.highlights}</p>
+                        <p><strong>Tone of comment:</strong> {review.tone}</p>
+                        <p><strong>Content of comment and PR match:</strong> {review.contentMatching}</p>
+
                     </div>
                 ))}
             </div>
