@@ -129,7 +129,6 @@ useEffect(() => {
             comment: "Needs improvement in thread safety during cache updates.",
             score: 7.0
         },
-        // Add more reviews as needed...
     ]);
     
     
