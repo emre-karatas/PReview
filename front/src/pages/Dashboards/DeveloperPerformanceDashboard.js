@@ -23,7 +23,7 @@ const columns: GridColDef[] = [
 ];
 
 const rows = [
-    { id: 1, x: 'John', y: 1200, z: 'Done'},
+    { id: 1, x: 'John', y: 1200, z: 'Done', a: 4},
     { id: 2, x: 'Joe', y: 300, z: 'Pending'},
     { id: 3, x: 'Linda', y: 200, z: 'Cancelled'},
     { id: 4, x: 'Ryan', y: 1400, z: 'Done'},
@@ -38,6 +38,7 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [nofReviewedCommits, setNofReviewedCommits] = useState()
     const [partipicationPR, setPartipicationPR] = useState()
     const [noOfPRComments, setNoOfPRComments] = useState()
+    const [developerActivity, setDeveloperActivity] = useState()
 
     const handleChange = (event) => {
         setSelectedDeveloper(event.x);
@@ -51,8 +52,8 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [repo, setRepo] = useState(null);
     const [authToken, setAuthToken] = useState(null);
     const [devList, setDevList] = useState([])
+    const [theRows, setRows] = useState([])
 
-    
     
     
 
@@ -125,10 +126,9 @@ const theme = createTheme({
 const fetchPRCountByTheDeveloper = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchPRCountByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchPRCountByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
       console.log("fetchPRCountByTheDeveloper:", response.teams);
       setTotalPRCount(response.teams);
-      //setAiReviews(response);
   } catch (error) {
       console.error('Error:', error);
   }
@@ -137,10 +137,9 @@ const fetchPRCountByTheDeveloper = async () => {
 const fetchReviewedCommitsCount = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchgetReviewedCommitsCount("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchgetReviewedCommitsCount("EvanLi", "Github-Ranking", "EvanLi", "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");
       console.log("fetchReviewedCommitsCount:", response.teams);
       setNofReviewedCommits(response.teams);
-      //setAiReviews(response);
   } catch (error) {
       console.error('Error:', error);
   }
@@ -150,10 +149,9 @@ const fetchReviewedCommitsCount = async () => {
 const fetchfetchPRCommentFrequency = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchPRCommentFrequency("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchPRCommentFrequency("EvanLi", "Github-Ranking", "EvanLi", "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");
       console.log("fetchfetchPRCommentFrequency:", response.teams);
       setPartipicationPR(response.teams.participationFrequency);
-      //setAiReviews(response);
   } catch (error) {
       console.error('Error:', error);
   }
@@ -163,10 +161,9 @@ const fetchfetchPRCommentFrequency = async () => {
 const getTotalPRCommentsByDeveloper = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchTotalPRCommentsByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchTotalPRCommentsByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
       console.log("getTotalPRCommentsByDeveloper:", response.teams);
       setNoOfPRComments(response.teams);
-      //setAiReviews(response);
   } catch (error) {
       console.error('Error:', error);
   }
@@ -174,22 +171,34 @@ const getTotalPRCommentsByDeveloper = async () => {
 
 const fetchDeveloperPRActivities = async () => {
   try {
-      //console.log("inside fetchgetAllPullRequests");
-      const response = await getDeveloperPRActivities("EvanLi", "Github-Ranking", "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");
-      console.log("fetchDeveloperPRActivities:", response);
-      //setNoOfPRComments(response.teams.participationFrequency);
-      //setAiReviews(response);
+    // Fetch data from the backend
+    const response = await getDeveloperPRActivities("EvanLi", "Github-Ranking", "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");
+    console.log("fetchDeveloperPRActivities:", response);
+
+    // Map the response to the rows format
+    const updatedRows = response.map((developer, index) => ({
+      id: index + 1,                         // Assign an ID based on the array index for uniqueness
+      x: developer.username,                 // Map 'username' to 'x'
+      y: developer.pullRequestCount,         // Map 'pullRequestCount' to 'y'
+      z: developer.latestPRStatus,           // Map 'latestPRStatus' to 'z'
+      a: developer.commentsOnLatestPR        // Map 'commentsOnLatestPR' to 'a'
+    }));
+    console.log("the updated rows", updatedRows);
+
+    setDeveloperActivity(response);         // Update state with the full response
+    setRows(updatedRows);                   // Update the rows state with the new formatted data
+
   } catch (error) {
-      console.error('Error:', error);
+    console.error('Error fetching and processing developer activities:', error);
   }
-};  
+};
+
 
 
 
 
 useEffect(() => {
     
-
   
   const fetchAllDevelopers = async () => {
       try {
@@ -207,17 +216,16 @@ useEffect(() => {
 
             console.log("Rows:", rows);
             setDevList(rows);
-            // setAiReviews(rows);  // Uncomment and adjust according to your application's state management
         } else {
             console.log("No teams found or teams array is empty.");
         }
-          //setAiReviews(response);
       } catch (error) {
           console.error('Error:', error);
       }
   };  
   
     
+  
   
           
   const fetchgetAllPullRequestss = async () => {
@@ -226,7 +234,6 @@ useEffect(() => {
           const response = await fetchgetAllPullRequests("EvanLi", "Github-Ranking", "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");
           console.log("fetchgetAllPullRequests:", response);
           
-          //setAiReviews(response);
       } catch (error) {
           console.error('Error:', error);
       }
@@ -313,7 +320,7 @@ useEffect(() => {
         marginTop: '5vh'
     }}>
         <DataGrid
-            rows={rows}
+            rows={theRows}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5, 10]}
