@@ -32,7 +32,7 @@ async function calculateDeveloperProductivity(owner, repo, developer, githubToke
         const analysisResponse = await openai.chat.completions.create({
             model: "gpt-4-turbo",
             messages: [{ role: "system", content: `Evaluate the productivity of a developer with ${commitsCount} commits and ${prsCount} pull requests in the repository. Provide a comprehensive assessment.Give your evaluation as a number in range 1-10.` }],
-            max_tokens: 250
+            max_tokens: 100
         });
 
         return analysisResponse.choices[0]?.message?.content;
