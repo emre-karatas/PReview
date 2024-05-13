@@ -11,8 +11,8 @@ const axios = require('axios');
 async function fetchPRCommentFrequency(owner, repo, developer, githubToken) {
     const githubHeaders = {
         headers: {
-            Authorization: `token ${githubToken}`,
-            'User-Agent': 'GitHub API'
+            'Authorization': `Bearer ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
         }
     };
 
@@ -46,6 +46,7 @@ async function fetchPRCommentFrequency(owner, repo, developer, githubToken) {
                     developerCommentsCount += developerComments.length;
                 }
             }
+            break;
         }
 
         // Calculate the frequency of participation

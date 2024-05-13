@@ -15,8 +15,8 @@ async function fetchLatestPRComments(repoOwner, repoName, developerUsername, git
     try {
         // Fetch all PRs to find the latest by the developer
         const prsResponse = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/pulls?state=all`, githubHeaders);
-        const latestPR = prsResponse.data.filter(pr => pr.user.login === developerUsername).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-
+        const latestPR = prsResponse.data.find(pr => pr.user.login === developerUsername);
+        
         if (!latestPR) {
             console.log("No PRs found for this developer.");
             return [];
@@ -24,7 +24,9 @@ async function fetchLatestPRComments(repoOwner, repoName, developerUsername, git
 
         // Fetch comments from the latest PR
         const commentsResponse = await axios.get(latestPR.comments_url, githubHeaders);
-        const commentsData = await Promise.all(commentsResponse.data.map(async (comment) => {
+        const commentsData = [];
+
+        for (const comment of commentsResponse.data) {
             // Analyze the quality of the comment using OpenAI
             const qualityResponse = await openai.chat.completions.create({
                 model: 'gpt-3.5-turbo',
@@ -34,12 +36,17 @@ async function fetchLatestPRComments(repoOwner, repoName, developerUsername, git
 
             const score = interpretOpenAIFeedback(qualityResponse.choices[0]?.message?.content);
 
-            return {
+            commentsData.push({
                 date: comment.created_at,
                 comment: comment.body,
                 score
-            };
-        }));
+            });
+
+            // Break the loop if you have obtained the required data
+            if (commentsData.length >= 2) {
+                break;
+            }
+        }
 
         return commentsData;
     } catch (error) {
@@ -47,6 +54,7 @@ async function fetchLatestPRComments(repoOwner, repoName, developerUsername, git
         throw error;
     }
 }
+
 
 function interpretOpenAIFeedback(feedback) {
     if (feedback.includes("excellent")) return 10;
@@ -56,4 +64,4 @@ function interpretOpenAIFeedback(feedback) {
     return 1; // Consider using a default or handling unexpected cases more explicitly
 }
 
-module.exports = { fetchLatestPRComments };
+module.exports = fetchLatestPRComments ;

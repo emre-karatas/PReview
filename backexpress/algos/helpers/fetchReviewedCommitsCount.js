@@ -10,7 +10,10 @@ const axios = require('axios');
  */
 async function fetchReviewedCommitsCount(owner, repo, developer, githubToken) {
     const githubHeaders = {
-        headers: { Authorization: `token ${githubToken}`, 'User-Agent': 'GitHub API' }
+        headers: {
+            'Authorization': `Bearer ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+        }
     };
 
     try {
