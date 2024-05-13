@@ -173,7 +173,7 @@ export const AnalyticDashboardsMain = () => {
 
         const fetchRows = async () => {
             try {
-                const prReviewCountsResponse = await fetchPRReviewCounts(owner, repo);
+                const prReviewCountsResponse = await fetchPRReviewCounts(owner, repo, authToken);
                 const prReviewCounts = prReviewCountsResponse.review;
 
                 // Map the data to get PR counts for each developer
@@ -206,7 +206,7 @@ export const AnalyticDashboardsMain = () => {
         <div className="dashboard-container">
             <Navbar />
             <div className="dashboard-content">
-                <AnalyticDashboardsSidebar />
+                <AnalyticDashboardsSidebar className="sidebar"/>
                 <div className="dashboard-main">
                     <div className="dashboard-main-content">
                         <TotalPRChart/>

@@ -1,7 +1,20 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    max-width: 250px; /* Adjust width as needed */
+    width: 100%;
+    min-width: 25vw;
+    background-color: #2A2C38;
+    z-index: 1000; /* Adjust z-index to make sure sidebar is on top */
+  }
+
 .dashboard-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    margin-left: 250px;
 }
 
 .dashboard-content {
