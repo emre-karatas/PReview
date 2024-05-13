@@ -63,7 +63,7 @@ code {
 }
 
 .profile .user-info {
-    margin-top: 30px;
+    margin-top: 10px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -71,7 +71,7 @@ code {
 }
 
 .profile .info-item {
-    margin-bottom: 20px;
+    margin-top: 15px;
     width: 100%;
 }
 
@@ -107,7 +107,7 @@ code {
 .profile .button-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
+    margin-top: 10px;
     width: 100%;
 }
 

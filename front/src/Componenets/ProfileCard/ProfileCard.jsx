@@ -53,14 +53,6 @@ const ProfileCard = () => {
                 userType: response.user.user_type,
                 username: response.user.username
             });
-
-            // if (response.ok) {
-            //     const data = await response.json();
-            //     setUserData(data);
-            //     setEditedUserData(data);
-            // } else {
-            //     throw new Error("Failed to fetch user data");
-            // }
         } catch (error) {
             console.error("Error fetching user data:", error);
         }
@@ -156,6 +148,10 @@ const ProfileCard = () => {
                                 ) : (
                                     <span>{userData.password}</span>
                                 )}
+                            </div>
+                            <div className="info-item">
+                                <label>User Type:</label>
+                                <span>{userData.userType}</span>
                             </div>
                             <div className="info-item">
                                 <label>GitHub Repository Link:</label>
