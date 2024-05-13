@@ -8,6 +8,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
 import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests } from "../../api/connector";
+import MenuItem from "antd/lib/menu/MenuItem";
+import {Select} from "antd";
 
 
 
@@ -28,7 +30,16 @@ const rows = [
 
 
 
+const handleChange = (event) => {
+    setSelectedDeveloper(event.target.value);
+};
 
+const rowsPR = [
+    { id: 1, x: 'John', y: 1200, z: 'Done'},
+    { id: 2, x: 'Joe', y: 300, z: 'Pending'},
+    { id: 3, x: 'Linda', y: 200, z: 'Cancelled'},
+    { id: 4, x: 'Ryan', y: 1400, z: 'Done'},
+];
 
 
 
@@ -42,6 +53,7 @@ const [repo, setRepo] = useState(null);
 const [authToken, setAuthToken] = useState(null);
 const [openaiApiKey, setOpenAiAPIKey] = useState(null);
 const [prNumber, setprNumber] = useState(null);
+const [selectedDeveloper, setSelectedDeveloper] = useState('');
 
  
 
@@ -305,7 +317,20 @@ useEffect(() => {
             </div>
              <Accordion defaultActiveKey="0" className="my-3">
                 
-                
+             <Select
+                    value={selectedDeveloper}
+                    onChange={handleChange}
+                    displayEmpty
+                    inputProps={{'aria-label': 'Without label'}}
+                    style={{width: 200, marginBottom: 20}}
+                >
+                    <MenuItem value="">
+                        <em>None</em>
+                    </MenuItem>
+                    {rowsPR.map((row) => (
+                        <MenuItem key={rowsPR.id} value={rowsPR.x}>{rowsPR.x}</MenuItem>
+                    ))}
+                </Select>
              <ThemeProvider theme={theme}>
     <div style={{
         height: '50vh',
