@@ -40,7 +40,7 @@ export const countPRReviews = (owner, repo, githubToken) =>
     apiRequest('countPRReviews', 'POST', { owner, repo, githubToken });
 
 // Count PR review comments per developer
-export const countPRReviewComments = (owner, repo) =>
+export const countPRReviewComments = (owner, repo, githubToken) =>
     apiRequest('countPRReviewComments', 'POST', { owner, repo, githubToken });
 
 // Fetch the number of files changed in the latest PR
@@ -56,7 +56,7 @@ export const fetchCommentsByDeveloperOnLatestPR = (owner, repo, developer, githu
     apiRequest('commentsOnLatestPR', 'POST', { owner, repo, developer, githubToken });
 
 // Fetch average PR time
-export const fetchAveragePRTime = (owner, repo) =>
+export const fetchAveragePRTime = (owner, repo, githubToken) =>
     apiRequest('average-pr-time', 'POST', { owner, repo, githubToken});
 
 // Fetch total line of code
