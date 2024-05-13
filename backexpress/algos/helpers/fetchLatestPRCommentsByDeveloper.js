@@ -15,7 +15,10 @@ async function fetchLatestPRCommentsByDeveloper(repoOwner, repoName, developer, 
     try {
         // Fetch the latest pull request for the repository
         const prsResponse = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/pulls`, {
-            headers: githubHeaders,
+            headers: {
+                'Authorization': `Bearer ${githubToken}`,
+                'Accept': 'application/vnd.github.v3+json'
+            },
             params: {
                 state: 'all',
                 per_page: 1, // Fetch only the most recent PR
@@ -32,7 +35,10 @@ async function fetchLatestPRCommentsByDeveloper(repoOwner, repoName, developer, 
         const commentsUrl = latestPR.comments_url;
 
         // Fetch comments from the latest PR
-        const commentsResponse = await axios.get(commentsUrl, { headers: githubHeaders });
+        const commentsResponse = await axios.get(commentsUrl, { headers: {
+            'Authorization': `Bearer ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+        } });
         const filteredComments = commentsResponse.data.filter(comment => comment.user.login === developer);
 
         // Analyze comments
