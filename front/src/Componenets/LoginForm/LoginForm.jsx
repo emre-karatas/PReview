@@ -29,7 +29,7 @@ const LoginForm = () => {
                 localStorage.setItem("user_type", user.user_type);
                 localStorage.setItem("email", user.email);
                 localStorage.setItem("github_repo", user.github_repo);
-                localStorage.setItem("github_token", user.github_link);
+                localStorage.setItem("github_token", user.github_token);
                 localStorage.setItem("repo_owner", repo_owner);
                 navigate("/analyticDashboards");
                 // navigate("/profile");
