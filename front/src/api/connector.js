@@ -68,8 +68,8 @@ export const fetchTotalNoOfCommits = (owner, repo, authToken) =>
     apiRequest('getCommitCount', 'POST', { owner, repo, authToken});  
     
  // Fetch productivity
-export const fetchProductivity = (owner, repo, authToken, openaiApiKey) =>
-    apiRequest('getProductivity', 'POST', { owner, repo, authToken, openaiApiKey});
+export const fetchProductivity = (owner, repo, githubToken, openaiApiKey) =>
+    apiRequest('getProductivity', 'POST', { owner, repo, githubToken, openaiApiKey});
     
  
   // Fetch prCountLastQuarter

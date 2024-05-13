@@ -37,11 +37,16 @@ const [prCnt, setPRCnt] = useState(0);
 const [mergedCnt, setMergedCnt] = useState(0);
 const [openCnt, setOpenCnt] = useState(0);
 //const [date, setDate] = useState([]);
-const [owner, setOwner] = useState(null);
-const [repo, setRepo] = useState(null);
-const [authToken, setAuthToken] = useState(null);
+// const [owner, setOwner] = useState(null);
+// const [repo, setRepo] = useState(null);
+// const [authToken, setAuthToken] = useState(null);
+
 const [openaiApiKey, setOpenAiAPIKey] = useState(null);
 const [prNumber, setprNumber] = useState(null);
+
+const [owner, setOwner] = useState("defaultOwner");
+const [repo, setRepo] = useState("defaultRepo");
+const [authToken, setAuthToken] = useState("defaultToken");
 
  
 
@@ -293,7 +298,7 @@ useEffect(() => {
             data: rows
         }]
     });
-}, []);
+}, [owner, repo, authToken]);
 
 
     return (
