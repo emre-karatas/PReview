@@ -17,6 +17,7 @@ const columns: GridColDef[] = [
   { field: 'x', headerName: 'Developer', width: 130, type: 'String' },
   { field: 'y', headerName: 'PR Count', width: 130, type: 'number' },
     { field: 'z', headerName: 'PR Status', width: 130, type: 'String' },
+    { field: 'a', headerName: 'Comment Cnt', width: 130, type: 'String' },
 
 ];
 
