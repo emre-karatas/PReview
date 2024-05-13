@@ -142,3 +142,9 @@ apiRequest('getReviewedCommitsCount', 'POST', { owner, repo, developer, authToke
 export const fetchPRCommentFrequency = (owner, repo, developer, authToken) =>
 apiRequest('getFetchPRCommentFrequency', 'POST', { owner, repo, developer, authToken});
 
+
+// Fetch getReviewedCommitsCount
+export const fetchTotalPRCommentsByDeveloper = (owner, repo, developer, authToken) =>
+apiRequest('getTotalPRCommentsByDeveloper', 'POST', { owner, repo, developer, authToken});
+
+

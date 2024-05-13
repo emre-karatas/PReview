@@ -8,7 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Select} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import StatBox from "./Statbox";
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper } from "../../api/connector";
 
 
 
@@ -43,13 +43,15 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
         setSelectedDeveloper(event.x);
         fetchPRCountByTheDeveloper();
         fetchReviewedCommitsCount();
-        fetchfetchPRCommentFrequency();
+        //fetchfetchPRCommentFrequency();
+        getTotalPRCommentsByDeveloper();
     };
     const [owner, setOwner] = useState(null);
     const [repo, setRepo] = useState(null);
     const [authToken, setAuthToken] = useState(null);
     const [devList, setDevList] = useState([])
 
+    
     
     
 
@@ -156,6 +158,18 @@ const fetchfetchPRCommentFrequency = async () => {
   }
 };  
 
+
+const getTotalPRCommentsByDeveloper = async () => {
+  try {
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await fetchTotalPRCommentsByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      console.log("fetchTotalPRCommentsByDeveloper:", response.teams);
+      setNoOfPRComments(response.teams.participationFrequency);
+      //setAiReviews(response);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};  
 
 
 
