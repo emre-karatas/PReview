@@ -33,7 +33,7 @@ const fetchDeveloperPRActivities = require('./helpers/fetchDeveloperPRActivities
 
 
 // API route for fetching getTotalPRCommentsByDeveloper
-router.post('/≈', async (req, res) => {
+router.post('/fetchDeveloperPRActivities', async (req, res) => {
     const { org, username, developer, authToken } = req.body;
         console.log("inside fetchDeveloperPRActivities " );
 
