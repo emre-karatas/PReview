@@ -30,6 +30,33 @@ const fetchPRCommentFrequency = require('./helpers/fetchPRCommentFrequency');
 const fetchTotalPRCommentsByDeveloper = require('./helpers/fetchTotalPRCommentsByDeveloper');
 const analyzeCommentTone = require("./helpers/analyzeCommentTone");
 const fetchDeveloperPRActivities = require('./helpers/fetchDeveloperPRActivities');
+const fetchLatestPRComments = require('./helpers/fetchLatestPRComments');
+
+
+// API route for fetching getTotalPRCommentsByDeveloper
+router.post('/getLatestPRComments', async (req, res) => {
+    const { org, username, developer, authToken } = req.body;
+        console.log("inside fetchLatestPRComments " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("the authToken should work " , authToken);
+
+
+    if (!req.body.owner || !req.body.repo || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await fetchLatestPRComments(req.body.owner, req.body.repo, developer, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching fetchLatestPRComments:', error);
+        res.status(500).send('Server error occurred while fetchLatestPRComments.');
+    }
+});
 
 
 
@@ -436,12 +463,12 @@ router.post('/latestPRStatus', async (req, res) => {
 
 // Pull Request review count per developer - ranking
 router.post('/countPRReviews', async (req, res) => {
-    const { owner, repo } = req.body; // Ensure token is passed in the body or through some secure means
+    const { owner, repo, token } = req.body; // Ensure token is passed in the body or through some secure means
     if (!owner || !repo) {
         return res.status(400).send('Missing required parameters: owner, repo');
     }
     try {
-        const reviewCounts = await countPRReviewsPerDeveloper(owner, repo);
+        const reviewCounts = await countPRReviewsPerDeveloper(owner, repo, token);
         res.status(200).json({review: reviewCounts});
     } catch (error) {
         console.error('Error getting PR reviews:', error);
@@ -452,12 +479,12 @@ router.post('/countPRReviews', async (req, res) => {
 
 // Pull request review comments count per developer - ranking
 router.post('/countPRReviewComments', async (req, res) => {
-    const { owner, repo } = req.body;
+    const { owner, repo, token } = req.body;
     if (!owner || !repo ) {
         return res.status(400).send('Missing required parameters: owner or/and repo');
     }
     try {
-        const rankedDevelopers = await countPRReviewCommentsPerDeveloper(owner, repo);
+        const rankedDevelopers = await countPRReviewCommentsPerDeveloper(owner, repo, token);
         res.status(200).json({ranked: rankedDevelopers});
     } catch (error) {
         console.error('Error getting PR review comments:', error);
@@ -572,6 +599,7 @@ router.post('/prCompletionRate', async (req, res) => {
 
     try {
         // Fetch the completion rate using the provided function
+        console.log("PR COMPLETION CONTROLLER")
         const completionRate = await computePRCompletionRate(owner, repo, authToken);
 
         // Send the completion rate as the response

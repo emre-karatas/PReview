@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-async function countPRReviewsPerDeveloper(owner, repo) {
+async function countPRReviewsPerDeveloper(owner, repo, token) {
     let apiUrl = `https://api.github.com/repos/${owner}/${repo}/pulls?state=all&per_page=20`;
     const reviewCounts = {};
 
@@ -42,7 +42,7 @@ async function countPRReviewsPerDeveloper(owner, repo) {
     return records;
 }
 
-async function countPRReviewCommentsPerDeveloper(owner, repo) {
+async function countPRReviewCommentsPerDeveloper(owner, repo, token) {
     let apiUrl = `https://api.github.com/repos/${owner}/${repo}/pulls?state=all&per_page=20`;
     const commentCounts = {};
 

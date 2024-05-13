@@ -107,12 +107,12 @@ export const fetchPerformance = (owner, repo, githubToken, openaiApiKey) =>
     apiRequest('projectPerformance', 'POST', { owner, repo, githubToken, openaiApiKey})
 
 // Fetch PR review counts per developer
-export const fetchPRReviewCounts = (owner, repo) =>
-    apiRequest('countPRReviews', 'POST', { owner, repo });
+export const fetchPRReviewCounts = (owner, repo, token) =>
+    apiRequest('countPRReviews', 'POST', { owner, repo, token });
 
 // Fetch PR review comments counts per developer
-export const fetchPRReviewCommentsCounts = (owner, repo) =>
-    apiRequest('countPRReviewComments', 'POST', { owner, repo });
+export const fetchPRReviewCommentsCounts = (owner, repo, token) =>
+    apiRequest('countPRReviewComments', 'POST', { owner, repo, token });
     
 // Fetch fetchgetcalculateDeveloperProductivity
 export const fetchgetcalculateDeveloperProductivity = (owner, repo, authToken,  openaiApiKey) =>
@@ -145,4 +145,9 @@ apiRequest('getTotalPRCommentsByDeveloper', 'POST', { owner, repo, developer, au
 // Fetch getReviewedCommitsCount
 export const getDeveloperPRActivities = (owner, repo, authToken) =>
 apiRequest('fetchDeveloperPRActivities', 'POST', { owner, repo, authToken});
+
+
+// Fetch getReviewedCommitsCount
+export const fetchLatestPRComments = (owner, repo, developer, authToken) =>
+apiRequest('getLatestPRComments', 'POST', { owner, repo, developer, authToken});
 
