@@ -104,20 +104,20 @@ const theme = createTheme({
 
 useEffect(() => {
     
-    setAiReviews([
-        {
-            id: 1,
-            date: '2023-01-01',
-            comment: "Great implementation of the new caching logic.",
-            score: 8.5
-        },
-        {
-            id: 2,
-            date: '2023-01-02',
-            comment: "Needs improvement in thread safety during cache updates.",
-            score: 7.0
-        },
-    ]);
+    // setAiReviews([
+    //     {
+    //         id: 1,
+    //         date: '2023-01-01',
+    //         comment: "Great implementation of the new caching logic.",
+    //         score: 8.5
+    //     },
+    //     {
+    //         id: 2,
+    //         date: '2023-01-02',
+    //         comment: "Needs improvement in thread safety during cache updates.",
+    //         score: 7.0
+    //     },
+    // ]);
     
     
     

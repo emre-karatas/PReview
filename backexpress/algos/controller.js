@@ -42,6 +42,7 @@ router.post('/getLatestPRCommentsByDeveloper', async (req, res) => {
     }
     try {
         const teams = await fetchLatestPRCommentsByDeveloper(owner, repo, developer, githubToken);
+        console.log("teams", teams);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching getLatestPRCommentsByDeveloper:', error);
@@ -458,7 +459,10 @@ router.post('/average-pr-time', async (req, res) => {
     }
 
     const config = {
-        headers: { Authorization: `Bearer ${githubToken}` },
+        headers: {
+            'Authorization': `Bearer ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json' 
+        },
         params: {
             state: 'closed',
             per_page: 100

@@ -5,6 +5,7 @@ const { OpenAI } = require('openai');
 const openai = new OpenAI({ apiKey: "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn" });
 
 async function fetchLatestPRCommentsByDeveloper(repoOwner, repoName, developer, githubToken) {
+    console.log(repoOwner, repoName, developer, githubToken);
     const githubHeaders = {
         headers: {
             'Authorization': `Bearer ${githubToken}`,
@@ -28,10 +29,13 @@ async function fetchLatestPRCommentsByDeveloper(repoOwner, repoName, developer, 
         });
 
         if (prsResponse.data.length === 0) {
+            console.log("why");
             return [];
         }
+        
 
         const latestPR = prsResponse.data[0];
+        console.log("hhhh", latestPR);
         const commentsUrl = latestPR.comments_url;
 
         // Fetch comments from the latest PR

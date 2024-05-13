@@ -9,7 +9,7 @@ const PerformanceScore = ({ score }) => {
         <span>{score}</span>
       </div>
       <p>Out of 100</p>
-      <button>View Performance Details</button>
+
     </div>
   );
 };
