@@ -14,8 +14,8 @@ import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLas
 export const RepositoryDashboard= () => {
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'x', headerName: 'Date', width: 130, type: 'Date' },
-  { field: 'y', headerName: 'Cost (USD)', width: 130, type: 'number' },
+    { field: 'x', headerName: 'Date', width: 130, type: 'Date' },
+    { field: 'y', headerName: 'Cost (USD)', width: 130, type: 'number' },
 ];
 
 const rows = [
@@ -137,7 +137,7 @@ useEffect(() => {
         try {
             const response = await fetchmergedPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
             console.log("fetchMergedLastQ:", response);
-            setMergedCnt(response);
+            setMergedCnt(response.teams);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -148,7 +148,7 @@ useEffect(() => {
         try {
             const response = await fetchopenPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
             console.log("fetchOpenLastQ:", response);
-            setOpenCnt(response);
+            setOpenCnt(response.teams);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -265,35 +265,33 @@ useEffect(() => {
 
     return (
         <div>
-             <Navbar/>
+            <Navbar/>
             <AnalyticDashboardsSidebar selectedDashboard={"Chatbot/TotalCostDashboard"}/>
             <div className="dashboard-wrapper">
                 <div  id="container" ></div>
             </div>
-             <Accordion defaultActiveKey="0" className="my-3">
-    <Accordion.Item eventKey="0">
-        <Accordion.Header>AI Reviews</Accordion.Header>
-        
-        <Accordion.Body>
-
-<div>
-        <p><strong>Total PR Count (Last Quarter): prCnt</strong></p>
-        <p><strong>Merged (Last Quarter): mergedCnt</strong></p>
-        <p><strong>Open (Last Quarter): openCnt</strong></p>
-        </div>
-            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                {aiReviews.map(review => (
-                    <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
-                        <p><strong>Date:</strong> {review.date}</p>
-                        <p><strong>Comment:</strong> {review.comment}</p>
-                        <p><strong>Score:</strong> {review.score}/10</p>
-                        <p><strong>Summarized:</strong> {review.highlights}</p>
-                    </div>
-                ))}
-            </div>
-        </Accordion.Body>
-    </Accordion.Item>
-</Accordion>
+            <Accordion defaultActiveKey="0" className="my-3">
+                <Accordion.Item eventKey="0">
+                    <Accordion.Header>AI Reviews</Accordion.Header>
+                    <Accordion.Body>
+                        <div>
+                            <p><strong>Total PR Count (Last Quarter): {prCnt}</strong></p>
+                            <p><strong>Merged (Last Quarter): {mergedCnt}</strong></p>
+                            <p><strong>Open (Last Quarter): {openCnt}</strong></p>
+                        </div>
+                        <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                            {aiReviews.map(review => (
+                                <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
+                                    <p><strong>Date:</strong> {review.date}</p>
+                                    <p><strong>Comment:</strong> {review.comment}</p>
+                                    <p><strong>Score:</strong> {review.score}/10</p>
+                                    <p><strong>Summarized:</strong> {review.highlights}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
 
             <ThemeProvider theme={theme}>
     <div style={{
