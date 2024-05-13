@@ -15,9 +15,9 @@ import {Select} from "antd";
 
 export const RepositoryDashboard= () => {
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'Name', width: 70 },
-    { field: 'x', headerName: 'PR Cnt', width: 130, type: 'Date' },
-    { field: 'y', headerName: 'Productivity', width: 130, type: 'number' },
+    { field: 'id', headerName: 'Id', width: 70 },
+    { field: 'x', headerName: 'PR ID', width: 130, type: 'Date' },
+    { field: 'y', headerName: 'Pull Request State', width: 130, type: 'number' },
 ];
 
 const rows = [
@@ -34,12 +34,7 @@ const handleChange = (event) => {
     setSelectedDeveloper(event.target.value);
 };
 
-const rowsPR = [
-    { id: 1, x: 'John', y: 1200, z: 'Done'},
-    { id: 2, x: 'Joe', y: 300, z: 'Pending'},
-    { id: 3, x: 'Linda', y: 200, z: 'Cancelled'},
-    { id: 4, x: 'Ryan', y: 1400, z: 'Done'},
-];
+
 
 
 
@@ -60,6 +55,8 @@ const [owner, setOwner] = useState("defaultOwner");
 const [repo, setRepo] = useState("defaultRepo");
 const [authToken, setAuthToken] = useState("defaultToken");
 const [pr, setSelectedpr] = useState("");
+const [prRows, setPrRows] = useState("");
+const [prs, setPrs] = useState();
 
 
  
@@ -220,15 +217,29 @@ useEffect(() => {
             
     const fetchgetAllPullRequestss = async () => {
         try {
-            //console.log("inside fetchgetAllPullRequests");
             const response = await fetchgetAllPullRequests("EvanLi", "Github-Ranking", "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");
             console.log("fetchgetAllPullRequests:", response);
+    
+            // Assuming 'response' contains an array of pull requests directly
+            const rowsPR = response.teams.map((pr, index) => ({
+                id: index + 1,          // Assign a new ID based on the index for simplicity
+                x: pr.id,              // Map the PR's id to 'x'
+                y: pr.state,           // Map the PR's state to 'y'
+                z: pr.state === 'open' ? 'Pending' : pr.merged_at ? 'Merged' : 'Closed', // Determine the status dynamically
+                a: pr.comments_url     // Assuming you want the comments URL here, or adapt to fetch comments count if needed
+            }));
+    
+            console.log("Mapped PR Rows:", rowsPR);
+            setPrRows(rowsPR);
             
-            //setAiReviews(response);
+            //setPrRows(response.teams)
+            // Use setRowsPR if you are managing this in state
+    
         } catch (error) {
             console.error('Error:', error);
         }
-    };  
+    };
+    
     
     
     
@@ -265,27 +276,13 @@ useEffect(() => {
                     style={{width: 200, marginBottom: 20, marginTop: 20, marginLeft: 20}}
                 >
                     <MenuItem value="">
-                        <em>None</em>
+                        <em>PRs</em>
                     </MenuItem>
-                    {rows.map((row) => (
+                    {prRows.map((row) => (
                         <MenuItem key={row.id} value={row.x}>{row.x}</MenuItem>
                     ))}
                 </Select>
-                
-             <Select
-                    value={selectedDeveloper}
-                    onChange={handleChange}
-                    displayEmpty
-                    inputProps={{'aria-label': 'Without label'}}
-                    style={{width: 200, marginBottom: 20}}
-                >
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
-                    {rowsPR.map((row) => (
-                        <MenuItem key={rowsPR.id} value={rowsPR.x}>{rowsPR.x}</MenuItem>
-                    ))}
-                </Select>
+          
              <ThemeProvider theme={theme}>
     <div style={{
         height: '50vh',
@@ -302,7 +299,7 @@ useEffect(() => {
         marginTop: '5vh'
     }}>
         <DataGrid
-            rows={rows}
+            rows={prRows}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5, 10]}
