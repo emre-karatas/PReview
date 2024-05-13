@@ -127,3 +127,18 @@ apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, authToken
 // Fetch fetchgetcalculateDeveloperProductivity
 export const fetchgetAllPullRequests = (owner, repo, authToken) =>
 apiRequest('getAllPullRequests', 'POST', { owner, repo, authToken});
+
+// Fetch fetchgetcalculateDeveloperProductivity
+export const fetchPRCountByDeveloper = (owner, repo, developer, authToken) =>
+apiRequest('getPRCountByDeveloper', 'POST', { owner, repo, developer, authToken});
+
+
+// Fetch getReviewedCommitsCount
+export const fetchgetReviewedCommitsCount = (owner, repo, developer, authToken) =>
+apiRequest('getReviewedCommitsCount', 'POST', { owner, repo, developer, authToken});
+
+
+// Fetch getReviewedCommitsCount
+export const fetchPRCommentFrequency = (owner, repo, developer, authToken) =>
+apiRequest('getFetchPRCommentFrequency', 'POST', { owner, repo, developer, authToken});
+

@@ -8,7 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Select} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import StatBox from "./Statbox";
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency } from "../../api/connector";
 
 
 
@@ -36,17 +36,21 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [productivity, setProductivity] = useState()
     const [totalLOC, setTotalLOC] = useState()
     const [nofReviewedCommits, setNofReviewedCommits] = useState()
-    const [PartipicationPR, setPartipicationPR] = useState()
+    const [partipicationPR, setPartipicationPR] = useState()
     const [noOfPRComments, setNoOfPRComments] = useState()
 
     const handleChange = (event) => {
         setSelectedDeveloper(event.x);
+        fetchPRCountByTheDeveloper();
+        fetchReviewedCommitsCount();
+        fetchfetchPRCommentFrequency();
     };
     const [owner, setOwner] = useState(null);
     const [repo, setRepo] = useState(null);
     const [authToken, setAuthToken] = useState(null);
     const [devList, setDevList] = useState([])
 
+    
     
 
 const aiReviews = [
@@ -114,6 +118,46 @@ const theme = createTheme({
     },
   },
 });
+           
+const fetchPRCountByTheDeveloper = async () => {
+  try {
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await fetchPRCountByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      console.log("fetchPRCountByTheDeveloper:", response.teams);
+      setTotalPRCount(response.teams);
+      //setAiReviews(response);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};  
+
+const fetchReviewedCommitsCount = async () => {
+  try {
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await fetchgetReviewedCommitsCount("EvanLi", "Github-Ranking", "EvanLi", "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");
+      console.log("fetchReviewedCommitsCount:", response.teams);
+      setNofReviewedCommits(response.teams);
+      //setAiReviews(response);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};  
+
+
+const fetchfetchPRCommentFrequency = async () => {
+  try {
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await fetchPRCommentFrequency("EvanLi", "Github-Ranking", "EvanLi", "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");
+      console.log("fetchfetchPRCommentFrequency:", response.teams);
+      setPartipicationPR(response.teams.participationFrequency);
+      //setAiReviews(response);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};  
+
+
+
 
 
 useEffect(() => {
@@ -161,6 +205,9 @@ useEffect(() => {
       }
   };  
   
+
+  
+  
   
   
   setOwner("EvanLi");
@@ -200,7 +247,7 @@ useEffect(() => {
                 <div className="dashboard-stats">
                     <StatBox title="Total PR Created" number={totalPRCount}/>
                     <StatBox title="Productivity" number={productivity}/>
-                    <StatBox title="Frequency in Participation of PR comments" number={PartipicationPR}/>
+                    <StatBox title="Frequency in Participation of PR comments" number={partipicationPR}/>
                 </div>
                 <div className="dashboard-stats">
                     <StatBox title="Number of Reviewed Commits" number={nofReviewedCommits}/>
