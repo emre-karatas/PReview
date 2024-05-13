@@ -1,21 +1,16 @@
 const axios = require('axios');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require('openai');
+const openai = new OpenAI({apiKey: "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn"});
 
-const openaiToken = sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn;
+async function analyzePRComments(repoOwner, repoName, prNumber, reviewer, githubToken) {
 
-
-const openaiClient = new OpenAIApi(new Configuration({
-    apiKey: openaiToken
-}));
-
-async function analyzePRComments(repoOwner, repoName, prNumber, reviewer, authToken) {
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${prNumber}/comments`;
-const githubHeaders = {
-    headers: {
-        Authorization: `token ${authToken}`,
-        'User-Agent': 'Node.js'
-    }
-};
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${prNumber}/comments`;    
+    const githubHeaders = {
+        headers: {
+            'Authorization': `Bearer ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+        }
+    };
 
     try {
         // Fetch comments from GitHub
@@ -30,13 +25,13 @@ const githubHeaders = {
         const combinedComments = comments.join(" ");
 
         // Analyze comments using OpenAI
-        const analysisResponse = await openaiClient.createCompletion({
-            model: "text-davinci-002",
-            prompt: `Analyze the quality of these review comments: ${combinedComments}`,
+        const analysisResponse = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            prompt: `Analyze the quality of these review comments, give an overall feedback by including a grade: excellent/good/average/poor : ${combinedComments}`,
             max_tokens: 150
         });
 
-        const qualityFeedback = analysisResponse.data.choices[0].text.trim();
+        const qualityFeedback = analysisResponse?.choices[0]?.message?.content;
         const score = interpretOpenAIFeedback(qualityFeedback);
 
         return { score, explanation: qualityFeedback };
