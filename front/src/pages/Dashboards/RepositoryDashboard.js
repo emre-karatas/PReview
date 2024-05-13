@@ -8,6 +8,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
 import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests } from "../../api/connector";
+import MenuItem from "antd/lib/menu/MenuItem";
+import {Select} from "antd";
 
 
 
@@ -47,6 +49,11 @@ const [prNumber, setprNumber] = useState(null);
 const [owner, setOwner] = useState("defaultOwner");
 const [repo, setRepo] = useState("defaultRepo");
 const [authToken, setAuthToken] = useState("defaultToken");
+const [pr, setSelectedpr] = useState("");
+
+  const handleChange = (event) => {
+        setSelectedpr(event.target.value);
+    };
 
  
 
@@ -309,6 +316,20 @@ useEffect(() => {
                 <div  id="container" ></div>
             </div>
              <Accordion defaultActiveKey="0" className="my-3">
+             <Select
+                    value={pr}
+                    onChange={handleChange}
+                    displayEmpty
+                    inputProps={{'aria-label': 'Without label'}}
+                    style={{width: 200, marginBottom: 20, marginTop: 20, marginLeft: 20}}
+                >
+                    <MenuItem value="">
+                        <em>None</em>
+                    </MenuItem>
+                    {rows.map((row) => (
+                        <MenuItem key={row.id} value={row.x}>{row.x}</MenuItem>
+                    ))}
+                </Select>
                 
                 
              <ThemeProvider theme={theme}>
