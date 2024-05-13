@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Navbar from "./Navbar";
 import AnalyticDashboardsSidebar from "./AnalyticDashboardsSidebar";
 import "./DeveloperPerformanceDashboard.css"
@@ -8,6 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Select} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import StatBox from "./Statbox";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests } from "../../api/connector";
 
 
 
@@ -28,6 +29,8 @@ const rows = [
     { id: 4, x: 'Ryan', y: 1400, z: 'Done'},
 ];
 
+
+
 const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [totalPRCount, setTotalPRCount] = useState()
     const [productivity, setProductivity] = useState()
@@ -37,10 +40,13 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [noOfPRComments, setNoOfPRComments] = useState()
 
     const handleChange = (event) => {
-        setSelectedDeveloper(event.target.value);
+        setSelectedDeveloper(event.x);
     };
+    const [owner, setOwner] = useState(null);
+    const [repo, setRepo] = useState(null);
+    const [authToken, setAuthToken] = useState(null);
+    const [devList, setDevList] = useState([])
 
-    
     
 
 const aiReviews = [
@@ -109,6 +115,66 @@ const theme = createTheme({
   },
 });
 
+
+useEffect(() => {
+    
+
+  
+  const fetchAllDevelopers = async () => {
+      try {
+          const developers = await fetchgetAllDevelopers("EvanLi", "Github-Ranking", "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");
+          console.log("fetchAllDevelopers:", developers);
+          console.log(developers.teams[0].login);
+          // Generate rows array dynamically
+          if (developers.teams && developers.teams.length > 0) {
+            const rows = developers.teams.map((team, index) => ({
+                id: index + 1,
+                x: team.login,  // Assuming the username is stored under the 'login' key
+                y: Math.floor(Math.random() * 1000),  // Example usage of random y values
+                z: ['Done', 'Pending', 'Cancelled'][Math.floor(Math.random() * 3)]  // Randomly assign a status for demonstration
+            }));
+
+            console.log("Rows:", rows);
+            setDevList(rows);
+            // setAiReviews(rows);  // Uncomment and adjust according to your application's state management
+        } else {
+            console.log("No teams found or teams array is empty.");
+        }
+          //setAiReviews(response);
+      } catch (error) {
+          console.error('Error:', error);
+      }
+  };  
+  
+    
+  
+          
+  const fetchgetAllPullRequestss = async () => {
+      try {
+          //console.log("inside fetchgetAllPullRequests");
+          const response = await fetchgetAllPullRequests("EvanLi", "Github-Ranking", "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");
+          console.log("fetchgetAllPullRequests:", response);
+          
+          //setAiReviews(response);
+      } catch (error) {
+          console.error('Error:', error);
+      }
+  };  
+  
+  
+  
+  setOwner("EvanLi");
+  setAuthToken("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");
+  
+  setRepo("Github-Ranking");
+       
+
+ 
+  
+  fetchAllDevelopers();
+  //fetchcalculateDeveloperProductivity();
+}, []);
+
     return (
         <div>
              <Navbar/>
@@ -127,7 +193,7 @@ const theme = createTheme({
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
-                    {rows.map((row) => (
+                    {devList.map((row) => (
                         <MenuItem key={row.id} value={row.x}>{row.x}</MenuItem>
                     ))}
                 </Select>
