@@ -16,7 +16,8 @@ import {
     fetchPRCompletionRate,
     fetchAnnualTickets,
     fetchPerformance,
-    fetchPRReviewCounts
+    fetchPRReviewCounts,
+    fetchAveragePRTime
 } from "../../api/connector";
 import axios from 'axios';
 
@@ -160,12 +161,12 @@ export const AnalyticDashboardsMain = () => {
             }
         };
 
-        const fetchAveragePRTime = async () => {
+        const fetchfetchAveragePRTime = async () => {
             try {
-                const response = await axios.post('http://localhost:8080/api/algos/average-pr-time', { owner, repo });
+                const response = await fetchAveragePRTime(owner, repo, authToken);
                 console.log("Average PR Time Response:", response.data);
                 // Assuming the response contains averageDays and count
-                setAveragePRTime(response.data.averageDays);
+                setAveragePRTime(response.averageDays);
             } catch (error) {
                 console.error('Error fetching average PR time:', error);
             }
@@ -191,7 +192,7 @@ export const AnalyticDashboardsMain = () => {
         };
 
 
-        fetchAveragePRTime();
+        fetchfetchAveragePRTime();
         fetchCompletionRate();
         fetchTickets();
         fetchPerformanceScore();
