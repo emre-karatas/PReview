@@ -157,7 +157,7 @@ useEffect(() => {
     return (
         <div>
              <Navbar/>
-            <AnalyticDashboardsSidebar selectedDashboard={"Chatbot/TotalCostDashboard"}/>
+            <AnalyticDashboardsSidebar selectedDashboard={"DeveloperPerformanceDashboard"}/>
             <div className="dashboard-wrapper">
                 <div  id="container" ></div>
             </div>
