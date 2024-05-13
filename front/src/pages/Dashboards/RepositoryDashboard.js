@@ -55,7 +55,7 @@ const [owner, setOwner] = useState("defaultOwner");
 const [repo, setRepo] = useState("defaultRepo");
 const [authToken, setAuthToken] = useState("defaultToken");
 const [pr, setSelectedpr] = useState("");
-const [prRows, setPrRows] = useState("");
+const [prRows, setPrRows] = useState([]);
 const [prs, setPrs] = useState();
 
 
