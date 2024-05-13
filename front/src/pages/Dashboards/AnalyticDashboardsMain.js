@@ -173,7 +173,7 @@ export const AnalyticDashboardsMain = () => {
 
         const fetchRows = async () => {
             try {
-                const prReviewCountsResponse = await fetchPRReviewCounts(owner, repo);
+                const prReviewCountsResponse = await fetchPRReviewCounts(owner, repo, authToken);
                 const prReviewCounts = prReviewCountsResponse.review;
 
                 // Map the data to get PR counts for each developer
