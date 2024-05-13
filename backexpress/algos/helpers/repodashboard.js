@@ -1,33 +1,31 @@
 const axios = require('axios');
-const { OpenAI, Configuration } = require('openai');
+const { OpenAI } = require('openai');
 
 // Initialize OpenAI client properly
-const openaiToken = 'sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn';
-const openai = new OpenAI({
-    apiKey: openaiToken
-});
+const openai = new OpenAI({apiKey: "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn"});
 
 async function summarizeComment(comment) {
     try {
-        const response = await openai.createCompletion({
-            model: "text-davinci-002",
-            prompt: `Summarize the following comment: "${comment}"`,
-            max_tokens: 60
+        const analysisResponse = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [{role: 'user', content: `Summarize the following comment: "${comment}"`}],
+            max_tokens: 100
         });
 
-        return response.data.choices[0].text.trim();
+        return analysisResponse.choices[0]?.message?.content;
     } catch (error) {
         console.error('Error summarizing comment:', error);
         throw error;
     }
 }
 
-async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken) {
+async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, githubToken) {
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${prNumber}/comments`;
+    
     const githubHeaders = {
         headers: {
-            Authorization: `token ${authToken}`,
-            'User-Agent': 'Node.js'
+            'Authorization': `Bearer ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
         }
     };
 
@@ -35,22 +33,23 @@ async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken)
         const response = await axios.get(url, githubHeaders);
         const commentsData = await Promise.all(response.data.map(async (comment) => {
             // Analyze the quality of the comment
-            const qualityResponse = await openai.createCompletion({
-                model: "text-davinci-002",
-                prompt: `Analyze the quality of this review comment: "${comment.body}"`,
+            const qualityResponse = await openai.chat.completions.create({
+                model: 'gpt-3.5-turbo',
+                messages: [{role: 'user', content: `Analyze the quality of this review comment: "${comment.body}"`}],
                 max_tokens: 150
             });
-            const qualityFeedback = qualityResponse.data.choices[0].text.trim();
+            
+            const qualityFeedback = qualityResponse.choices[0]?.message?.content;
+
             const score = interpretOpenAIFeedback(qualityFeedback);
 
             // Get summary of the comment
-            const summaryResponse = await openai.createCompletion({
-                model: "text-davinci-002",
-                prompt: `Provide a summary for the following comment: "${comment.body}"`,
-                max_tokens: 60
+            const summaryResponse = await openai.chat.completions.create({
+                model: 'gpt-3.5-turbo',
+                messages: [{role: 'user', content:  `Provide a summary for the following comment: "${comment.body}"`}],
+                max_tokens: 100
             });
-            const summary = summaryResponse.data.choices[0].text.trim();
-        console.log("inside fetchAndAnalyzeComments 1 ")
+            const summary = summaryResponse.choices[0]?.message?.content;
 
             return {
                 date: comment.created_at,
@@ -59,9 +58,6 @@ async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, authToken)
                 summary
             };
         }));
-        console.log("inside fetchAndAnalyzeComments 2 ")
-        console.log("the commentsdata ", commentsData)
-        console.log("the response ", response)
 
         return commentsData;
     } catch (error) {

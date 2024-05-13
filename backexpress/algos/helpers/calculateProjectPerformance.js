@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require('openai');
 
 /**
  * Calculates the performance score of a project using activity data from a GitHub repository and analysis by OpenAI.
@@ -12,14 +12,21 @@ const { Configuration, OpenAIApi } = require('openai');
 async function calculateProjectPerformance(owner, repo, githubToken, openaiApiKey) {
     try {
         // Initialize OpenAI API
-        const openaiConfig = new Configuration({
+        // const openaiConfig = new Configuration({
+        //     apiKey: openaiApiKey
+        // });
+        // const openai = new OpenAIApi(openaiConfig);
+
+        const openai = new OpenAI({
             apiKey: openaiApiKey
         });
-        const openai = new OpenAIApi(openaiConfig);
 
         // GitHub API headers
         const githubHeaders = {
-            headers: { Authorization: `token ${githubToken}` }
+            headers: {
+                'Authorization': `Bearer ${githubToken}`,
+                'Accept': 'application/vnd.github.v3+json'
+            }
         };
 
         // Get repository data
@@ -34,13 +41,13 @@ async function calculateProjectPerformance(owner, repo, githubToken, openaiApiKe
         const issuesCount = issuesResponse.data.filter(issue => !issue.pull_request).length;
 
         // Analyze project performance with OpenAI
-        const analysisResponse = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: `Given a project with ${commitsCount} commits, ${prsCount} pull requests, and ${issuesCount} issues, rate its performance on a scale of 0 to 100. Consider aspects such as activity levels, issue resolution speed, and overall engagement.`,
+        const analysisResponse = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'user', content: `Given a project with ${commitsCount} commits, ${prsCount} pull requests, and ${issuesCount} issues, rate its performance on a scale of 0 to 100. Consider aspects such as activity levels, issue resolution speed, and overall engagement.`}],
             max_tokens: 100
         });
+        return analysisResponse.choices[0]?.message?.content;
 
-        return analysisResponse.data.choices[0].text.trim();
     } catch (error) {
         console.error('Error calculating project performance:', error);
         throw error;

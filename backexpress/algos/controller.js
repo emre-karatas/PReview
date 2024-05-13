@@ -15,8 +15,8 @@ const countCommits = require('./helpers/countCommits');
 const calculateProjectProductivity = require('./helpers/calculateProjectProductivity');
 const countAllPRs = require('./helpers/countAllPRs');
 const computePRCompletionRate = require('./helpers/computePRCompletionRate');
-const fetchAnnualTickets = require('./helpers/computeAnnualTicketCreation');
-const fetchPerformance = require('./helpers/calculateProjectPerformance')
+const computeAnnualTicketCreation = require('./helpers/computeAnnualTicketCreation');
+const calculateProjectPerformance = require('./helpers/calculateProjectPerformance')
 const countPRsLastQuarter = require('./helpers/countPRsLastQuarter');
 const countMergedPRsLastQuarter = require('./helpers/countMergedPRsLastQuarter');
 const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
@@ -78,22 +78,13 @@ router.post('/getAllDeveloperss', async (req, res) => {
 
 // API route for fetching repodashboard
 router.post('/getrepodashboard', async (req, res) => {
-    const { org, username, prNumber, authToken } = req.body;
-        console.log("inside getrepodashboard " );
+    const { owner, repo, prNumber, githubToken } = req.body;
 
-    console.log("req.body.repoOwner " , req.body.repoOwner);
-    console.log("req " , req.body);
-
-    console.log("req.body.repoName " , req.body.repoName);
-    console.log("prNumber " , prNumber);
-
-    console.log("authToken " , authToken);
-
-    if (!req.body.repoOwner || !req.body.repoName || !authToken || !prNumber) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken || !prNumber) {
+        return res.status(400).send('Missing required parameters: owner, repo, prNumber, githubToken');
     }
     try {
-        const teams = await fetchAndAnalyzeComments(req.body.repoOwner, req.body.repoName, prNumber, authToken);
+        const teams = await fetchAndAnalyzeComments(owner, repo, prNumber, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching repodashboard:', error);
@@ -409,7 +400,7 @@ router.post('/annualTickets', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, year, authToken');
     }
     try {
-        const totalIssues = await fetchAnnualTickets(owner, repo, authToken, year);
+        const totalIssues = await computeAnnualTicketCreation(owner, repo, authToken, year);
         res.status(200).json({ totalIssues });
     } catch (error) {
         console.error('Error computing annual ticket creation:', error);
@@ -446,7 +437,7 @@ router.post('/projectPerformance', async (req, res) => {
 
     try {
         // Calculate project performance using the provided function
-        const performanceScore = await fetchPerformance(owner, repo, githubToken, openaiApiKey);
+        const performanceScore = await calculateProjectPerformance(owner, repo, githubToken, openaiApiKey);
 
         // Send the performance score as the response
         res.status(200).json({ performanceScore });
