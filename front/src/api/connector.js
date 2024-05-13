@@ -9,7 +9,7 @@ const apiRequest = async (endpoint, method, data) => {
         method: method,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${data.authToken}`, // Assuming authToken is passed in data when needed
+            'Authorization': `Bearer ${data.githubToken}`, // Assuming githubToken is passed in data when needed
         },
         data,
         url,
@@ -24,134 +24,126 @@ const apiRequest = async (endpoint, method, data) => {
 };
 
 // Fetch user teams
-export const fetchUserTeams = (org, username, authToken) =>
-    apiRequest('userTeams', 'POST', { org, username, authToken });
+export const fetchUserTeams = (org, username, githubToken) =>
+    apiRequest('userTeams', 'POST', { org, username, githubToken });
 
 // Fetch the latest PR title
-export const fetchLatestPRTitle = (owner, repo, authToken) =>
-    apiRequest('latestPRTitle', 'POST', { owner, repo, authToken });
+export const fetchLatestPRTitle = (owner, repo, githubToken) =>
+    apiRequest('latestPRTitle', 'POST', { owner, repo, githubToken });
 
 // Fetch the latest PR status of a developer
-export const fetchLatestPRStatus = (owner, repo, developer, authToken) =>
-    apiRequest('latestPRStatus', 'POST', { owner, repo, developer, authToken });
+export const fetchLatestPRStatus = (owner, repo, developer, githubToken) =>
+    apiRequest('latestPRStatus', 'POST', { owner, repo, developer, githubToken });
 
 // Count PR reviews per developer
-export const countPRReviews = (owner, repo) =>
-    apiRequest('countPRReviews', 'POST', { owner, repo });
+export const countPRReviews = (owner, repo, githubToken) =>
+    apiRequest('countPRReviews', 'POST', { owner, repo, githubToken });
 
 // Count PR review comments per developer
 export const countPRReviewComments = (owner, repo) =>
-    apiRequest('countPRReviewComments', 'POST', { owner, repo });
+    apiRequest('countPRReviewComments', 'POST', { owner, repo, githubToken });
 
 // Fetch the number of files changed in the latest PR
-export const fetchNumberOfChangedFilesInLatestPR = (owner, repo, authToken) =>
-    apiRequest('numberChangedFilesInLatestPR', 'POST', { owner, repo, authToken });
+export const fetchNumberOfChangedFilesInLatestPR = (owner, repo, githubToken) =>
+    apiRequest('numberChangedFilesInLatestPR', 'POST', { owner, repo, githubToken });
 
 // Fetch all contributors
-export const fetchAllContributors = (owner, repo, authToken) =>
-    apiRequest('allContributors', 'POST', { owner, repo, authToken });
+export const fetchAllContributors = (owner, repo, githubToken) =>
+    apiRequest('allContributors', 'POST', { owner, repo, githubToken });
 
 // Fetch comments made by the developer on their latest PR
-export const fetchCommentsByDeveloperOnLatestPR = (owner, repo, developer, authToken) =>
-    apiRequest('commentsOnLatestPR', 'POST', { owner, repo, developer, authToken });
+export const fetchCommentsByDeveloperOnLatestPR = (owner, repo, developer, githubToken) =>
+    apiRequest('commentsOnLatestPR', 'POST', { owner, repo, developer, githubToken });
 
 // Fetch average PR time
 export const fetchAveragePRTime = (owner, repo) =>
-    apiRequest('average-pr-time', 'POST', { owner, repo });
+    apiRequest('average-pr-time', 'POST', { owner, repo, githubToken});
 
 // Fetch total line of code
-export const fetchTotalLinesOfCodes = (owner, repo, authToken) =>
-    apiRequest('getTotalLinesOfCode', 'POST', { owner, repo, authToken});  
+export const fetchTotalLinesOfCodes = (owner, repo, githubToken) =>
+    apiRequest('getTotalLinesOfCode', 'POST', { owner, repo, githubToken});  
     
 // Fetch total no of commits
-export const fetchTotalNoOfCommits = (owner, repo, authToken) =>
-    apiRequest('getCommitCount', 'POST', { owner, repo, authToken});  
+export const fetchTotalNoOfCommits = (owner, repo, githubToken) =>
+    apiRequest('getCommitCount', 'POST', { owner, repo, githubToken});  
     
  // Fetch productivity
 export const fetchProductivity = (owner, repo, githubToken, openaiApiKey) =>
     apiRequest('getProductivity', 'POST', { owner, repo, githubToken, openaiApiKey});
    
  // Fetch prCountLastQuarter
-export const fetchPRCountLastQuarter = (owner, repo, authToken) =>
-  apiRequest('prCountLastQuarter', 'POST', { owner, repo, authToken});     
+export const fetchPRCountLastQuarter = (owner, repo, githubToken) =>
+  apiRequest('prCountLastQuarter', 'POST', { owner, repo, githubToken});     
  
 // Fetch prCountLastQuarter
-export const fetchmergedPrCntLastQuarter = (owner, repo, authToken) =>
-apiRequest('mergedPrCntLastQuarter', 'POST', { owner, repo, authToken});      
-
+export const fetchmergedPrCntLastQuarter = (owner, repo, githubToken) =>
+apiRequest('mergedPrCntLastQuarter', 'POST', { owner, repo, githubToken});      
 
 // Fetch prCountLastQuarter
-export const fetchopenPrCntLastQuarter = (owner, repo, authToken) =>
-apiRequest('openPrCntLastQuarter', 'POST', { owner, repo, authToken});     
-
+export const fetchopenPrCntLastQuarter = (owner, repo, githubToken) =>
+apiRequest('openPrCntLastQuarter', 'POST', { owner, repo, githubToken});     
 
 // Fetch prCountLastQuarter
 export const fetchgetrepodashboard = (owner, repo, prNumber, githubToken) =>
 apiRequest('getrepodashboard', 'POST', { owner, repo, prNumber, githubToken});     
                  
 // Fetch prCountLastQuarter
-export const fetchgetAllDevelopers = (owner, repo, authToken) =>
-    apiRequest('getAllDeveloperss', 'POST', { owner, repo, authToken});     
+export const fetchgetAllDevelopers = (owner, repo, githubToken) =>
+apiRequest('getAllDevelopers', 'POST', { owner, repo, githubToken});     
 
  // Fetch PR count
- export const fetchAllPRCount = (owner, repo, authToken) =>
- apiRequest('getAllPRCount', 'POST', { owner, repo, authToken});
+ export const fetchAllPRCount = (owner, repo, githubToken) =>
+ apiRequest('getAllPRCount', 'POST', { owner, repo, githubToken});
 
-export const fetchPRCompletionRate = (owner, repo, authToken) =>
-    apiRequest('prCompletionRate', 'POST', { owner, repo, authToken});
+export const fetchPRCompletionRate = (owner, repo, githubToken) =>
+apiRequest('prCompletionRate', 'POST', { owner, repo, githubToken});
 
-export const fetchAnnualTickets = (owner, repo, authToken, year) =>
-    apiRequest('annualTickets', 'POST', { owner, repo, authToken, year});
+export const fetchAnnualTickets = (owner, repo, githubToken, year) =>
+apiRequest('annualTickets', 'POST', { owner, repo, githubToken, year});
 
 export const fetchPerformance = (owner, repo, githubToken, openaiApiKey) =>
-    apiRequest('projectPerformance', 'POST', { owner, repo, githubToken, openaiApiKey})
+apiRequest('projectPerformance', 'POST', { owner, repo, githubToken, openaiApiKey});
 
 // Fetch PR review counts per developer
-export const fetchPRReviewCounts = (owner, repo, token) =>
-    apiRequest('countPRReviews', 'POST', { owner, repo, token });
+export const fetchPRReviewCounts = (owner, repo, githubToken) =>
+apiRequest('countPRReviews', 'POST', { owner, repo, githubToken });
 
 // Fetch PR review comments counts per developer
-export const fetchPRReviewCommentsCounts = (owner, repo, token) =>
-    apiRequest('countPRReviewComments', 'POST', { owner, repo, token });
+export const fetchPRReviewCommentsCounts = (owner, repo, githubToken) =>
+apiRequest('countPRReviewComments', 'POST', { owner, repo, githubToken });
     
 // Fetch fetchgetcalculateDeveloperProductivity
-export const fetchgetcalculateDeveloperProductivity = (owner, repo, authToken,  openaiApiKey) =>
-apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, authToken,  openaiApiKey});
-    
+export const fetchgetcalculateDeveloperProductivity = (owner, repo, developer, githubToken,  openaiApiKey) =>
+apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, developer, githubToken,  openaiApiKey});
 
 // Fetch fetchgetcalculateDeveloperProductivity
-export const fetchgetAllPullRequests = (owner, repo, authToken) =>
-apiRequest('getAllPullRequests', 'POST', { owner, repo, authToken});
+export const fetchgetAllPullRequests = (owner, repo, githubToken) =>
+apiRequest('getAllPullRequests', 'POST', { owner, repo, githubToken});
 
 // Fetch fetchgetcalculateDeveloperProductivity
-export const fetchPRCountByDeveloper = (owner, repo, developer, authToken) =>
-apiRequest('getPRCountByDeveloper', 'POST', { owner, repo, developer, authToken});
-
-
-// Fetch getReviewedCommitsCount
-export const fetchgetReviewedCommitsCount = (owner, repo, developer, authToken) =>
-apiRequest('getReviewedCommitsCount', 'POST', { owner, repo, developer, authToken});
-
+export const fetchPRCountByDeveloper = (owner, repo, developer, githubToken) =>
+apiRequest('getPRCountByDeveloper', 'POST', { owner, repo, developer, githubToken});
 
 // Fetch getReviewedCommitsCount
-export const fetchPRCommentFrequency = (owner, repo, developer, authToken) =>
-apiRequest('getFetchPRCommentFrequency', 'POST', { owner, repo, developer, authToken});
+export const fetchgetReviewedCommitsCount = (owner, repo, developer, githubToken) =>
+apiRequest('getReviewedCommitsCount', 'POST', { owner, repo, developer, githubToken});
 
-
-// Fetch getReviewedCommitsCount
-export const fetchTotalPRCommentsByDeveloper = (owner, repo, developer, authToken) =>
-apiRequest('getTotalPRCommentsByDeveloper', 'POST', { owner, repo, developer, authToken});
-
-// Fetch getReviewedCommitsCount
-export const getDeveloperPRActivities = (owner, repo, authToken) =>
-apiRequest('fetchDeveloperPRActivities', 'POST', { owner, repo, authToken});
-
+// Fetch getFetchPRCommentFrequency
+export const fetchPRCommentFrequency = (owner, repo, developer, githubToken) =>
+apiRequest('getFetchPRCommentFrequency', 'POST', { owner, repo, developer, githubToken});
 
 // Fetch getReviewedCommitsCount
-export const fetchLatestPRComments = (owner, repo, developer, authToken) =>
-apiRequest('getLatestPRComments', 'POST', { owner, repo, developer, authToken});
-
+export const fetchTotalPRCommentsByDeveloper = (owner, repo, developer, githubToken) =>
+apiRequest('getTotalPRCommentsByDeveloper', 'POST', { owner, repo, developer, githubToken});
 
 // Fetch getReviewedCommitsCount
-export const fetchcalculateDeveloperProductivity = (owner, repo, developer, authToken) =>
-apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, developer, authToken});
+export const getDeveloperPRActivities = (owner, repo, githubToken) =>
+apiRequest('fetchDeveloperPRActivities', 'POST', { owner, repo, githubToken});
+
+// Fetch getReviewedCommitsCount
+export const fetchLatestPRComments = (owner, repo, developer, githubToken) =>
+apiRequest('getLatestPRComments', 'POST', { owner, repo, developer, githubToken});
+
+// Fetch getReviewedCommitsCount
+export const fetchcalculateDeveloperProductivity = (owner, repo, developer, githubToken, openaiApiKey) =>
+apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, developer, githubToken, openaiApiKey});
