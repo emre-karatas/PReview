@@ -1,12 +1,33 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  min-height: 7vh;
+  height: 100%;
+  max-height: 50px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  max-width: 250px; /* Adjust width as needed */
+  width: 100%;
+  min-width: 25vw;
+  background-color: #2A2C38;
+  z-index: 900; /* Adjust z-index to make sure sidebar is on top */
+}
 
 .dashboard-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 12vh;
+  margin-top: 12vh; /* Adjust this value according to your navbar height */
 }
-
 
 #container {
   margin-left: 10vh;
@@ -31,12 +52,10 @@
   font-family: 'Circular', sans-serif, Arial, Helvetica;
 }
 
-
 .accordion-button:not(.collapsed) {
   color: #ffffff;
   background-color: #2A2C38;
 }
-
 
 .accordion-body {
   background-color: #ffffff;
@@ -44,9 +63,8 @@
 }
 
 .reviewBody {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
-
 
 .dashboard-loader {
   width: 5vh;

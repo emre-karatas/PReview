@@ -279,13 +279,13 @@ useEffect(() => {
  
 
 
-    return (
-        <div>
-            <Navbar/>
-            <AnalyticDashboardsSidebar selectedDashboard={"Chatbot/TotalCostDashboard"}/>
-           
-             <Accordion defaultActiveKey="0" className="my-3">
-             <Select
+return (
+    <div>
+        <Navbar className="navbar"/>
+        <AnalyticDashboardsSidebar className="sidebar" selectedDashboard={"Chatbot/TotalCostDashboard"}/>
+        <div className="dashboard-wrapper">
+            <Accordion defaultActiveKey="0" className="my-3">
+                <Select
                     value={pr}
                     onChange={handleChange}
                     displayEmpty
@@ -299,64 +299,60 @@ useEffect(() => {
                         <MenuItem key={row.id} value={row.x}>{row.x}</MenuItem>
                     ))}
                 </Select>
-          
-             <ThemeProvider theme={theme}>
-    <div style={{
-        height: '50vh',
-        width: '60%',
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '10px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-        margin: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: '5vh'
-    }}>
-        <DataGrid
-            rows={prRows}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5, 10]}
-            checkboxSelection
-        />
-    </div>
-</ThemeProvider>
-                
-                
-    <Accordion.Item eventKey="0">
-        <Accordion.Header>AI Reviews</Accordion.Header>
-        
-        <Accordion.Body className="reviewBody">
 
-<div>
-        <p><strong>Total PR Count (Last Quarter): {prCnt}</strong></p>
-        <p><strong>Merged (Last Quarter): {mergedCnt}</strong></p>
-        <p><strong>Open (Last Quarter): {openCnt}</strong></p>
-        </div>
-            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                {aiReviews.map(review => (
-                    <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
-                        <p><strong>Date:</strong> {review.date}</p>
-                        <p><strong>Comment:</strong> {review.comment}</p>
-                        <p><strong>Score:</strong> {review.score}/10</p>
-                        <p><strong>Summarized:</strong> {review.summary}</p>
-                        <p><strong>Tone of comment:</strong> {review.tone}</p>
-                        <p><strong>Content of comment and PR match:</strong> {review.prMatch}</p>
+                <ThemeProvider theme={theme}>
+                    <div style={{
+                        height: '50vh',
+                        width: '60%',
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '10px',
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                        margin: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: '5vh'
+                    }}>
+                        <DataGrid
+                            rows={prRows}
+                            columns={columns}
+                            pageSize={5}
+                            rowsPerPageOptions={[5, 10]}
+                            checkboxSelection
+                        />
                     </div>
-                ))}
-            </div>
-        </Accordion.Body>
-    </Accordion.Item>
-</Accordion>
+                </ThemeProvider>
 
-           
+                <Accordion.Item eventKey="0">
+                    <Accordion.Header>AI Reviews</Accordion.Header>
 
+                    <Accordion.Body className="reviewBody">
 
+                        <div>
+                            <p><strong>Total PR Count (Last Quarter): {prCnt}</strong></p>
+                            <p><strong>Merged (Last Quarter): {mergedCnt}</strong></p>
+                            <p><strong>Open (Last Quarter): {openCnt}</strong></p>
+                        </div>
+                        <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                            {aiReviews.map(review => (
+                                <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
+                                    <p><strong>Date:</strong> {review.date}</p>
+                                    <p><strong>Comment:</strong> {review.comment}</p>
+                                    <p><strong>Score:</strong> {review.score}/10</p>
+                                    <p><strong>Summarized:</strong> {review.summary}</p>
+                                    <p><strong>Tone of comment:</strong> {review.tone}</p>
+                                    <p><strong>Content of comment and PR match:</strong> {review.prMatch}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
         </div>
-    );
+    </div>
+);
 };
 
 export default RepositoryDashboard;
