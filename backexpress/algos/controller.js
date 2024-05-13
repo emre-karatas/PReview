@@ -25,11 +25,38 @@ const getAllDevelopers = require('./helpers/getAllDevelopers');
 const calculateDeveloperProductivity = require('./helpers/calculateDeveloperProductivity');
 const getAllPullRequests = require('./helpers/getAllPullRequests');
 const fetchPRCountByDeveloper = require('./helpers/fetchPRCountByDeveloper');
+const fetchReviewedCommitsCount = require('./helpers/fetchReviewedCommitsCount');
 
+
+
+// API route for fetching fetchReviewedCommitsCount
+router.post('/getReviewedCommitsCount', async (req, res) => {
+    const { org, username, developer, authToken } = req.body;
+        console.log("inside fetchReviewedCommitsCount " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("authToken " , authToken);
+
+
+    if (!req.body.owner || !req.body.repo || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await fetchReviewedCommitsCount(req.body.owner, req.body.repo, developer, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching fetchReviewedCommitsCount:', error);
+        res.status(500).send('Server error occurred while fetchReviewedCommitsCount.');
+    }
+});
 
 
 // API route for fetching getAllPullRequests
-router.post('/getRCountByDeveloper', async (req, res) => {
+router.post('/getPRCountByDeveloper', async (req, res) => {
     const { org, username, developer, authToken } = req.body;
         console.log("inside fetchPRCountByDeveloper " );
 

@@ -8,7 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Select} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import StatBox from "./Statbox";
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount } from "../../api/connector";
 
 
 
@@ -41,12 +41,15 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
 
     const handleChange = (event) => {
         setSelectedDeveloper(event.x);
+        fetchPRCountByTheDeveloper();
+        fetchReviewedCommitsCount();
     };
     const [owner, setOwner] = useState(null);
     const [repo, setRepo] = useState(null);
     const [authToken, setAuthToken] = useState(null);
     const [devList, setDevList] = useState([])
 
+    
     
 
 const aiReviews = [
@@ -114,6 +117,31 @@ const theme = createTheme({
     },
   },
 });
+           
+const fetchPRCountByTheDeveloper = async () => {
+  try {
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await fetchPRCountByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      console.log("fetchPRCountByTheDeveloper:", response.teams);
+      setTotalPRCount(response.teams);
+      //setAiReviews(response);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};  
+
+const fetchReviewedCommitsCount = async () => {
+  try {
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await fetchgetReviewedCommitsCount("EvanLi", "Github-Ranking", "EvanLi", "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");
+      console.log("fetchReviewedCommitsCount:", response.teams);
+      setNofReviewedCommits(response.teams);
+      //setAiReviews(response);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};  
+
 
 
 useEffect(() => {
@@ -160,6 +188,9 @@ useEffect(() => {
           console.error('Error:', error);
       }
   };  
+  
+
+  
   
   
   
