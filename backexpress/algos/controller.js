@@ -37,7 +37,7 @@ router.post('/getLatestPRComments', async (req, res) => {
     const { owner, repo, developer, githubToken } = req.body;
 
     if (!owner || !repo || !githubToken || !developer) {
-        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken');
     }
     try {
         const teams = await fetchLatestPRComments(owner, repo, developer, githubToken);
@@ -153,7 +153,7 @@ router.post('/getcalculateDeveloperProductivity', async (req, res) => {
     const { owner, repo, developer, githubToken, openaiApiKey } = req.body;
         
     if (!owner || !repo || !githubToken || !developer || !openaiApiKey) {
-        return res.status(400).send('Missing required parameters: org, username, githubToken');
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken, openaiApiKey');
     }
     try {
         const teams = await calculateDeveloperProductivity(owner, repo, developer, githubToken, openaiApiKey);
@@ -205,7 +205,7 @@ router.post('/openPrCntLastQuarter', async (req, res) => {
     const { owner, repo, githubToken } = req.body;
 
     if (!owner || !repo || !githubToken) {
-        return res.status(400).send('Missing required parameters: org, username, githubToken');
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
         const teams = await countOpenPRsLastQuarter(owner, repo, githubToken);
@@ -254,7 +254,7 @@ router.post('/prCountLastQuarter', async (req, res) => {
     const { owner, repo, githubToken } = req.body;
     
     if (!owner || !repo || !githubToken) {
-        return res.status(400).send('Missing required parameters: org, username, githubToken');
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
         const teams = await countPRsLastQuarter(owner, repo, githubToken);
@@ -360,7 +360,7 @@ router.post('/latestPRStatus', async (req, res) => {
 router.post('/countPRReviews', async (req, res) => {
     const { owner, repo, token } = req.body; // Ensure token is passed in the body or through some secure means
     if (!owner || !repo) {
-        return res.status(400).send('Missing required parameters: owner, repo');
+        return res.status(400).send('Missing required parameters: owner, repo, token');
     }
     try {
         const reviewCounts = await countPRReviewsPerDeveloper(owner, repo, token);
@@ -375,7 +375,7 @@ router.post('/countPRReviews', async (req, res) => {
 router.post('/countPRReviewComments', async (req, res) => {
     const { owner, repo, token } = req.body;
     if (!owner || !repo ) {
-        return res.status(400).send('Missing required parameters: owner or/and repo');
+        return res.status(400).send('Missing required parameters: owner, repo, token ');
     }
     try {
         const rankedDevelopers = await countPRReviewCommentsPerDeveloper(owner, repo, token);
@@ -432,14 +432,14 @@ router.post('/commentsOnLatestPR', async (req, res) => {
 });
 
 router.post('/average-pr-time', async (req, res) => {
-    const { owner, repo } = req.body;
+    const { owner, repo, githubToken } = req.body;
 
     if (!owner || !repo ) {
-        return res.status(400).send('Missing required parameters: owner, repo, or token');
+        return res.status(400).send('Missing required parameters: owner, repo,  githubToken');
     }
 
     const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${githubToken}` },
         params: {
             state: 'closed',
             per_page: 100
@@ -509,7 +509,6 @@ router.post('/projectPerformance', async (req, res) => {
     if (!owner || !repo || !githubToken || !openaiApiKey) {
         return res.status(400).send('Missing required parameters: owner, repo, githubToken, openaiApiKey');
     }
-
     try {
         // Calculate project performance using the provided function
         const performanceScore = await calculateProjectPerformance(owner, repo, githubToken, openaiApiKey);
@@ -521,6 +520,5 @@ router.post('/projectPerformance', async (req, res) => {
         res.status(500).send('Server error occurred while calculating project performance.');
     }
 });
-
 
 module.exports = router;
