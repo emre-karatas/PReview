@@ -11,8 +11,6 @@ import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLas
 import MenuItem from "antd/lib/menu/MenuItem";
 import {Select} from "antd";
 
-
-
 export const RepositoryDashboard= () => {
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'Id', width: 70 },
@@ -31,12 +29,9 @@ const rows = [
 
 
 const handleChange = (event) => {
-    setSelectedDeveloper(event.target.value);
+    console.log("buga buga", event);
+    setSelectedDeveloper(event);
 };
-
-
-
-
 
 const [aiReviews, setAiReviews] = useState([]);
 const [prCnt, setPRCnt] = useState(0);
@@ -57,9 +52,6 @@ const [authToken, setAuthToken] = useState("defaultToken");
 const [pr, setSelectedpr] = useState("");
 const [prRows, setPrRows] = useState([]);
 const [prs, setPrs] = useState();
-
-
- 
 
 const theme = createTheme({
   palette: {
@@ -109,8 +101,6 @@ const theme = createTheme({
     },
   },
 });
-
-
 
 useEffect(() => {
     
@@ -277,8 +267,6 @@ useEffect(() => {
     fetchgetAllPullRequestss();
 }, [owner, repo, authToken, selectedDeveloper]);
  
-
-
 return (
     <div>
         <Navbar className="navbar"/>

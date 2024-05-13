@@ -17,7 +17,11 @@ async function calculateDeveloperParticipationFrequency(owner, repo, developer, 
         while (hasMorePRs) {
             // Fetch pull requests from the repository
             const prResponse = await axios.get(`https://api.github.com/repos/${owner}/${repo}/pulls`, {
-                headers: { Authorization: `token ${token}` },
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+
                 params: {
                     state: 'all', // Include both open and closed PRs
                     per_page: 100,
