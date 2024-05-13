@@ -35,7 +35,7 @@ async function calculateProjectProductivity(owner, repo, githubToken, openaiApiK
 
         // Analyze project productivity with OpenAI
         const analysisResponse = await openai.createCompletion({
-            model: "text-davinci-003",
+            model: "gpt-4-turbo",
             prompt: `Evaluate the overall productivity of a project with ${commitsCount} commits, ${prsCount} pull requests, and ${issuesCount} issues. Provide a comprehensive assessment of the project's effectiveness and efficiency.`,
             max_tokens: 250
         });
