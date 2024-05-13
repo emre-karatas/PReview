@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Navbar.css';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();  // Use useNavigate for navigation

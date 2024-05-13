@@ -8,6 +8,7 @@ import Logout from './pages/Logout/Logout';
 import AnalyticDashboardsMain from "./pages/Dashboards/AnalyticDashboardsMain";
 import DeveloperPerformanceDashboard from "./pages/Dashboards/DeveloperPerformanceDashboard";
 import RepositoryDashboard from "./pages/Dashboards/RepositoryDashboard";
+import Organization from "./pages/Organization/Organization";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/api' element={<API />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/Organization' element={<Organization />} />
         <Route path='/analyticDashboards' element={<AnalyticDashboardsMain />} />
         <Route path='/DeveloperPerformanceDashboard' element={<DeveloperPerformanceDashboard />} />
         <Route path='/RepositoryDashboard' element={<RepositoryDashboard />} />
