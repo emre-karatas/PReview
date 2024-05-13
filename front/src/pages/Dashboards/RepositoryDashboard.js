@@ -182,7 +182,7 @@ useEffect(() => {
     const fetchRepoDashboard = async () => {
         try {
             const response = await fetchgetrepodashboard("EvanLi", "Github-Ranking", 31, "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");
-            console.log("fetchRepoDashboard:", response);
+            console.log("fetchRepoDashboard3333:", response);
             
             setAiReviews(response.teams);
         } catch (error) {
@@ -381,7 +381,7 @@ useEffect(() => {
     <Accordion.Item eventKey="0">
         <Accordion.Header>AI Reviews</Accordion.Header>
         
-        <Accordion.Body>
+        <Accordion.Body className="reviewBody">
 
 <div>
         <p><strong>Total PR Count (Last Quarter): {prCnt}</strong></p>
@@ -394,9 +394,9 @@ useEffect(() => {
                         <p><strong>Date:</strong> {review.date}</p>
                         <p><strong>Comment:</strong> {review.comment}</p>
                         <p><strong>Score:</strong> {review.score}/10</p>
-                        <p><strong>Summarized:</strong> {review.highlights}</p>
+                        <p><strong>Summarized:</strong> {review.summary}</p>
                         <p><strong>Tone of comment:</strong> {review.tone}</p>
-                        <p><strong>Content of comment and PR match:</strong> {review.contentMatching}</p>
+                        <p><strong>Content of comment and PR match:</strong> {review.prMatch}</p>
 
                     </div>
                 ))}

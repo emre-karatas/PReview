@@ -43,6 +43,10 @@
   color: #000000;
 }
 
+.reviewBody {
+  margin-bottom: 30px;
+}
+
 
 .dashboard-loader {
   width: 5vh;
