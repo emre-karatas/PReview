@@ -11,8 +11,8 @@ const ProfileCard = () => {
         email: "",
         username: "",
         password: "",
-        githubRepo: "",
-        githubToken: ""
+        github_repo: "",
+        github_token: ""
     });
     const [editedUserData, setEditedUserData] = useState({ ...userData });
 
@@ -22,8 +22,8 @@ const ProfileCard = () => {
             email: localStorage.getItem("email"),
             username: localStorage.getItem("username"),
             password: localStorage.getItem("password"),
-            githubRepo: localStorage.getItem("github_repo"),
-            githubToken: localStorage.getItem("github_token")
+            github_repo: localStorage.getItem("github_repo"),
+            github_token: localStorage.getItem("github_token")
         };
         setUserData(userDataFromLocalStorage);
         setEditedUserData(userDataFromLocalStorage);
@@ -38,8 +38,8 @@ const ProfileCard = () => {
             setUserData({
                 email: response.user.email,
                 fullName: response.user.full_name,
-                githubRepo: response.user.github_repo,
-                githubToken: response.user.github_token,
+                github_repo: response.user.github_repo,
+                github_token: response.user.github_token,
                 password: response.user.password,
                 userType: response.user.user_type,
                 username: response.user.username
@@ -47,8 +47,8 @@ const ProfileCard = () => {
             setEditedUserData({
                 email: response.user.email,
                 fullName: response.user.full_name,
-                githubRepo: response.user.github_repo,
-                githubToken: response.user.github_token,
+                github_repo: response.user.github_repo,
+                github_token: response.user.github_token,
                 password: response.user.password,
                 userType: response.user.user_type,
                 username: response.user.username
@@ -158,12 +158,12 @@ const ProfileCard = () => {
                                 {isEditing ? (
                                     <input
                                         type="text"
-                                        name="githubRepo"
-                                        value={editedUserData.githubRepo}
+                                        name="github_repo"
+                                        value={editedUserData.github_repo}
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    <span>{userData.githubRepo}</span>
+                                    <span>{userData.github_repo}</span>
                                 )}
                             </div>
                             <div className="info-item">
@@ -171,12 +171,12 @@ const ProfileCard = () => {
                                 {isEditing ? (
                                     <input
                                         type="text"
-                                        name="githubToken"
-                                        value={editedUserData.githubToken}
+                                        name="github_token"
+                                        value={editedUserData.github_token}
                                         onChange={handleInputChange}
                                     />
                                 ) : (
-                                    <span>{userData.githubToken}</span>
+                                    <span>{userData.github_token}</span>
                                 )}
                             </div>
                         </>

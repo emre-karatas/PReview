@@ -151,3 +151,9 @@ apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, developer
 // Fetch PR analysis
 export const analyzePR = (repoOwner, repoName, prNumber, reviewer, githubToken) =>
     apiRequest('analyzePRComments', 'POST', { repoOwner, repoName, prNumber, reviewer, githubToken });
+
+  
+    
+// Fetch PR fetchLatestPRCommentsByDeveloper
+export const fetchLatestPRCommentsByDeveloper = (owner, repo, developer, githubToken) =>
+apiRequest('getLatestPRCommentsByDeveloper', 'POST', { owner, repo, developer, githubToken });

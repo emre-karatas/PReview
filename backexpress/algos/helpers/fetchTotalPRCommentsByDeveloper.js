@@ -37,7 +37,7 @@ async function fetchTotalPRCommentsByDeveloper(owner, repo, developer, githubTok
                 page++;
                 // Fetch comments for each pull request
                 for (const pr of prsResponse.data) {
-                    const commentsResponse = await axios.get(pr.comments_url, { headers: githubHeaders });
+                    const commentsResponse = await axios.get(pr.comments_url, githubHeaders);
                     const developerComments = commentsResponse.data.filter(comment => comment.user.login === developer);
                     totalCommentsCount += developerComments.length;
                 }

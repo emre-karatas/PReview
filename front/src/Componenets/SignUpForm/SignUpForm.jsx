@@ -11,8 +11,8 @@ const SignUpForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [githubRepo, setGithubRepo] = useState(null);
-    const [githubToken, setGithubToken] = useState(null);
+    const [github_repo, setGithubRepo] = useState(null);
+    const [github_token, setGithubToken] = useState(null);
     const navigate = useNavigate();
 
     const handleUserTypeChange = (e) => {
@@ -32,7 +32,7 @@ const SignUpForm = () => {
         }
 
         try {
-            const response = await signupUser({ username, fullName, email, password, userType, githubRepo, githubToken });
+            const response = await signupUser({ username, fullName, email, password, userType, github_repo, github_token });
             console.log("Signup Response:", response);
 
             if (response.message === "User created")
@@ -127,7 +127,7 @@ const SignUpForm = () => {
                     <input 
                         type="text" 
                         placeholder="GitHub Repo Link"
-                        value={githubRepo}
+                        value={github_repo}
                         onChange={(e) => setGithubRepo(e.target.value)}
                         required
                     />
@@ -138,7 +138,7 @@ const SignUpForm = () => {
                     <input 
                         type="text" 
                         placeholder="GitHub Token"
-                        value={githubToken}
+                        value={github_token}
                         onChange={(e) => setGithubToken(e.target.value)}
                         required
                     />

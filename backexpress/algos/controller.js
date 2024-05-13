@@ -31,6 +31,27 @@ const fetchTotalPRCommentsByDeveloper = require('./helpers/fetchTotalPRCommentsB
 const analyzeCommentTone = require("./helpers/analyzeCommentTone");
 const fetchDeveloperPRActivities = require('./helpers/fetchDeveloperPRActivities');
 const fetchLatestPRComments = require('./helpers/fetchLatestPRComments');
+const fetchLatestPRCommentsByDeveloper = require('./helpers/fetchLatestPRCommentsByDeveloper');
+
+
+
+// API route for fetching getLatestPRCommentsByDeveloper
+router.post('/getLatestPRCommentsByDeveloper', async (req, res) => {
+    const { owner, repo, developer, githubToken } = req.body;
+
+    if (!owner || !repo || !githubToken || !developer) {
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken');
+    }
+    try {
+        const teams = await fetchLatestPRCommentsByDeveloper(owner, repo, developer, githubToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching getLatestPRCommentsByDeveloper:', error);
+        res.status(500).send('Server error occurred while getLatestPRCommentsByDeveloper.');
+    }
+});
+
+
 
 // API route for fetching getLatestPRComments
 router.post('/getLatestPRComments', async (req, res) => {
