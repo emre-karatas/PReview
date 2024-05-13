@@ -34,8 +34,12 @@ export const AnalyticDashboardsMain = () => {
     // const [repo, setRepo] = useState(null);
     // const [authToken, setAuthToken] = useState(null);
 
+    const url = new URL(localStorage.getItem("github_repo"));
+    const pathSegments = url.pathname.split('/');  // Split the path by '/'
+    const repoPart = pathSegments[2];
+
     const [owner, setOwner] = useState(localStorage.getItem("repo_owner"));
-    const [repo, setRepo] = useState(localStorage.getItem("github_repo"));
+    const [repo, setRepo] = useState(repoPart);
     const [authToken, setAuthToken] = useState(localStorage.getItem("github_token"));
     const [year, setYear] = useState(2024);
 
