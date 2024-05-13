@@ -12,9 +12,7 @@ const { OpenAI } = require('openai');
 
 async function calculateDeveloperProductivity(owner, repo, developer, githubToken, openaiApiKey) {
     try {
-        const openai = new OpenAI({
-            apiKey: openaiApiKey
-        });
+        const openai = new OpenAI({apiKey: openaiApiKey});
 
         // GitHub API headers
         const githubHeaders = {

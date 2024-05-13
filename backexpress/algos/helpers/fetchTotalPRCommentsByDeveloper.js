@@ -11,8 +11,8 @@ const axios = require('axios');
 async function fetchTotalPRCommentsByDeveloper(owner, repo, developer, githubToken) {
     const githubHeaders = {
         headers: {
-            Authorization: `token ${githubToken}`,
-            'User-Agent': 'GitHub API'
+            'Authorization': `Bearer ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
         }
     };
 
@@ -42,6 +42,8 @@ async function fetchTotalPRCommentsByDeveloper(owner, repo, developer, githubTok
                     totalCommentsCount += developerComments.length;
                 }
             }
+            // To not hit api limit
+            break;
         }
 
         return totalCommentsCount;

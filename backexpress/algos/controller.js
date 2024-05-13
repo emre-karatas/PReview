@@ -32,25 +32,15 @@ const analyzeCommentTone = require("./helpers/analyzeCommentTone");
 const fetchDeveloperPRActivities = require('./helpers/fetchDeveloperPRActivities');
 const fetchLatestPRComments = require('./helpers/fetchLatestPRComments');
 
-
-// API route for fetching getTotalPRCommentsByDeveloper
+// API route for fetching getLatestPRComments
 router.post('/getLatestPRComments', async (req, res) => {
-    const { org, username, developer, authToken } = req.body;
-        console.log("inside fetchLatestPRComments " );
+    const { owner, repo, developer, githubToken } = req.body;
 
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("the authToken should work " , authToken);
-
-
-    if (!req.body.owner || !req.body.repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken || !developer) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const teams = await fetchLatestPRComments(req.body.owner, req.body.repo, developer, authToken);
+        const teams = await fetchLatestPRComments(owner, repo, developer, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching fetchLatestPRComments:', error);
@@ -58,26 +48,15 @@ router.post('/getLatestPRComments', async (req, res) => {
     }
 });
 
-
-
-// API route for fetching getTotalPRCommentsByDeveloper
+// API route for fetching fetchDeveloperPRActivities
 router.post('/fetchDeveloperPRActivities', async (req, res) => {
-    const { org, username, developer, authToken } = req.body;
-        console.log("inside fetchDeveloperPRActivities " );
+    const { owner, repo, githubToken } = req.body;
 
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("the authToken should work " , authToken);
-
-
-    if (!req.body.owner || !req.body.repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const teams = await fetchDeveloperPRActivities(req.body.owner, req.body.repo, authToken);
+        const teams = await fetchDeveloperPRActivities(owner, repo, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching fetchDeveloperPRActivities:', error);
@@ -85,25 +64,15 @@ router.post('/fetchDeveloperPRActivities', async (req, res) => {
     }
 });
 
-
 // API route for fetching getTotalPRCommentsByDeveloper
 router.post('/getTotalPRCommentsByDeveloper', async (req, res) => {
-    const { org, username, developer, authToken } = req.body;
-        console.log("inside getTotalPRCommentsByDeveloper " );
+    const { owner, repo, developer, githubToken } = req.body;
 
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("the authToken should work " , authToken);
-
-
-    if (!req.body.owner || !req.body.repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken || !developer) {
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken');
     }
     try {
-        const teams = await fetchTotalPRCommentsByDeveloper(req.body.owner, req.body.repo, developer, authToken);
+        const teams = await fetchTotalPRCommentsByDeveloper(owner, repo, developer, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching getTotalPRCommentsByDeveloper:', error);
@@ -114,22 +83,13 @@ router.post('/getTotalPRCommentsByDeveloper', async (req, res) => {
 
 // API route for fetching getFetchPRCommentFrequency
 router.post('/getFetchPRCommentFrequency', async (req, res) => {
-    const { org, username, developer, authToken } = req.body;
-        console.log("inside getFetchPRCommentFrequency " );
-
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("authToken " , authToken);
-
-
-    if (!req.body.owner || !req.body.repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    const { owner, repo, developer, githubToken } = req.body;
+ 
+    if (!owner || !repo || !githubToken || !developer) {
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken');
     }
     try {
-        const teams = await fetchPRCommentFrequency(req.body.owner, req.body.repo, developer, authToken);
+        const teams = await fetchPRCommentFrequency(owner, repo, developer, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching fetchPRCommentFrequency:', error);
@@ -137,26 +97,15 @@ router.post('/getFetchPRCommentFrequency', async (req, res) => {
     }
 });
 
-
-
 // API route for fetching fetchReviewedCommitsCount
 router.post('/getReviewedCommitsCount', async (req, res) => {
-    const { org, username, developer, authToken } = req.body;
-        console.log("inside fetchReviewedCommitsCount " );
+    const { owner, repo, developer, githubToken } = req.body;
 
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("authToken " , authToken);
-
-
-    if (!req.body.owner || !req.body.repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken || !developer) {
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken');
     }
     try {
-        const teams = await fetchReviewedCommitsCount(req.body.owner, req.body.repo, developer, authToken);
+        const teams = await fetchReviewedCommitsCount(owner, repo, developer, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching fetchReviewedCommitsCount:', error);
@@ -167,22 +116,13 @@ router.post('/getReviewedCommitsCount', async (req, res) => {
 
 // API route for fetching getAllPullRequests
 router.post('/getPRCountByDeveloper', async (req, res) => {
-    const { org, username, developer, authToken } = req.body;
-        console.log("inside fetchPRCountByDeveloper " );
+    const { owner, repo, developer, githubToken } = req.body;
 
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("authToken " , authToken);
-
-
-    if (!req.body.owner || !req.body.repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken');
     }
     try {
-        const teams = await fetchPRCountByDeveloper(req.body.owner, req.body.repo, developer, authToken);
+        const teams = await fetchPRCountByDeveloper(owner, repo, developer, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching fetchPRCountByDeveloper:', error);
@@ -193,22 +133,13 @@ router.post('/getPRCountByDeveloper', async (req, res) => {
 
 // API route for fetching getAllPullRequests
 router.post('/getAllPullRequests', async (req, res) => {
-    const { org, username, authToken, openaiApiKey } = req.body;
-        console.log("inside getAllPullRequests " );
-
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("authToken " , authToken);
-
-
-    if (!req.body.owner || !req.body.repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    const { owner, repo, githubToken } = req.body;
+  
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const teams = await getAllPullRequests(req.body.owner, req.body.repo, authToken);
+        const teams = await getAllPullRequests(owner, repo, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching getAllPullRequests:', error);
@@ -222,7 +153,7 @@ router.post('/getcalculateDeveloperProductivity', async (req, res) => {
     const { owner, repo, developer, githubToken, openaiApiKey } = req.body;
         
     if (!owner || !repo || !githubToken || !developer || !openaiApiKey) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+        return res.status(400).send('Missing required parameters: org, username, githubToken');
     }
     try {
         const teams = await calculateDeveloperProductivity(owner, repo, developer, githubToken, openaiApiKey);
@@ -235,21 +166,13 @@ router.post('/getcalculateDeveloperProductivity', async (req, res) => {
 
 // API route for fetching getAllDevelopers
 router.post('/getAllDeveloperss', async (req, res) => {
-    const { org, username, authToken } = req.body;
+    const { owner, repo, githubToken } = req.body;
 
-            console.log("inside getAllDeveloperss " );
-
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("authToken " , authToken);
-    if (!req.body.owner || !req.body.repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const teams = await getAllDevelopers(req.body.owner, req.body.repo, authToken);
+        const teams = await getAllDevelopers(owner, repo, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching getAllDevelopers:', error);
@@ -279,21 +202,13 @@ router.post('/getrepodashboard', async (req, res) => {
 
 // API route for fetching openPrCntLastQuarter
 router.post('/openPrCntLastQuarter', async (req, res) => {
-    const { org, username, authToken } = req.body;
+    const { owner, repo, githubToken } = req.body;
 
-        console.log("req", req.body)
-        let owner = req.body.owner;
-        let repo = req.body.repo;
-
-        console.log("The repo", repo);
-        console.log("The owner", owner);
-
-        console.log("The authToken", authToken);
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: org, username, githubToken');
     }
     try {
-        const teams = await countOpenPRsLastQuarter(owner, repo, authToken);
+        const teams = await countOpenPRsLastQuarter(owner, repo, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching openPrCntLastQuarter:', error);
@@ -304,22 +219,13 @@ router.post('/openPrCntLastQuarter', async (req, res) => {
 
 // API route for fetching countMergedPRsLastQuarter
 router.post('/mergedPrCntLastQuarter', async (req, res) => {
-    const { org, username, authToken } = req.body;
+    const { owner, repo, githubToken } = req.body;
 
-        console.log("req", req.body)
-        let owner = req.body.owner;
-                let repo = req.body.repo;
-
-        console.log("The repo", repo);
-        console.log("The owner", owner);
-
-        console.log("The authToken", authToken);
-
-    if (!req.body.repo || !req.body.owner || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!repo || !owner || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const teams = await countMergedPRsLastQuarter( owner, repo, authToken);
+        const teams = await countMergedPRsLastQuarter(owner, repo, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching countMergedPRsLastQuarter:', error);
@@ -329,30 +235,29 @@ router.post('/mergedPrCntLastQuarter', async (req, res) => {
 
 // API route for fetching the teams a user belongs to
 router.post('/userTeams', async (req, res) => {
-    const { org, username, authToken } = req.body;
-    if (!org || !username || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    const { org, username, githubToken } = req.body;
+    if (!org || !username || !githubToken) {
+        return res.status(400).send('Missing required parameters: org, username, githubToken');
     }
     try {
-        const teams = await fetchUserTeams(org, username, authToken);
+        const teams = await fetchUserTeams(org, username, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching user teams:', error);
         res.status(500).send('Server error occurred while fetching user teams.');
     }
 });
-
 
 
 // API route for fetching the teams a user belongs to
 router.post('/prCountLastQuarter', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
+    const { owner, repo, githubToken } = req.body;
     
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: org, username, githubToken');
     }
     try {
-        const teams = await countPRsLastQuarter(owner, repo, authToken);
+        const teams = await countPRsLastQuarter(owner, repo, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching user teams:', error);
@@ -360,16 +265,14 @@ router.post('/prCountLastQuarter', async (req, res) => {
     }
 });
 
-
-
 // API route for fetching the latest PR title
 router.post('/latestPRTitle', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    const { owner, repo, githubToken } = req.body;
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const title = await fetchLatestPullRequestTitle(owner, repo, authToken);
+        const title = await fetchLatestPullRequestTitle(owner, repo, githubToken);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching the latest PR title:', error);
@@ -377,20 +280,15 @@ router.post('/latestPRTitle', async (req, res) => {
     }
 });
 
-
 // API route for fetching the total line of code
 router.post('/getTotalLinesOfCode', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
-    console.log("the owner ", owner);
-        console.log("the repo ", repo);
+    const { owner, repo, githubToken } = req.body;
 
-    console.log("the authToken ", authToken);
-
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const title = await getTotalLinesOfCode(owner, repo, authToken);
+        const title = await getTotalLinesOfCode(owner, repo, githubToken);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching the total line of code:', error);
@@ -400,19 +298,18 @@ router.post('/getTotalLinesOfCode', async (req, res) => {
 
 // API route for fetching the total no of commits
 router.post('/getCommitCount', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    const { owner, repo, githubToken } = req.body;
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const title = await countCommits(owner, repo, authToken);
+        const title = await countCommits(owner, repo, githubToken);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching no of commits:', error);
         res.status(500).send('Server error occurred while fetching the no of commits.');
     }
 });
-
 
 // API route for fetching productivity
 router.post('/getProductivity', async (req, res) => {
@@ -431,12 +328,12 @@ router.post('/getProductivity', async (req, res) => {
 
 // API route for counting all prs
 router.post('/getAllPRCount', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    const { owner, repo, githubToken } = req.body;
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const title = await countAllPRs(owner, repo, authToken);
+        const title = await countAllPRs(owner, repo, githubToken);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching counting all prs:', error);
@@ -444,16 +341,14 @@ router.post('/getAllPRCount', async (req, res) => {
     }
 });
 
-
-
 // API route for fetching the latest PR status of a developer
 router.post('/latestPRStatus', async (req, res) => {
-    const { owner, repo, developer, authToken } = req.body;
-    if (!owner || !repo || !developer || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, developer, authToken');
+    const { owner, repo, developer, githubToken } = req.body;
+    if (!owner || !repo || !developer || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken');
     }
     try {
-        const prStatus = await fetchLatestPRStatus(owner, repo, developer, authToken);
+        const prStatus = await fetchLatestPRStatus(owner, repo, developer, githubToken);
         res.status(200).json(prStatus);
     } catch (error) {
         console.error('Error fetching latest PR status:', error);
@@ -476,7 +371,6 @@ router.post('/countPRReviews', async (req, res) => {
     }
 });
 
-
 // Pull request review comments count per developer - ranking
 router.post('/countPRReviewComments', async (req, res) => {
     const { owner, repo, token } = req.body;
@@ -494,12 +388,12 @@ router.post('/countPRReviewComments', async (req, res) => {
 
 // API route for fetching the number of files changed in the latest PR
 router.post('/numberChangedFilesInLatestPR', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    const { owner, repo, githubToken } = req.body;
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const changedFiles = await fetchNumberOfChangedFilesInLatestPR(owner, repo, authToken);
+        const changedFiles = await fetchNumberOfChangedFilesInLatestPR(owner, repo, githubToken);
         res.status(200).json({ changedFiles });
     } catch (error) {
         console.error('Error fetching number of changed files in latest PR:', error);
@@ -509,12 +403,12 @@ router.post('/numberChangedFilesInLatestPR', async (req, res) => {
 
 // API route for fetching all contributors
 router.post('/allContributors', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    const { owner, repo, githubToken } = req.body;
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const contributors = await fetchAllContributors(owner, repo, authToken);
+        const contributors = await fetchAllContributors(owner, repo, githubToken);
         res.status(200).json({ contributors });
     } catch (error) {
         console.error('Error fetching all contributors:', error);
@@ -524,12 +418,12 @@ router.post('/allContributors', async (req, res) => {
 
 // API route for fetching comments made by the developer on their latest PR
 router.post('/commentsOnLatestPR', async (req, res) => {
-    const { owner, repo, developer, authToken } = req.body;
-    if (!owner || !repo || !developer || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, developer, authToken');
+    const { owner, repo, developer, githubToken } = req.body;
+    if (!owner || !repo || !developer || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, developer, githubToken');
     }
     try {
-        const comments = await fetchCommentsByDeveloperOnLatestPR(owner, repo, developer, authToken);
+        const comments = await fetchCommentsByDeveloperOnLatestPR(owner, repo, developer, githubToken);
         res.status(200).json({ comments });
     } catch (error) {
         console.error('Error fetching comments by the developer on latest PR:', error);
@@ -576,12 +470,12 @@ router.post('/average-pr-time', async (req, res) => {
 });
 
 router.post('/annualTickets', async (req, res) => {
-    const { owner, repo, year, authToken } = req.body;
-    if (!owner || !repo || !year || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, year, authToken');
+    const { owner, repo, year, githubToken } = req.body;
+    if (!owner || !repo || !year || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, year, githubToken');
     }
     try {
-        const totalIssues = await computeAnnualTicketCreation(owner, repo, authToken, year);
+        const totalIssues = await computeAnnualTicketCreation(owner, repo, githubToken, year);
         res.status(200).json({ totalIssues });
     } catch (error) {
         console.error('Error computing annual ticket creation:', error);
@@ -591,16 +485,15 @@ router.post('/annualTickets', async (req, res) => {
 
 // Controller method for computing the completion rate of all open PRs in a GitHub repository
 router.post('/prCompletionRate', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
+    const { owner, repo, githubToken } = req.body;
 
-    if (!owner || !repo || !authToken) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    if (!owner || !repo || !githubToken) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
 
     try {
         // Fetch the completion rate using the provided function
-        console.log("PR COMPLETION CONTROLLER")
-        const completionRate = await computePRCompletionRate(owner, repo, authToken);
+        const completionRate = await computePRCompletionRate(owner, repo, githubToken);
 
         // Send the completion rate as the response
         res.status(200).json({ completionRate });
