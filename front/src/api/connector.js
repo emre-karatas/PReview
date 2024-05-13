@@ -70,12 +70,7 @@ export const fetchTotalNoOfCommits = (owner, repo, authToken) =>
  // Fetch productivity
 export const fetchProductivity = (owner, repo, authToken, openaiApiKey) =>
     apiRequest('getProductivity', 'POST', { owner, repo, authToken, openaiApiKey});
-
-
     
- // Fetch fetchAllPRCount
- export const fetchAllPRCount = (owner, repo, authToken) =>
- apiRequest('getAllPRCount', 'POST', { owner, repo, authToken});     
  
   // Fetch prCountLastQuarter
 export const fetchPRCountLastQuarter = (owner, repo, authToken) =>
