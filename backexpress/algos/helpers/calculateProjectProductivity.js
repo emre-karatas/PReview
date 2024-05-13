@@ -38,7 +38,7 @@ async function calculateProjectProductivity(owner, repo, githubToken, openaiApiK
         // Analyze project productivity with OpenAI
         const analysisResponse = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
-            messages: [{role: 'user', content: `Evaluate the overall productivity of a project with ${commitsCount} commits, ${prsCount} pull requests, and ${issuesCount} issues. Provide a comprehensive assessment of the project's effectiveness and efficiency.`}],
+            messages: [{role: 'user', content: `Evaluate the overall productivity of a project with ${commitsCount} commits, ${prsCount} pull requests, and ${issuesCount} issues. Provide a comprehensive assessment of the project's effectiveness and efficiency. However, do not exceed 4 sentences.`}],
             max_tokens: 250
         });
 

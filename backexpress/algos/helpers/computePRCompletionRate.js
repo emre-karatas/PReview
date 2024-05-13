@@ -33,10 +33,13 @@ async function computePRCompletionRate(owner, repo, token) {
             const reviews = reviewsResponse.data;
 
             const isReadyToMerge = reviews.some(review => review.state === 'APPROVED');
+            console.log('APPROVED: ', isReadyToMerge);
             if (isReadyToMerge) {
                 readyToMergeCount++;
             }
         }
+
+        console.log('CPM RATE: ', readyToMergeCount, ' ', openPRs.length);
 
         // Compute the completion rate
         const completionRate = (readyToMergeCount / openPRs.length) * 100;
