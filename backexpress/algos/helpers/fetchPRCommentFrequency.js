@@ -40,7 +40,7 @@ async function fetchPRCommentFrequency(owner, repo, developer, githubToken) {
                 // Process each pull request to count comments
                 for (const pr of prsResponse.data) {
                     const commentsUrl = pr.comments_url;
-                    const commentsResponse = await axios.get(commentsUrl, { headers: githubHeaders });
+                    const commentsResponse = await axios.get(commentsUrl, githubHeaders);
                     allCommentsCount += commentsResponse.data.length;
                     const developerComments = commentsResponse.data.filter(comment => comment.user.login === developer);
                     developerCommentsCount += developerComments.length;
