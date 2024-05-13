@@ -1,13 +1,13 @@
 const axios = require('axios');
 
-async function getAllPullRequests(owner, repo) {
+async function getAllPullRequests(owner, repo, authToken) {
     let allPullRequests = [];
     let apiUrl = `https://api.github.com/repos/${owner}/${repo}/pulls?state=all&per_page=100`;
 
     while (apiUrl) {
         const response = await axios.get(apiUrl, {
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${authToken}`,
                 'Accept': 'application/vnd.github.v3+json'
             }
         });
@@ -23,6 +23,4 @@ async function getAllPullRequests(owner, repo) {
     return allPullRequests;
 };
 
-module.exports = {
-    getAllPullRequests,
-}
+module.exports = getAllPullRequests;

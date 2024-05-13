@@ -123,3 +123,7 @@ export const fetchPRReviewCommentsCounts = (owner, repo) =>
 export const fetchgetcalculateDeveloperProductivity = (owner, repo, authToken,  openaiApiKey) =>
 apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, authToken,  openaiApiKey});
     
+
+// Fetch fetchgetcalculateDeveloperProductivity
+export const fetchgetAllPullRequests = (owner, repo, authToken) =>
+apiRequest('getAllPullRequests', 'POST', { owner, repo, authToken});

@@ -7,7 +7,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests } from "../../api/connector";
 
 
 
@@ -24,6 +24,12 @@ const rows = [
     { id: 3, x: new Date('2023-01-03'), y: 1800 },
     { id: 4, x: new Date('2023-01-04'), y: 1600 },
 ];
+
+
+
+
+
+
 
 
 const [aiReviews, setAiReviews] = useState([]);
@@ -192,12 +198,24 @@ useEffect(() => {
         }
     };  
     
-    
+            
+    const fetchgetAllPullRequestss = async () => {
+        try {
+            //console.log("inside fetchgetAllPullRequests");
+            const response = await fetchgetAllPullRequests("EvanLi", "Github-Ranking", "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");
+            console.log("fetchgetAllPullRequests:", response);
+            
+            //setAiReviews(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };  
     
     
     
     setOwner("EvanLi");
     setAuthToken("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");
+    
     setRepo("Github-Ranking");
          
 
@@ -208,11 +226,12 @@ useEffect(() => {
     //fetchRepoDashboard();
     
     fetchAllDevelopers();
-    fetchcalculateDeveloperProductivity();
+    //fetchcalculateDeveloperProductivity();
+    fetchgetAllPullRequestss();
 }, []);
   
-        
 
+        
  
 
 Highcharts.addEvent(Highcharts.Point, 'click', function () {
