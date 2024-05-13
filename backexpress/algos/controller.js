@@ -208,12 +208,12 @@ router.post('/getCommitCount', async (req, res) => {
 
 // API route for fetching productivity
 router.post('/getProductivity', async (req, res) => {
-    const { owner, repo, authToken, openaiApiKey } = req.body;
-    if (!owner || !repo || !authToken || !openaiApiKey) {
-        return res.status(400).send('Missing required parameters: owner, repo, authToken');
+    const { owner, repo, githubToken, openaiApiKey } = req.body;
+    if (!owner || !repo || !githubToken || !openaiApiKey) {
+        return res.status(400).send('Missing required parameters: owner, repo, githubToken');
     }
     try {
-        const title = await calculateProjectProductivity(owner, repo, authToken, openaiApiKey);
+        const title = await calculateProjectProductivity(owner, repo, githubToken, openaiApiKey);
         res.status(200).json({ title });
     } catch (error) {
         console.error('Error fetching productivity:', error);
