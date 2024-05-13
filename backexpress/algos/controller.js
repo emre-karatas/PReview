@@ -26,6 +26,36 @@ const calculateDeveloperProductivity = require('./helpers/calculateDeveloperProd
 const getAllPullRequests = require('./helpers/getAllPullRequests');
 const fetchPRCountByDeveloper = require('./helpers/fetchPRCountByDeveloper');
 const fetchReviewedCommitsCount = require('./helpers/fetchReviewedCommitsCount');
+const fetchPRCommentFrequency = require('./helpers/fetchPRCommentFrequency');
+
+
+
+
+
+// API route for fetching getFetchPRCommentFrequency
+router.post('/getFetchPRCommentFrequency', async (req, res) => {
+    const { org, username, developer, authToken } = req.body;
+        console.log("inside getFetchPRCommentFrequency " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("authToken " , authToken);
+
+
+    if (!req.body.owner || !req.body.repo || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await fetchPRCommentFrequency(req.body.owner, req.body.repo, developer, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching fetchPRCommentFrequency:', error);
+        res.status(500).send('Server error occurred while fetchPRCommentFrequency.');
+    }
+});
 
 
 
