@@ -147,3 +147,7 @@ apiRequest('getLatestPRComments', 'POST', { owner, repo, developer, githubToken}
 // Fetch getReviewedCommitsCount
 export const fetchcalculateDeveloperProductivity = (owner, repo, developer, githubToken, openaiApiKey) =>
 apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, developer, githubToken, openaiApiKey});
+
+// Fetch PR analysis
+export const analyzePR = (repoOwner, repoName, prNumber, reviewer, githubToken) =>
+    apiRequest('analyzePRComments', 'POST', { repoOwner, repoName, prNumber, reviewer, githubToken });

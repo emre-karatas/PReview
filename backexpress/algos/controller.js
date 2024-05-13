@@ -521,4 +521,22 @@ router.post('/projectPerformance', async (req, res) => {
     }
 });
 
+// API route for analyzing PR comments
+router.post('/analyzePRComments', async (req, res) => {
+    const { repoOwner, repoName, prNumber, reviewer, githubToken } = req.body;
+
+    if (!repoOwner || !repoName || !prNumber || !reviewer || !githubToken) {
+        return res.status(400).send('Missing required parameters: repoOwner, repoName, prNumber, reviewer, githubToken');
+    }
+
+    try {
+        // Call the analyzePRComments function to analyze PR comments
+        const analysisResult = await analyzePRComments(repoOwner, repoName, prNumber, reviewer, githubToken);
+        res.status(200).json(analysisResult); // Send the analysis result as the response
+    } catch (error) {
+        console.error('Error analyzing PR comments:', error);
+        res.status(500).send('Server error occurred while analyzing PR comments.');
+    }
+});
+
 module.exports = router;
