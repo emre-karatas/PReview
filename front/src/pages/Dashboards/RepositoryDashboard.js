@@ -178,7 +178,7 @@ useEffect(() => {
     const fetchRepoDashboard = async () => {
         try {
             const response = await fetchgetrepodashboard("EvanLi", "Github-Ranking", 31, "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");
-            console.log("fetchRepoDashboard3333:", response);
+            console.log("fetchRepoDashboard:", response);
             
             setAiReviews(response.teams);
         } catch (error) {
@@ -204,8 +204,8 @@ useEffect(() => {
         
     const fetchcalculateDeveloperProductivity = async () => {
         try {
-            const response = await fetchgetcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
-            console.log("fetchcalculateDeveloperProductivity22222:", response);
+            const response = await fetchgetcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "EvanLi", "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+            console.log("fetchcalculateDeveloperProductivity22222:", response.teams);
             
             //setAiReviews(response);
         } catch (error) {
@@ -327,7 +327,6 @@ useEffect(() => {
                         <p><strong>Summarized:</strong> {review.summary}</p>
                         <p><strong>Tone of comment:</strong> {review.tone}</p>
                         <p><strong>Content of comment and PR match:</strong> {review.prMatch}</p>
-
                     </div>
                 ))}
             </div>
