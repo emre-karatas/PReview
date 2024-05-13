@@ -11,53 +11,53 @@ import {useEffect, useState} from "react";
 
 
 
-const PRTable = () => {
+const PRTable = ({ rows }) => {
 
 
-    const [rows, setRows] = useState([]);
-    const [owner, setOwner] = useState(null);
-    const [repo, setRepo] = useState(null);
-
-    useEffect(() => {
-        setOwner("EvanLi");
-        setRepo("Github-Ranking");
-
-        const fetchData = async () => {
-            try {
-                // Fetch PR review counts per developer
-                const prReviewCountsResponse = await fetchPRReviewCounts(owner, repo); // Replace owner and repo with actual values
-                const prReviewCounts = prReviewCountsResponse.review;
-
-                // Fetch PR review comments counts per developer
-                const prReviewCommentsCountsResponse = await fetchPRReviewCommentsCounts(owner, repo); // Replace owner and repo with actual values
-                const prReviewCommentsCounts = prReviewCommentsCountsResponse.ranked;
-
-                // Merge the data to get the final rows
-                const mergedData = mergeData(prReviewCounts, prReviewCommentsCounts);
-
-                // Update the rows state
-                setRows(mergedData);
-            } catch (error) {
-                console.error('Error fetching PR review counts:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    const mergeData = (prReviewCounts, prReviewCommentsCounts) => {
-        // Merge the data based on developer names
-        const mergedData = prReviewCounts.map(prReviewCount => {
-            const matchingCommentCount = prReviewCommentsCounts.find(prReviewCommentCount => prReviewCommentCount.developer === prReviewCount.developer);
-            return {
-                id: prReviewCount.id,
-                name: prReviewCount.developer,
-                prCount: matchingCommentCount ? matchingCommentCount.comments : 0,
-            };
-        });
-
-        return mergedData;
-    };
+    // const [rows, setRows] = useState([]);
+    // const [owner, setOwner] = useState(null);
+    // const [repo, setRepo] = useState(null);
+    //
+    // useEffect(() => {
+    //     setOwner("EvanLi");
+    //     setRepo("Github-Ranking");
+    //
+    //     const fetchData = async () => {
+    //         try {
+    //             // Fetch PR review counts per developer
+    //             const prReviewCountsResponse = await fetchPRReviewCounts(owner, repo); // Replace owner and repo with actual values
+    //             const prReviewCounts = prReviewCountsResponse.review;
+    //
+    //             // Fetch PR review comments counts per developer
+    //             const prReviewCommentsCountsResponse = await fetchPRReviewCommentsCounts(owner, repo); // Replace owner and repo with actual values
+    //             const prReviewCommentsCounts = prReviewCommentsCountsResponse.ranked;
+    //
+    //             // Merge the data to get the final rows
+    //             const mergedData = mergeData(prReviewCounts, prReviewCommentsCounts);
+    //
+    //             // Update the rows state
+    //             setRows(mergedData);
+    //         } catch (error) {
+    //             console.error('Error fetching PR review counts:', error);
+    //         }
+    //     };
+    //
+    //     fetchData();
+    // }, []);
+    //
+    // const mergeData = (prReviewCounts, prReviewCommentsCounts) => {
+    //     // Merge the data based on developer names
+    //     const mergedData = prReviewCounts.map(prReviewCount => {
+    //         const matchingCommentCount = prReviewCommentsCounts.find(prReviewCommentCount => prReviewCommentCount.developer === prReviewCount.developer);
+    //         return {
+    //             id: prReviewCount.id,
+    //             name: prReviewCount.developer,
+    //             prCount: matchingCommentCount ? matchingCommentCount.comments : 0,
+    //         };
+    //     });
+    //
+    //     return mergedData;
+    // };
 
 
     const columns = [

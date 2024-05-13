@@ -15,7 +15,8 @@ import {
     fetchAllPRCount,
     fetchPRCompletionRate,
     fetchAnnualTickets,
-    fetchPerformance
+    fetchPerformance,
+    fetchPRReviewCounts
 } from "../../api/connector";
 import axios from 'axios';
 
@@ -28,9 +29,17 @@ export const AnalyticDashboardsMain = () => {
     const [totalPRTrend, setTotalPRTrend] = useState(null);
     const [totalCommitCount, setTotalCommitCount] = useState(null);
     const [totalCommitTrend, setTotalCommitTrend] = useState(null);
-    const [owner, setOwner] = useState(null);
-    const [repo, setRepo] = useState(null);
-    const [authToken, setAuthToken] = useState(null);
+
+    // const [owner, setOwner] = useState(null);
+    // const [repo, setRepo] = useState(null);
+    // const [authToken, setAuthToken] = useState(null);
+
+    const [owner, setOwner] = useState("defaultOwner");
+    const [repo, setRepo] = useState("defaultRepo");
+    const [authToken, setAuthToken] = useState("defaultToken");
+    const [year, setYear] = useState(2024);
+
+
     const [openaiApiKey, setOpenAiAPIKey] = useState(null);
 
     const [totalLOC, setTotalLOC] = useState(null);
@@ -39,8 +48,10 @@ export const AnalyticDashboardsMain = () => {
     const [completionRate, setCompletionRate] = useState(null);
     const [performanceScore, setPerformanceScore] = useState(null);
     const [error, setError] = useState(null);
-    const [year, setYear] = useState(null);
     const [averagePRTime, setAveragePRTime] = useState(null);
+
+    const [rows, setRows] = useState([]);
+
 
     useEffect(() => {
         const fetchProductivityData = async () => {
@@ -155,6 +166,24 @@ export const AnalyticDashboardsMain = () => {
             }
         };
 
+        const fetchRows = async () => {
+            try {
+                const prReviewCountsResponse = await fetchPRReviewCounts(owner, repo);
+                const prReviewCounts = prReviewCountsResponse.review;
+
+                // Map the data to get PR counts for each developer
+                const prCountsData = prReviewCounts.map(prReviewCount => ({
+                    id: prReviewCount.id,
+                    name: prReviewCount.developer,
+                    prCount: prReviewCount.count,
+                }));
+
+                setRows(prCountsData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
 
         fetchAveragePRTime();
         fetchCompletionRate();
@@ -164,7 +193,8 @@ export const AnalyticDashboardsMain = () => {
         fetchCommitCNT();
         //fetchProductivityData();
         fetchLOC();
-    }, []);
+        fetchRows();
+    }, [owner, repo, authToken, year]);
     
     
     return (
@@ -175,8 +205,8 @@ export const AnalyticDashboardsMain = () => {
                 <div className="dashboard-main">
                     <div className="dashboard-main-content">
                         <TotalPRChart/>
-                        <PRTable/>
-table
+                        <PRTable rows={rows} />
+                        tab
                     </div>
                     <div className="dashboard-stats">
                         <StatBox title="Total PR Created" number={totalPRCount}/>
