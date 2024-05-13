@@ -10,7 +10,7 @@ const axios = require('axios');
 async function fetchDeveloperPRActivities(owner, repo, githubToken) {
     const githubHeaders = {
         headers: {
-            Authorization: `token ${githubToken}`,
+            Authorization: `Bearer ${githubToken}`,
             Accept: 'application/vnd.github.v3+json'
         }
     };
