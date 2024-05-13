@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Navbar from "../../pages/Dashboards/Navbar";
+import AnalyticDashboardsSidebar from "../../pages/Dashboards/AnalyticDashboardsSidebar";
 import { getUserByUserName, updateUserByUserName } from "../../api/authAdapter";
 import './ProfileCard.css';
 
@@ -94,102 +96,106 @@ const ProfileCard = () => {
     };
 
     return (
-        <div className="profile">
-            <h1>Profile Overview</h1>
-            <div className="user-info">
-                {userData && (
-                    <>
-                        <div className="info-item">
-                            <label>Full Name:</label>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    name="fullName"
-                                    value={editedUserData.fullName}
-                                    onChange={handleInputChange}
-                                    className="edit-input-box"
-                                />
-                            ) : (
-                                <span>{userData.fullName}</span>
-                            )}
-                        </div>
-                        <div className="info-item">
-                            <label>Email:</label>
-                            {isEditing ? (
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={editedUserData.email}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <span>{userData.email}</span>
-                            )}
-                        </div>
-                        <div className="info-item">
-                            <label>Username:</label>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    name="username"
-                                    value={editedUserData.username}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <span>{userData.username}</span>
-                            )}
-                        </div>
-                        <div className="info-item">
-                            <label>Password:</label>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    name="password"
-                                    value={editedUserData.password}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <span>{userData.password}</span>
-                            )}
-                        </div>
-                        <div className="info-item">
-                            <label>GitHub Repository Link:</label>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    name="githubRepo"
-                                    value={editedUserData.githubRepo}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <span>{userData.githubRepo}</span>
-                            )}
-                        </div>
-                        <div className="info-item">
-                            <label>GitHub Token</label>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    name="githubToken"
-                                    value={editedUserData.githubToken}
-                                    onChange={handleInputChange}
-                                />
-                            ) : (
-                                <span>{userData.githubToken}</span>
-                            )}
-                        </div>
-                    </>
-                )}
-            </div>
-            <div className="button-container">
-                {isEditing ? (
-                    <>
-                        <button onClick={handleSubmit}>Save</button>
-                        <button onClick={handleCancelClick}>Cancel</button>
-                    </>
-                ) : (
-                    <button onClick={handleEditClick}>Edit</button>
-                )}
+        <div>
+            <Navbar />
+            <AnalyticDashboardsSidebar />
+            <div className="profile">
+                <h1>Profile Overview</h1>
+                <div className="user-info">
+                    {userData && (
+                        <>
+                            <div className="info-item">
+                                <label>Full Name:</label>
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="fullName"
+                                        value={editedUserData.fullName}
+                                        onChange={handleInputChange}
+                                        className="edit-input-box"
+                                    />
+                                ) : (
+                                    <span>{userData.fullName}</span>
+                                )}
+                            </div>
+                            <div className="info-item">
+                                <label>Email:</label>
+                                {isEditing ? (
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={editedUserData.email}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    <span>{userData.email}</span>
+                                )}
+                            </div>
+                            <div className="info-item">
+                                <label>Username:</label>
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        value={editedUserData.username}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    <span>{userData.username}</span>
+                                )}
+                            </div>
+                            <div className="info-item">
+                                <label>Password:</label>
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="password"
+                                        value={editedUserData.password}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    <span>{userData.password}</span>
+                                )}
+                            </div>
+                            <div className="info-item">
+                                <label>GitHub Repository Link:</label>
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="githubRepo"
+                                        value={editedUserData.githubRepo}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    <span>{userData.githubRepo}</span>
+                                )}
+                            </div>
+                            <div className="info-item">
+                                <label>GitHub Token</label>
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="githubToken"
+                                        value={editedUserData.githubToken}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    <span>{userData.githubToken}</span>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
+                <div className="button-container">
+                    {isEditing ? (
+                        <>
+                            <button onClick={handleSubmit}>Save</button>
+                            <button onClick={handleCancelClick}>Cancel</button>
+                        </>
+                    ) : (
+                        <button onClick={handleEditClick}>Edit</button>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -34,6 +34,7 @@ const AnalyticDashboardsSidebar = ({ selectedDashboard }) => {
           {renderMenuItem("DeveloperPerformance", <DesktopOutlined />, "Developer Performance Dashboard", "/DeveloperPerformanceDashboard")}
           {renderMenuItem("RepositoryDashboard", <PieChartOutlined />, "Repository Dashboard", "/RepositoryDashboard")}
           {renderMenuItem("Organization", <TeamOutlined />, "Organization", "/Organization")}
+          {renderMenuItem("Profile", <TeamOutlined />, "Profile", "/Profile")}
         </Menu>
       </div>
     </div>
