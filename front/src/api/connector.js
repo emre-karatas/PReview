@@ -70,31 +70,27 @@ export const fetchTotalNoOfCommits = (owner, repo, authToken) =>
  // Fetch productivity
 export const fetchProductivity = (owner, repo, githubToken, openaiApiKey) =>
     apiRequest('getProductivity', 'POST', { owner, repo, githubToken, openaiApiKey});
-    
- 
-  // Fetch prCountLastQuarter
+   
+ // Fetch prCountLastQuarter
 export const fetchPRCountLastQuarter = (owner, repo, authToken) =>
   apiRequest('prCountLastQuarter', 'POST', { owner, repo, authToken});     
  
-  // Fetch prCountLastQuarter
-  export const fetchmergedPrCntLastQuarter = (owner, repo, authToken) =>
-  apiRequest('mergedPrCntLastQuarter', 'POST', { owner, repo, authToken});      
-  
-  
-    // Fetch prCountLastQuarter
-    export const fetchopenPrCntLastQuarter = (owner, repo, authToken) =>
-    apiRequest('openPrCntLastQuarter', 'POST', { owner, repo, authToken});     
-    
-    
-    // Fetch prCountLastQuarter
-    export const fetchgetrepodashboard = (repoOwner, repoName, prNumber, authToken) =>
-    apiRequest('getrepodashboard', 'POST', { repoOwner, repoName, prNumber, authToken});     
-    
-    
-        
-      
-    // Fetch prCountLastQuarter
-    export const fetchgetAllDevelopers = (owner, repo, authToken) =>
+// Fetch prCountLastQuarter
+export const fetchmergedPrCntLastQuarter = (owner, repo, authToken) =>
+apiRequest('mergedPrCntLastQuarter', 'POST', { owner, repo, authToken});      
+
+
+// Fetch prCountLastQuarter
+export const fetchopenPrCntLastQuarter = (owner, repo, authToken) =>
+apiRequest('openPrCntLastQuarter', 'POST', { owner, repo, authToken});     
+
+
+// Fetch prCountLastQuarter
+export const fetchgetrepodashboard = (owner, repo, prNumber, githubToken) =>
+apiRequest('getrepodashboard', 'POST', { owner, repo, prNumber, githubToken});     
+                 
+// Fetch prCountLastQuarter
+export const fetchgetAllDevelopers = (owner, repo, authToken) =>
     apiRequest('getAllDeveloperss', 'POST', { owner, repo, authToken});     
 
  // Fetch PR count
@@ -117,7 +113,6 @@ export const fetchPRReviewCounts = (owner, repo) =>
 // Fetch PR review comments counts per developer
 export const fetchPRReviewCommentsCounts = (owner, repo) =>
     apiRequest('countPRReviewComments', 'POST', { owner, repo });
-
     
 // Fetch fetchgetcalculateDeveloperProductivity
 export const fetchgetcalculateDeveloperProductivity = (owner, repo, authToken,  openaiApiKey) =>
