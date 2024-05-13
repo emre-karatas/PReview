@@ -206,7 +206,7 @@ export const AnalyticDashboardsMain = () => {
         <div className="dashboard-container">
             <Navbar />
             <div className="dashboard-content">
-                <AnalyticDashboardsSidebar />
+                <AnalyticDashboardsSidebar className="sidebar"/>
                 <div className="dashboard-main">
                     <div className="dashboard-main-content">
                         <TotalPRChart/>
