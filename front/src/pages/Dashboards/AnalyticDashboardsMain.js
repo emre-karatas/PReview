@@ -34,9 +34,9 @@ export const AnalyticDashboardsMain = () => {
     // const [repo, setRepo] = useState(null);
     // const [authToken, setAuthToken] = useState(null);
 
-    const [owner, setOwner] = useState("defaultOwner");
-    const [repo, setRepo] = useState("defaultRepo");
-    const [authToken, setAuthToken] = useState("defaultToken");
+    const [owner, setOwner] = useState(localStorage.getItem("repo_owner"));
+    const [repo, setRepo] = useState(localStorage.getItem("github_repo"));
+    const [authToken, setAuthToken] = useState(localStorage.getItem("github_token"));
     const [year, setYear] = useState(2024);
 
 
