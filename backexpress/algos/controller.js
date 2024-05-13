@@ -20,7 +20,7 @@ const calculateProjectPerformance = require('./helpers/calculateProjectPerforman
 const countPRsLastQuarter = require('./helpers/countPRsLastQuarter');
 const countMergedPRsLastQuarter = require('./helpers/countMergedPRsLastQuarter');
 const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
-const {fetchAndAnalyzeComments, summarizeComment} = require('./helpers/repodashboard');
+const {fetchAndAnalyzeComments} = require('./helpers/repodashboard');
 const getAllDevelopers = require('./helpers/getAllDevelopers');
 const calculateDeveloperProductivity = require('./helpers/calculateDeveloperProductivity');
 const getAllPullRequests = require('./helpers/getAllPullRequests');
@@ -28,6 +28,7 @@ const fetchPRCountByDeveloper = require('./helpers/fetchPRCountByDeveloper');
 const fetchReviewedCommitsCount = require('./helpers/fetchReviewedCommitsCount');
 const fetchPRCommentFrequency = require('./helpers/fetchPRCommentFrequency');
 const fetchTotalPRCommentsByDeveloper = require('./helpers/fetchTotalPRCommentsByDeveloper');
+const analyzeCommentTone = require("./helpers/analyzeCommentTone");
 
 
 // API route for fetching getTotalPRCommentsByDeveloper
@@ -218,7 +219,11 @@ router.post('/getrepodashboard', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, prNumber, githubToken');
     }
     try {
-        const teams = await fetchAndAnalyzeComments(owner, repo, prNumber, githubToken);
+        let teams = await fetchAndAnalyzeComments(owner, repo, prNumber, githubToken);
+        // let tones = []
+        // for(team in teams) {
+        //     
+        // }
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching repodashboard:', error);
@@ -251,8 +256,6 @@ router.post('/openPrCntLastQuarter', async (req, res) => {
 });
 
 
-
-
 // API route for fetching countMergedPRsLastQuarter
 router.post('/mergedPrCntLastQuarter', async (req, res) => {
     const { org, username, authToken } = req.body;
@@ -277,8 +280,6 @@ router.post('/mergedPrCntLastQuarter', async (req, res) => {
         res.status(500).send('Server error occurred while fetchingcountMergedPRsLastQuarter.');
     }
 });
-
-
 
 // API route for fetching the teams a user belongs to
 router.post('/userTeams', async (req, res) => {
