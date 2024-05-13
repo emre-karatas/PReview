@@ -27,6 +27,10 @@
   color: white;
 }
 
+.analytic-sidebar sidebar-bottom-item {
+  margin-bottom: 0px;
+}
+
 .menu-item.active {
   background-color: #2A2C38 !important;
 }

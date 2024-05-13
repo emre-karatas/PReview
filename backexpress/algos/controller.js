@@ -14,6 +14,9 @@ const getTotalLinesOfCode  = require('./helpers/getTotalLinesOfCode');
 const countCommits = require('./helpers/countCommits');
 const calculateProjectProductivity = require('./helpers/calculateProjectProductivity');
 const countAllPRs = require('./helpers/countAllPRs');
+const computePRCompletionRate = require('./helpers/computePRCompletionRate');
+const fetchAnnualTickets = require('./helpers/computeAnnualTicketCreation');
+const fetchPerformance = require('./helpers/calculateProjectPerformance')
 const countPRsLastQuarter = require('./helpers/countPRsLastQuarter');
 const countMergedPRsLastQuarter = require('./helpers/countMergedPRsLastQuarter');
 const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
@@ -125,7 +128,6 @@ router.post('/mergedPrCntLastQuarter', async (req, res) => {
 
 
 
-
 // API route for fetching the teams a user belongs to
 router.post('/userTeams', async (req, res) => {
     const { org, username, authToken } = req.body;
@@ -215,8 +217,8 @@ router.post('/getCommitCount', async (req, res) => {
 
 // API route for fetching productivity
 router.post('/getProductivity', async (req, res) => {
-    const { owner, repo, authToken } = req.body;
-    if (!owner || !repo || !authToken) {
+    const { owner, repo, authToken, openaiApiKey } = req.body;
+    if (!owner || !repo || !authToken || !openaiApiKey) {
         return res.status(400).send('Missing required parameters: owner, repo, authToken');
     }
     try {
@@ -380,7 +382,7 @@ router.post('/annualTickets', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, year, authToken');
     }
     try {
-        const totalIssues = await computeAnnualTicketCreation(owner, repo, authToken, year);
+        const totalIssues = await fetchAnnualTickets(owner, repo, authToken, year);
         res.status(200).json({ totalIssues });
     } catch (error) {
         console.error('Error computing annual ticket creation:', error);
@@ -417,7 +419,7 @@ router.post('/projectPerformance', async (req, res) => {
 
     try {
         // Calculate project performance using the provided function
-        const performanceScore = await calculateProjectPerformance(owner, repo, githubToken, openaiApiKey);
+        const performanceScore = await fetchPerformance(owner, repo, githubToken, openaiApiKey);
 
         // Send the performance score as the response
         res.status(200).json({ performanceScore });

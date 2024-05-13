@@ -69,7 +69,8 @@ export const fetchTotalNoOfCommits = (owner, repo, authToken) =>
     
  // Fetch productivity
 export const fetchProductivity = (owner, repo, authToken, openaiApiKey) =>
-    apiRequest('getProductivity', 'POST', { owner, repo, authToken, openaiApiKey});     
+    apiRequest('getProductivity', 'POST', { owner, repo, authToken, openaiApiKey});
+
 
     
  // Fetch fetchAllPRCount
@@ -100,3 +101,25 @@ export const fetchPRCountLastQuarter = (owner, repo, authToken) =>
     // Fetch prCountLastQuarter
     export const fetchgetAllDevelopers = (owner, repo, authToken) =>
     apiRequest('getAllDeveloperss', 'POST', { owner, repo, authToken});     
+
+ // Fetch PR count
+ export const fetchAllPRCount = (owner, repo, authToken) =>
+ apiRequest('getAllPRCount', 'POST', { owner, repo, authToken});
+
+export const fetchPRCompletionRate = (owner, repo, authToken) =>
+    apiRequest('prCompletionRate', 'POST', { owner, repo, authToken});
+
+export const fetchAnnualTickets = (owner, repo, authToken, year) =>
+    apiRequest('annualTickets', 'POST', { owner, repo, authToken, year});
+
+export const fetchPerformance = (owner, repo, authToken, openaiApiKey) =>
+    apiRequest('projectPerformance', 'POST', { owner, repo, authToken, openaiApiKey})
+
+// Fetch PR review counts per developer
+export const fetchPRReviewCounts = (owner, repo) =>
+    apiRequest('countPRReviews', 'POST', { owner, repo });
+
+// Fetch PR review comments counts per developer
+export const fetchPRReviewCommentsCounts = (owner, repo) =>
+    apiRequest('countPRReviewComments', 'POST', { owner, repo });
+

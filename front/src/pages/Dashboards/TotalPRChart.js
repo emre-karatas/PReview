@@ -23,7 +23,7 @@ const TotalPRChart = () => {
     };
 
     return (
-        <div>
+        <div style={{ marginTop: '30px' }}>
             <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
     );
