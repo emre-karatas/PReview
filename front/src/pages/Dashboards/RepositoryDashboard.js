@@ -61,9 +61,6 @@ const [repo, setRepo] = useState("defaultRepo");
 const [authToken, setAuthToken] = useState("defaultToken");
 const [pr, setSelectedpr] = useState("");
 
-  const handleChange = (event) => {
-        setSelectedpr(event.target.value);
-    };
 
  
 

@@ -24,6 +24,34 @@ const {fetchAndAnalyzeComments, summarizeComment} = require('./helpers/repodashb
 const getAllDevelopers = require('./helpers/getAllDevelopers');
 const calculateDeveloperProductivity = require('./helpers/calculateDeveloperProductivity');
 const getAllPullRequests = require('./helpers/getAllPullRequests');
+const fetchPRCountByDeveloper = require('./helpers/fetchPRCountByDeveloper');
+
+
+
+// API route for fetching getAllPullRequests
+router.post('/getRCountByDeveloper', async (req, res) => {
+    const { org, username, developer, authToken } = req.body;
+        console.log("inside fetchPRCountByDeveloper " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("authToken " , authToken);
+
+
+    if (!req.body.owner || !req.body.repo || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await fetchPRCountByDeveloper(req.body.owner, req.body.repo, developer, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching fetchPRCountByDeveloper:', error);
+        res.status(500).send('Server error occurred while fetchPRCountByDeveloper.');
+    }
+});
 
 
 // API route for fetching getAllPullRequests

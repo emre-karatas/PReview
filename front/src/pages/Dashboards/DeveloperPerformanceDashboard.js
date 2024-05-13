@@ -40,7 +40,7 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [noOfPRComments, setNoOfPRComments] = useState()
 
     const handleChange = (event) => {
-        setSelectedDeveloper(event.target.value);
+        setSelectedDeveloper(event.x);
     };
     const [owner, setOwner] = useState(null);
     const [repo, setRepo] = useState(null);
