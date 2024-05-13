@@ -48,12 +48,22 @@ const [prCnt, setPRCnt] = useState(0);
 const [mergedCnt, setMergedCnt] = useState(0);
 const [openCnt, setOpenCnt] = useState(0);
 //const [date, setDate] = useState([]);
-const [owner, setOwner] = useState(null);
-const [repo, setRepo] = useState(null);
-const [authToken, setAuthToken] = useState(null);
+// const [owner, setOwner] = useState(null);
+// const [repo, setRepo] = useState(null);
+// const [authToken, setAuthToken] = useState(null);
+
 const [openaiApiKey, setOpenAiAPIKey] = useState(null);
 const [prNumber, setprNumber] = useState(null);
 const [selectedDeveloper, setSelectedDeveloper] = useState('');
+
+const [owner, setOwner] = useState("defaultOwner");
+const [repo, setRepo] = useState("defaultRepo");
+const [authToken, setAuthToken] = useState("defaultToken");
+const [pr, setSelectedpr] = useState("");
+
+  const handleChange = (event) => {
+        setSelectedpr(event.target.value);
+    };
 
  
 
@@ -305,7 +315,7 @@ useEffect(() => {
             data: rows
         }]
     });
-}, []);
+}, [owner, repo, authToken]);
 
 
     return (
@@ -316,6 +326,20 @@ useEffect(() => {
                 <div  id="container" ></div>
             </div>
              <Accordion defaultActiveKey="0" className="my-3">
+             <Select
+                    value={pr}
+                    onChange={handleChange}
+                    displayEmpty
+                    inputProps={{'aria-label': 'Without label'}}
+                    style={{width: 200, marginBottom: 20, marginTop: 20, marginLeft: 20}}
+                >
+                    <MenuItem value="">
+                        <em>None</em>
+                    </MenuItem>
+                    {rows.map((row) => (
+                        <MenuItem key={row.id} value={row.x}>{row.x}</MenuItem>
+                    ))}
+                </Select>
                 
              <Select
                     value={selectedDeveloper}
