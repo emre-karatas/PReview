@@ -8,7 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Select} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import StatBox from "./Statbox";
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper, getDeveloperPRActivities, fetchLatestPRComments, fetchcalculateDeveloperProductivity } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchLatestPRCommentsByDeveloper, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper, getDeveloperPRActivities, fetchLatestPRComments, fetchcalculateDeveloperProductivity } from "../../api/connector";
 
 
 
@@ -46,11 +46,12 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
         setSelectedDeveloper(event.x);
         fetchPRCountByTheDeveloper();
         fetchReviewedCommitsCount();
-        fetchfetchPRCommentFrequency();
-        getTotalPRCommentsByDeveloper();
+        //fetchfetchPRCommentFrequency();
+        //getTotalPRCommentsByDeveloper();
         fetchDeveloperPRActivities();
         getLatestPRComments();
         fetchgetProductivity();
+        fetchgetLatestPrInfo();
     };
     const [owner, setOwner] = useState(null);
     const [repo, setRepo] = useState(null);
@@ -226,6 +227,38 @@ const fetchgetProductivity = async () => {
   }
 }; 
 
+
+            
+const fetchgetLatestPrInfo = async () => {
+  try {
+    console.log("inside fetchgetLatestPrInfo:");
+
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await fetchLatestPRCommentsByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      console.log("fetchLatestPRCommentsByDeveloper:", response);
+      //setAiReviews(response);
+      
+      const aiReviews = [
+        {
+            id: 1,
+            date: '2023-01-01',
+            comment: "Great implementation of the new caching logic.",
+            score: 8.5
+        },
+        {
+            id: 2,
+            date: '2023-01-02',
+            comment: "Needs improvement in thread safety during cache updates.",
+            score: 7.0
+        },
+    ];
+      
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};  
+
+
 useEffect(() => {
     
   
@@ -269,7 +302,8 @@ useEffect(() => {
   };  
   
 
-   
+
+  
   
   setOwner("EvanLi");
   setAuthToken("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");
