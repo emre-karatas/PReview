@@ -216,9 +216,10 @@ const getLatestPRComments = async () => {
 
 const fetchgetProductivity = async () => {
   try {
-      //console.log("inside fetchgetAllPullRequests");owner, repo, githubToken, openaiApiKey
-      const response = await fetchcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+    //owner, repo, developer, githubToken, openaiApiKey
+      const response = await fetchcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "Evanli" , "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
       console.log("fetchgetProductivity:", response);
+      setProductivity(response.teams);
       
   } catch (error) {
       console.error('Error:', error);
@@ -252,7 +253,7 @@ useEffect(() => {
       }
   };  
   
-    
+  
   
   
           
@@ -268,9 +269,7 @@ useEffect(() => {
   };  
   
 
-            
-  
-  
+   
   
   setOwner("EvanLi");
   setAuthToken("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");
