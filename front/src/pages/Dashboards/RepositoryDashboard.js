@@ -183,13 +183,14 @@ useEffect(() => {
     const fetchcalculateDeveloperProductivity = async () => {
         try {
             const response = await fetchgetcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
-            console.log("fetchAllDevelopers:", response);
+            console.log("fetchcalculateDeveloperProductivity:", response);
             
             //setAiReviews(response);
         } catch (error) {
             console.error('Error:', error);
         }
     };  
+    
     
     
     
