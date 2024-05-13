@@ -134,7 +134,7 @@ const theme = createTheme({
 const fetchPRCountByTheDeveloper = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchPRCountByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchPRCountByDeveloper(owner, repo, developer,authToken);
       console.log("fetchPRCountByTheDeveloper:", response.teams);
       setTotalPRCount(response.teams);
   } catch (error) {
@@ -145,7 +145,7 @@ const fetchPRCountByTheDeveloper = async () => {
 const fetchReviewedCommitsCount = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchgetReviewedCommitsCount("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchgetReviewedCommitsCount(owner, repo, developer, authToken);
       console.log("fetchReviewedCommitsCount:", response.teams);
       setNofReviewedCommits(response.teams);
   } catch (error) {
@@ -157,7 +157,7 @@ const fetchReviewedCommitsCount = async () => {
 const fetchfetchPRCommentFrequency = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchPRCommentFrequency("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchPRCommentFrequency(owner, repo, developer, authToken);
       console.log("fetchfetchPRCommentFrequency:", response.teams);
       setPartipicationPR(response.teams.participationFrequency);
   } catch (error) {
@@ -170,7 +170,7 @@ const fetchfetchPRCommentFrequency = async () => {
 const getTotalPRCommentsByDeveloper = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchTotalPRCommentsByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchTotalPRCommentsByDeveloper(owner, repo, developer, authToken);
       console.log("getTotalPRCommentsByDeveloper:", response.teams);
       setNoOfPRComments(response.teams);
   } catch (error) {
@@ -182,7 +182,7 @@ const getTotalPRCommentsByDeveloper = async () => {
 const fetchDeveloperPRActivities = async () => {
   try {
     // Fetch data from the backend
-    const response = await getDeveloperPRActivities("EvanLi", "Github-Ranking", "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");
+    const response = await getDeveloperPRActivities(owner, repo, authToken);
     console.log("fetchDeveloperPRActivities:", response);
 
     // Map the response to the rows format
@@ -206,7 +206,7 @@ const fetchDeveloperPRActivities = async () => {
 const getLatestPRComments = async () => {
   try {
     // Fetch data from the backend
-    const response = await fetchLatestPRComments("EvanLi", "Github-Ranking", "EvanLi", "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");
+    const response = await fetchLatestPRComments(owner, repo, developer, authToken);
     console.log("getLatestPRComments:", response);
 
   
@@ -219,7 +219,7 @@ const getLatestPRComments = async () => {
 const fetchgetProductivity = async () => {
   try {
     //owner, repo, developer, githubToken, openaiApiKey
-      const response = await fetchcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "Evanli" , "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+      const response = await fetchcalculateDeveloperProductivity(owner, repo, developer ,authToken, "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
       console.log("fetchgetProductivity:", response);
       setProductivity(response.teams);
       
@@ -235,7 +235,7 @@ const fetchgetLatestPrInfo = async () => {
     console.log("inside fetchgetLatestPrInfo:");
 
       //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchLatestPRCommentsByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
+      const response = await fetchLatestPRCommentsByDeveloper(owner, repo, developer,authToken);
       console.log("fetchLatestPRCommentsByDeveloper:", response);
       //setAiReviews(response);
       
@@ -272,13 +272,19 @@ useEffect(() => {
         console.log(localStorage.getItem("github_token"));
         console.log(localStorage.getItem("repo_owner"));
         setOwner(localStorage.getItem("repo_owner"));
-        setRepo(localStorage.getItem("github_repo"));
+        
+        const url = new URL(localStorage.getItem("github_repo"));
+        const pathSegments = url.pathname.split('/');  // Split the path by '/'
+        const codedPart = pathSegments[2];            
+        
+        
+        setRepo(codedPart);
         setAuthToken(localStorage.getItem("github_token"));
         setDeveloper(localStorage.getItem("username"));
 
         
         
-          const developers = await fetchgetAllDevelopers("EvanLi", "Github-Ranking", "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");
+          const developers = await fetchgetAllDevelopers(owner, repo, authToken);
           console.log("fetchAllDevelopers:", developers);
           console.log(developers.teams[0].login);
           // Generate rows array dynamically
@@ -307,7 +313,7 @@ useEffect(() => {
   const fetchgetAllPullRequestss = async () => {
       try {
           //console.log("inside fetchgetAllPullRequests");
-          const response = await fetchgetAllPullRequests("EvanLi", "Github-Ranking", "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");
+          const response = await fetchgetAllPullRequests(owner, repo, authToken);
           console.log("fetchgetAllPullRequests:", response);
           
       } catch (error) {
@@ -317,10 +323,6 @@ useEffect(() => {
   
 
 
-  
-  
-  setOwner("EvanLi");
-  setAuthToken("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");
   
   setRepo("Github-Ranking");
        
