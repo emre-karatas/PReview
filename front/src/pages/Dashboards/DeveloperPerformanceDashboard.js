@@ -8,7 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Select} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import StatBox from "./Statbox";
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper, getDeveloperPRActivities } from "../../api/connector";
 
 
 
@@ -43,8 +43,9 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
         setSelectedDeveloper(event.x);
         fetchPRCountByTheDeveloper();
         fetchReviewedCommitsCount();
-        //fetchfetchPRCommentFrequency();
+        fetchfetchPRCommentFrequency();
         getTotalPRCommentsByDeveloper();
+        fetchDeveloperPRActivities();
     };
     const [owner, setOwner] = useState(null);
     const [repo, setRepo] = useState(null);
@@ -163,8 +164,20 @@ const getTotalPRCommentsByDeveloper = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
       const response = await fetchTotalPRCommentsByDeveloper("EvanLi", "Github-Ranking", "EvanLi", "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");
-      console.log("fetchTotalPRCommentsByDeveloper:", response.teams);
-      setNoOfPRComments(response.teams.participationFrequency);
+      console.log("getTotalPRCommentsByDeveloper:", response.teams);
+      setNoOfPRComments(response.teams);
+      //setAiReviews(response);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};  
+
+const fetchDeveloperPRActivities = async () => {
+  try {
+      //console.log("inside fetchgetAllPullRequests");
+      const response = await getDeveloperPRActivities("EvanLi", "Github-Ranking", "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");
+      console.log("fetchDeveloperPRActivities:", response);
+      //setNoOfPRComments(response.teams.participationFrequency);
       //setAiReviews(response);
   } catch (error) {
       console.error('Error:', error);
@@ -268,7 +281,7 @@ useEffect(() => {
                      <StatBox title="Number of Comments under PRs" number={noOfPRComments}/>
                 </div>
                 <Accordion.Item eventKey="0">
-                    <Accordion.Header>AI Reviews</Accordion.Header>
+                    <Accordion.Header>AI Reviews : Latest PR</Accordion.Header>
                     <Accordion.Body>
                         <div style={{maxHeight: '300px', overflowY: 'auto'}}>
                             {aiReviews.map(review => (
