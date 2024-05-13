@@ -54,11 +54,22 @@ export const AnalyticDashboardsMain = () => {
 
 
     useEffect(() => {
+
+        console.log(localStorage.getItem("username"));
+        console.log(localStorage.getItem("github_repo"));
+        console.log(localStorage.getItem("github_token"));
+
+        setOwner(localStorage.getItem("repo_owner"));
+        setRepo(localStorage.getItem("github_repo"));
+        setAuthToken(localStorage.getItem("github_token"));
+        setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+
+
         const fetchProductivityData = async () => {
-            setOwner("EvanLi");
-            setAuthToken("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");
-            setRepo("Github-Ranking");
-            setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+            // setOwner("EvanLi");
+            // setAuthToken("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");
+            // setRepo("Github-Ranking");
+
 
             try {
                 const response = await fetchProductivity(owner, repo, authToken, openaiApiKey);
@@ -82,9 +93,9 @@ export const AnalyticDashboardsMain = () => {
          
         
         const fetchLOC = async () => {
-            setOwner("EvanLi");
-            setAuthToken("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");
-            setRepo("Github-Ranking");
+            // setOwner("EvanLi");
+            // setAuthToken("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");
+            // setRepo("Github-Ranking");
              
             console.log("the owner ", owner);  
             console.log("the token ", authToken); 
@@ -103,9 +114,9 @@ export const AnalyticDashboardsMain = () => {
         
                 
         const fetchPRCNT = async () => {
-            setOwner("EvanLi");
-            setAuthToken("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");
-            setRepo("Github-Ranking");
+            // setOwner("EvanLi");
+            // setAuthToken("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");
+            // setRepo("Github-Ranking");
 
             try {
                 const response = await fetchAllPRCount(owner, repo, authToken);
@@ -117,9 +128,9 @@ export const AnalyticDashboardsMain = () => {
         };
 
         const fetchCompletionRate = async () => {
-            setOwner("EvanLi");
-            setAuthToken("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");
-            setRepo("Github-Ranking");
+            // setOwner("EvanLi");
+            // setAuthToken("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");
+            // setRepo("Github-Ranking");
 
             try {
                 const response = await fetchPRCompletionRate(owner, repo, authToken);
@@ -131,9 +142,9 @@ export const AnalyticDashboardsMain = () => {
         };
 
         const fetchTickets = async () => {
-            setOwner("EvanLi");
-            setAuthToken("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");
-            setRepo("Github-Ranking");
+            // setOwner("EvanLi");
+            // setAuthToken("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");
+            // setRepo("Github-Ranking");
             setYear(2024);
 
             try {
@@ -146,10 +157,10 @@ export const AnalyticDashboardsMain = () => {
         };
 
         const fetchPerformanceScore = async () => {
-            setOwner("EvanLi");
-            setAuthToken("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");
-            setRepo("Github-Ranking");
-            setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+            // setOwner("EvanLi");
+            // setAuthToken("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");
+            // setRepo("Github-Ranking");
+            // setOpenAiAPIKey("sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
 
             try {
                 const response = await fetchPerformance(owner, repo, authToken, openaiApiKey);
