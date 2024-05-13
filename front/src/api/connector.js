@@ -151,3 +151,7 @@ apiRequest('fetchDeveloperPRActivities', 'POST', { owner, repo, authToken});
 export const fetchLatestPRComments = (owner, repo, developer, authToken) =>
 apiRequest('getLatestPRComments', 'POST', { owner, repo, developer, authToken});
 
+
+// Fetch getReviewedCommitsCount
+export const fetchcalculateDeveloperProductivity = (owner, repo, developer, authToken) =>
+apiRequest('getcalculateDeveloperProductivity', 'POST', { owner, repo, developer, authToken});
