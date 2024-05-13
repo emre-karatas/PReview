@@ -1,5 +1,7 @@
 const axios = require('axios');
 const { OpenAI } = require('openai');
+const analyzeCommentTone = require('./analyzeCommentTone');
+const checkCommentContentMatchWithPRInfo = require('./checkCommentContentMatchWithPRInfo');
 
 // Initialize OpenAI client properly
 const openai = new OpenAI({apiKey: "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn"});
@@ -15,6 +17,26 @@ async function summarizeComment(comment) {
         return analysisResponse.choices[0]?.message?.content;
     } catch (error) {
         console.error('Error summarizing comment:', error);
+        throw error;
+    }
+};
+
+async function getPRInfo(repoOwner, repoName, prNumber, githubToken) {
+    try {
+        const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${prNumber}`;
+    
+        const githubHeaders = {
+            headers: {
+                'Authorization': `Bearer ${githubToken}`,
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        };
+    
+        const response = await axios.get(url, githubHeaders); 
+        
+        return [response?.data?.title, response?.data?.body];
+    } catch (error) {
+        console.error('Error getting pr info', error);
         throw error;
     }
 }
@@ -35,7 +57,7 @@ async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, githubToke
             // Analyze the quality of the comment
             const qualityResponse = await openai.chat.completions.create({
                 model: 'gpt-3.5-turbo',
-                messages: [{role: 'user', content: `Analyze the quality of this review comment: "${comment.body}"`}],
+                messages: [{role: 'user', content: `Analyze the quality of this review comment give an overall feedback by including a grade: excellent/good/average/poor: "${comment.body}"`}],
                 max_tokens: 150
             });
             
@@ -49,12 +71,19 @@ async function fetchAndAnalyzeComments(repoOwner, repoName, prNumber, githubToke
                 messages: [{role: 'user', content:  `Provide a summary for the following comment: "${comment.body}"`}],
                 max_tokens: 100
             });
-            const summary = summaryResponse.choices[0]?.message?.content;
 
+            // inspect the tone
+            const tone = await analyzeCommentTone(comment.body);
+            
+            const [titleInfo, bodyInfo] = await getPRInfo(repoOwner, repoName, prNumber, githubToken);
+            const prMatch = await checkCommentContentMatchWithPRInfo(comment.body, "Title: " + titleInfo + "Body: " + bodyInfo);
+            const summary = summaryResponse.choices[0]?.message?.content;
             return {
                 date: comment.created_at,
                 comment: comment.body,
                 score,
+                tone,
+                prMatch,
                 summary
             };
         }));
@@ -74,4 +103,4 @@ function interpretOpenAIFeedback(feedback) {
     return 1;
 }
 
-module.exports = { fetchAndAnalyzeComments, summarizeComment };
+module.exports = { fetchAndAnalyzeComments };

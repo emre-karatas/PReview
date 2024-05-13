@@ -20,7 +20,7 @@ const calculateProjectPerformance = require('./helpers/calculateProjectPerforman
 const countPRsLastQuarter = require('./helpers/countPRsLastQuarter');
 const countMergedPRsLastQuarter = require('./helpers/countMergedPRsLastQuarter');
 const countOpenPRsLastQuarter = require('./helpers/countOpenPRsLastQuarter');
-const {fetchAndAnalyzeComments, summarizeComment} = require('./helpers/repodashboard');
+const {fetchAndAnalyzeComments} = require('./helpers/repodashboard');
 const getAllDevelopers = require('./helpers/getAllDevelopers');
 const calculateDeveloperProductivity = require('./helpers/calculateDeveloperProductivity');
 const getAllPullRequests = require('./helpers/getAllPullRequests');
@@ -28,7 +28,35 @@ const fetchPRCountByDeveloper = require('./helpers/fetchPRCountByDeveloper');
 const fetchReviewedCommitsCount = require('./helpers/fetchReviewedCommitsCount');
 const fetchPRCommentFrequency = require('./helpers/fetchPRCommentFrequency');
 const fetchTotalPRCommentsByDeveloper = require('./helpers/fetchTotalPRCommentsByDeveloper');
+const analyzeCommentTone = require("./helpers/analyzeCommentTone");
 const fetchDeveloperPRActivities = require('./helpers/fetchDeveloperPRActivities');
+const fetchLatestPRComments = require('./helpers/fetchLatestPRComments');
+
+
+// API route for fetching getTotalPRCommentsByDeveloper
+router.post('/getLatestPRComments', async (req, res) => {
+    const { org, username, developer, authToken } = req.body;
+        console.log("inside fetchLatestPRComments " );
+
+        console.log("req.body.repoOwner " , req.body.owner);
+        console.log("req " , req.body);
+
+        console.log("req.body.repoName " , req.body.repo);
+
+        console.log("the authToken should work " , authToken);
+
+
+    if (!req.body.owner || !req.body.repo || !authToken) {
+        return res.status(400).send('Missing required parameters: org, username, authToken');
+    }
+    try {
+        const teams = await fetchLatestPRComments(req.body.owner, req.body.repo, developer, authToken);
+        res.status(200).json({ teams });
+    } catch (error) {
+        console.error('Error fetching fetchLatestPRComments:', error);
+        res.status(500).send('Server error occurred while fetchLatestPRComments.');
+    }
+});
 
 
 
@@ -56,7 +84,6 @@ router.post('/fetchDeveloperPRActivities', async (req, res) => {
         res.status(500).send('Server error occurred while fetchDeveloperPRActivities.');
     }
 });
-
 
 
 // API route for fetching getTotalPRCommentsByDeveloper
@@ -192,22 +219,13 @@ router.post('/getAllPullRequests', async (req, res) => {
 
 // API route for fetching calculateDeveloperProductivity
 router.post('/getcalculateDeveloperProductivity', async (req, res) => {
-    const { org, username, authToken, openaiApiKey } = req.body;
-        console.log("inside getAllDeveloperss " );
-
-        console.log("req.body.repoOwner " , req.body.owner);
-        console.log("req " , req.body);
-
-        console.log("req.body.repoName " , req.body.repo);
-
-        console.log("authToken " , authToken);
-        console.log("openaiApiKey: " , openaiApiKey);
-
-    if (!req.body.owner || !req.body.repo || !authToken) {
+    const { owner, repo, developer, githubToken, openaiApiKey } = req.body;
+        
+    if (!owner || !repo || !githubToken || !developer || !openaiApiKey) {
         return res.status(400).send('Missing required parameters: org, username, authToken');
     }
     try {
-        const teams = await calculateDeveloperProductivity(req.body.owner, req.body.repo, authToken, openaiApiKey);
+        const teams = await calculateDeveloperProductivity(owner, repo, developer, githubToken, openaiApiKey);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching calculateDeveloperProductivity:', error);
@@ -247,7 +265,11 @@ router.post('/getrepodashboard', async (req, res) => {
         return res.status(400).send('Missing required parameters: owner, repo, prNumber, githubToken');
     }
     try {
-        const teams = await fetchAndAnalyzeComments(owner, repo, prNumber, githubToken);
+        let teams = await fetchAndAnalyzeComments(owner, repo, prNumber, githubToken);
+        // let tones = []
+        // for(team in teams) {
+        //     
+        // }
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching repodashboard:', error);
@@ -280,8 +302,6 @@ router.post('/openPrCntLastQuarter', async (req, res) => {
 });
 
 
-
-
 // API route for fetching countMergedPRsLastQuarter
 router.post('/mergedPrCntLastQuarter', async (req, res) => {
     const { org, username, authToken } = req.body;
@@ -306,8 +326,6 @@ router.post('/mergedPrCntLastQuarter', async (req, res) => {
         res.status(500).send('Server error occurred while fetchingcountMergedPRsLastQuarter.');
     }
 });
-
-
 
 // API route for fetching the teams a user belongs to
 router.post('/userTeams', async (req, res) => {

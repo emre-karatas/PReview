@@ -9,20 +9,23 @@ const { OpenAI } = require('openai');
 
 const openai = new OpenAI({apiKey: "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn"});
 
-async function analyzeCommentTone(comment) {
+async function checkCommentContentMatchWithPRInfo(comment, info) {
     
     try {
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
-            messages: [{role: 'user', content: `Analyze the tone of the following comment: "${comment}"`}],
-            max_tokens: 60
+            messages: [{role: 'user', content: `Can you check if the content of the 
+                    comment matches the title & explanation of the pull request: 
+                    Comment: "${comment}" 
+                    Title & Explanation info:"${info}" `}],
+            max_tokens: 150
         });
 
         return response?.choices[0]?.message?.content;
     } catch (error) {
-        console.error('Error analyzing comment tone:', error);
+        console.error('Error analyzing the match:', error);
         throw error;
     }
 }
 
-module.exports = analyzeCommentTone;
+module.exports = checkCommentContentMatchWithPRInfo;

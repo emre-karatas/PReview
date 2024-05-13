@@ -8,7 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {Select} from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import StatBox from "./Statbox";
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper, getDeveloperPRActivities } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity, fetchgetAllPullRequests, fetchPRCountByDeveloper, fetchgetReviewedCommitsCount, fetchPRCommentFrequency, fetchTotalPRCommentsByDeveloper, getDeveloperPRActivities, fetchLatestPRComments } from "../../api/connector";
 
 
 
@@ -47,6 +47,7 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
         fetchfetchPRCommentFrequency();
         getTotalPRCommentsByDeveloper();
         fetchDeveloperPRActivities();
+        getLatestPRComments();
     };
     const [owner, setOwner] = useState(null);
     const [repo, setRepo] = useState(null);
@@ -54,6 +55,7 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [devList, setDevList] = useState([])
     const [theRows, setRows] = useState([])
 
+    
     
     
 
@@ -193,7 +195,18 @@ const fetchDeveloperPRActivities = async () => {
   }
 };
 
+const getLatestPRComments = async () => {
+  try {
+    // Fetch data from the backend
+    const response = await getLatestPRComments("EvanLi", "Github-Ranking", "EvanLi", "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");
+    console.log("getLatestPRComments:", response);
 
+  
+
+  } catch (error) {
+    console.error('Error fetching and processing developer activities:', error);
+  }
+};
 
 
 
