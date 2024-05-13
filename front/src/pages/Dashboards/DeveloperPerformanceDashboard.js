@@ -39,6 +39,7 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [partipicationPR, setPartipicationPR] = useState()
     const [noOfPRComments, setNoOfPRComments] = useState()
     const [developerActivity, setDeveloperActivity] = useState()
+    const [developer, setDeveloper] = useState(null);
 
     const handleChange = (event) => {
       console.log('handleChange triggered');
@@ -264,6 +265,19 @@ useEffect(() => {
   
   const fetchAllDevelopers = async () => {
       try {
+        
+        
+        console.log(localStorage.getItem("username"));
+        console.log(localStorage.getItem("github_repo"));
+        console.log(localStorage.getItem("github_token"));
+        console.log(localStorage.getItem("repo_owner"));
+        setOwner(localStorage.getItem("repo_owner"));
+        setRepo(localStorage.getItem("github_repo"));
+        setAuthToken(localStorage.getItem("github_token"));
+        setDeveloper(localStorage.getItem("username"));
+
+        
+        
           const developers = await fetchgetAllDevelopers("EvanLi", "Github-Ranking", "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");
           console.log("fetchAllDevelopers:", developers);
           console.log(developers.teams[0].login);
