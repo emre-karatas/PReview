@@ -23,7 +23,10 @@ async function fetchTotalPRCommentsByDeveloper(owner, repo, developer, githubTok
 
         while (hasMorePages) {
             const prsResponse = await axios.get(`https://api.github.com/repos/${owner}/${repo}/pulls`, {
-                headers: githubHeaders,
+                headers: {
+                    'Authorization': `Bearer ${githubToken}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                },
                 params: {
                     state: 'all',
                     per_page: 100,
