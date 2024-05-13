@@ -13,7 +13,11 @@
 .summary-item {
   padding: 10px;
   border-bottom: 1px solid #444;
+  /* Add the following styles */
+  word-wrap: break-word; /* Enable word wrapping */
+  max-width: 2000px; /* Set a maximum width to prevent overflow */
 }
+
 
 .summary-item:last-child {
   border-bottom: none;
