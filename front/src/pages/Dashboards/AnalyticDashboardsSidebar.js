@@ -2,6 +2,7 @@ import React from "react";
 import "./AnalyticDashboardsSidebar.css";
 import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
+import { IoPersonOutline, IoLogOutOutline } from "react-icons/io5";
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -34,7 +35,8 @@ const AnalyticDashboardsSidebar = ({ selectedDashboard }) => {
           {renderMenuItem("DeveloperPerformance", <DesktopOutlined />, "Developer Performance Dashboard", "/DeveloperPerformanceDashboard")}
           {renderMenuItem("RepositoryDashboard", <PieChartOutlined />, "Repository Dashboard", "/RepositoryDashboard")}
           {renderMenuItem("Organization", <TeamOutlined />, "Organization", "/Organization")}
-          {renderMenuItem("Profile", <TeamOutlined />, "Profile", "/Profile")}
+          {renderMenuItem("Profile", <IoPersonOutline />, "Profile", "/Profile")}
+          {renderMenuItem("Logout", <IoLogOutOutline />, "Logout", "/Logout")}
         </Menu>
       </div>
     </div>
