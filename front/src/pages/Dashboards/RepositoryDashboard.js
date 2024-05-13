@@ -7,15 +7,15 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
 import { useState } from 'react';
-import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers } from "../../api/connector";
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers, fetchgetcalculateDeveloperProductivity } from "../../api/connector";
 
 
 
 export const RepositoryDashboard= () => {
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'x', headerName: 'Date', width: 130, type: 'Date' },
-  { field: 'y', headerName: 'Cost (USD)', width: 130, type: 'number' },
+    { field: 'id', headerName: 'Name', width: 70 },
+    { field: 'x', headerName: 'PR Cnt', width: 130, type: 'Date' },
+    { field: 'y', headerName: 'Productivity', width: 130, type: 'number' },
 ];
 
 const rows = [
@@ -137,7 +137,7 @@ useEffect(() => {
         try {
             const response = await fetchmergedPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
             console.log("fetchMergedLastQ:", response);
-            setMergedCnt(response);
+            setMergedCnt(response.teams);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -148,7 +148,7 @@ useEffect(() => {
         try {
             const response = await fetchopenPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
             console.log("fetchOpenLastQ:", response);
-            setOpenCnt(response);
+            setOpenCnt(response.teams);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -179,6 +179,18 @@ useEffect(() => {
       
     
     
+        
+    const fetchcalculateDeveloperProductivity = async () => {
+        try {
+            const response = await fetchgetcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
+            console.log("fetchcalculateDeveloperProductivity:", response);
+            
+            //setAiReviews(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };  
+    
     
     
     
@@ -195,6 +207,7 @@ useEffect(() => {
     //fetchRepoDashboard();
     
     fetchAllDevelopers();
+    fetchcalculateDeveloperProductivity();
 }, []);
   
         
@@ -265,37 +278,15 @@ useEffect(() => {
 
     return (
         <div>
-             <Navbar/>
+            <Navbar/>
             <AnalyticDashboardsSidebar selectedDashboard={"Chatbot/TotalCostDashboard"}/>
             <div className="dashboard-wrapper">
                 <div  id="container" ></div>
             </div>
              <Accordion defaultActiveKey="0" className="my-3">
-    <Accordion.Item eventKey="0">
-        <Accordion.Header>AI Reviews</Accordion.Header>
-        
-        <Accordion.Body>
-
-<div>
-        <p><strong>Total PR Count (Last Quarter): prCnt</strong></p>
-        <p><strong>Merged (Last Quarter): mergedCnt</strong></p>
-        <p><strong>Open (Last Quarter): openCnt</strong></p>
-        </div>
-            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                {aiReviews.map(review => (
-                    <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
-                        <p><strong>Date:</strong> {review.date}</p>
-                        <p><strong>Comment:</strong> {review.comment}</p>
-                        <p><strong>Score:</strong> {review.score}/10</p>
-                        <p><strong>Summarized:</strong> {review.highlights}</p>
-                    </div>
-                ))}
-            </div>
-        </Accordion.Body>
-    </Accordion.Item>
-</Accordion>
-
-            <ThemeProvider theme={theme}>
+                
+                
+             <ThemeProvider theme={theme}>
     <div style={{
         height: '50vh',
         width: '60%',
@@ -319,6 +310,33 @@ useEffect(() => {
         />
     </div>
 </ThemeProvider>
+                
+                
+    <Accordion.Item eventKey="0">
+        <Accordion.Header>AI Reviews</Accordion.Header>
+        
+        <Accordion.Body>
+
+<div>
+        <p><strong>Total PR Count (Last Quarter): {prCnt}</strong></p>
+        <p><strong>Merged (Last Quarter): {mergedCnt}</strong></p>
+        <p><strong>Open (Last Quarter): {openCnt}</strong></p>
+        </div>
+            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                {aiReviews.map(review => (
+                    <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
+                        <p><strong>Date:</strong> {review.date}</p>
+                        <p><strong>Comment:</strong> {review.comment}</p>
+                        <p><strong>Score:</strong> {review.score}/10</p>
+                        <p><strong>Summarized:</strong> {review.highlights}</p>
+                    </div>
+                ))}
+            </div>
+        </Accordion.Body>
+    </Accordion.Item>
+</Accordion>
+
+           
 
 
         </div>
