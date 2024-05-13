@@ -9,6 +9,8 @@ import {
   TeamOutlined,
 } from '@ant-design/icons';
 
+// Example: Importing a logo image
+import logo from '../../Componenets/Assets/logo.png';
 const AnalyticDashboardsSidebar = ({ selectedDashboard }) => {
   const isDashboardSelected = (dashboardName) => {
     return selectedDashboard === dashboardName;
@@ -24,7 +26,8 @@ const AnalyticDashboardsSidebar = ({ selectedDashboard }) => {
     <div className="analytic-sidebar">
       <div className="analytic-sidebar-section">
         <div className="analytic-sidebar-title-container">
-          <Link to="/analyticDashboards" style={{ textDecoration: 'none' }}>
+          <Link to="/analyticDashboards" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <img src={logo} alt="Logo" style={{ marginRight: 10 }} /> {/* Logo next to the title */}
             <h2 className="analytic-sidebar-title">PReview</h2>
           </Link>
         </div>
