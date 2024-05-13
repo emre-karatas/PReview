@@ -6,6 +6,8 @@ import Highcharts from 'highcharts';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Accordion from 'react-bootstrap/Accordion';
+import { useState } from 'react';
+import { fetchPRCountLastQuarter, fetchmergedPrCntLastQuarter, fetchopenPrCntLastQuarter, fetchgetrepodashboard, fetchAllPRCount, fetchgetAllDevelopers } from "../../api/connector";
 
 
 
@@ -23,22 +25,19 @@ const rows = [
     { id: 4, x: new Date('2023-01-04'), y: 1600 },
 ];
 
-const aiReviews = [
-    {
-        id: 1,
-        date: '2023-01-01',
-        comment: "Great implementation of the new caching logic.",
-        score: 8.5
-    },
-    {
-        id: 2,
-        date: '2023-01-02',
-        comment: "Needs improvement in thread safety during cache updates.",
-        score: 7.0
-    },
-    // Add more reviews as needed...
-];
 
+const [aiReviews, setAiReviews] = useState([]);
+const [prCnt, setPRCnt] = useState(0);
+const [mergedCnt, setMergedCnt] = useState(0);
+const [openCnt, setOpenCnt] = useState(0);
+//const [date, setDate] = useState([]);
+const [owner, setOwner] = useState(null);
+const [repo, setRepo] = useState(null);
+const [authToken, setAuthToken] = useState(null);
+const [openaiApiKey, setOpenAiAPIKey] = useState(null);
+const [prNumber, setprNumber] = useState(null);
+
+ 
 
 const theme = createTheme({
   palette: {
@@ -91,6 +90,116 @@ const theme = createTheme({
 
 
 
+
+
+useEffect(() => {
+    setAiReviews([
+        {
+            id: 1,
+            date: '2023-01-01',
+            comment: "Great implementation of the new caching logic.",
+            score: 8.5
+        },
+        {
+            id: 2,
+            date: '2023-01-02',
+            comment: "Needs improvement in thread safety during cache updates.",
+            score: 7.0
+        },
+        // Add more reviews as needed...
+    ]);
+    
+    
+    
+    const fetchPRLastQ = async () => {
+        console.log("the owner ", owner);  
+        console.log("the token ", authToken); 
+    
+        console.log("the repo ", repo);  
+
+        
+
+        try {
+            const response = await fetchAllPRCount("EvanLi", "Github-Ranking", "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" );
+            console.log("fetchPRLastQ:", response);
+            setPRCnt(response.title);
+            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    
+    
+    
+    
+    
+    const fetchMergedLastQ = async () => {
+        try {
+            const response = await fetchmergedPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
+            console.log("fetchMergedLastQ:", response);
+            setMergedCnt(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    
+        
+    const fetchOpenLastQ = async () => {
+        try {
+            const response = await fetchopenPrCntLastQuarter("EvanLi", "Github-Ranking", "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");
+            console.log("fetchOpenLastQ:", response);
+            setOpenCnt(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    const fetchRepoDashboard = async () => {
+        try {
+            const response = await fetchgetrepodashboard("EvanLi", "Github-Ranking", 3, "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");
+            console.log("fetchRepoDashboard:", response);
+            
+            //setAiReviews(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }; 
+    
+    
+    const fetchAllDevelopers = async () => {
+        try {
+            const response = await fetchgetAllDevelopers("EvanLi", "Github-Ranking", "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");
+            console.log("fetchAllDevelopers:", response);
+            
+            //setAiReviews(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };  
+    
+      
+    
+    
+    
+    
+    
+    
+    setOwner("EvanLi");
+    setAuthToken("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");
+    setRepo("Github-Ranking");
+         
+
+    fetchPRLastQ();
+    fetchMergedLastQ(); //bu metod back te hata veriyor tekrar kontrol
+   
+    fetchOpenLastQ(); //error in this backend method
+    //fetchRepoDashboard();
+    
+    fetchAllDevelopers();
+}, []);
+  
+        
+
+ 
 
 Highcharts.addEvent(Highcharts.Point, 'click', function () {
     if (this.series.options.className.indexOf('popup-on-click') !== -1) {
@@ -164,13 +273,21 @@ useEffect(() => {
              <Accordion defaultActiveKey="0" className="my-3">
     <Accordion.Item eventKey="0">
         <Accordion.Header>AI Reviews</Accordion.Header>
+        
         <Accordion.Body>
+
+<div>
+        <p><strong>Total PR Count (Last Quarter): prCnt</strong></p>
+        <p><strong>Merged (Last Quarter): mergedCnt</strong></p>
+        <p><strong>Open (Last Quarter): openCnt</strong></p>
+        </div>
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                 {aiReviews.map(review => (
                     <div key={review.id} style={{ marginBottom: '10px', padding: '10px', borderBottom: '1px solid #ccc' }}>
                         <p><strong>Date:</strong> {review.date}</p>
                         <p><strong>Comment:</strong> {review.comment}</p>
                         <p><strong>Score:</strong> {review.score}/10</p>
+                        <p><strong>Summarized:</strong> {review.highlights}</p>
                     </div>
                 ))}
             </div>
