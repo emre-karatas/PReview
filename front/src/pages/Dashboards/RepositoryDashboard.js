@@ -181,12 +181,12 @@ useEffect(() => {
     };
     const fetchRepoDashboard = async () => {
         try {
-            const response = await fetchgetrepodashboard("EvanLi", "Github-Ranking", 3, "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");
+            const response = await fetchgetrepodashboard("EvanLi", "Github-Ranking", 31, "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");
             console.log("fetchRepoDashboard:", response);
             
-            //setAiReviews(response);
+            setAiReviews(response.teams);
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error repoDashboard:', error);
         }
     }; 
     
@@ -209,11 +209,11 @@ useEffect(() => {
     const fetchcalculateDeveloperProductivity = async () => {
         try {
             const response = await fetchgetcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
-            console.log("fetchcalculateDeveloperProductivity:", response);
+            console.log("fetchcalculateDeveloperProductivity22222:", response);
             
             //setAiReviews(response);
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error22222:', error);
         }
     };  
     
@@ -242,10 +242,10 @@ useEffect(() => {
     fetchMergedLastQ(); //bu metod back te hata veriyor tekrar kontrol
    
     fetchOpenLastQ(); //error in this backend method
-    //fetchRepoDashboard();
+    fetchRepoDashboard();
     
     fetchAllDevelopers();
-    //fetchcalculateDeveloperProductivity();
+    fetchcalculateDeveloperProductivity();
     fetchgetAllPullRequestss();
 }, []);
   

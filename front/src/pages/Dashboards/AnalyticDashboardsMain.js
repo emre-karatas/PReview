@@ -124,7 +124,7 @@ export const AnalyticDashboardsMain = () => {
             try {
                 const response = await fetchPRCompletionRate(owner, repo, authToken);
                 console.log("PR Comp Rate Response:", response);
-                setCompletionRate(response.title);
+                setCompletionRate(response.completionRate);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -154,7 +154,7 @@ export const AnalyticDashboardsMain = () => {
             try {
                 const response = await fetchPerformance(owner, repo, authToken, openaiApiKey);
                 console.log("Performance Response:", response);
-                setPerformanceScore(response.title);
+                setPerformanceScore(response.performanceScore);
             } catch (error) {
                 console.error('Performance Error:', error);
             }
@@ -215,11 +215,10 @@ export const AnalyticDashboardsMain = () => {
                     </div>
                     <div className="dashboard-stats">
                         <StatBox title="Total PR Created" number={totalPRCount}/>
-                        <StatBox title="Productivity" number={productivity}/>
                         <StatBox title="Commit" number={totalCommitCount}/>
                         <StatBox title="Line of Code" number={totalLOC}/>
                     </div>
-                    <ProjectSummary ticketsCreated= {annualTickets} avgPRTime={averagePRTime} completionRate={completionRate}/>
+                    <ProjectSummary ticketsCreated= {annualTickets} avgPRTime={averagePRTime} completionRate={completionRate} productivity={productivity}/>
                     <PerformanceScore score={performanceScore} />
                 </div>
             </div>

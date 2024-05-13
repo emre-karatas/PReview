@@ -43,7 +43,7 @@ async function calculateProjectPerformance(owner, repo, githubToken, openaiApiKe
         // Analyze project performance with OpenAI
         const analysisResponse = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
-            messages: [{ role: 'user', content: `Given a project with ${commitsCount} commits, ${prsCount} pull requests, and ${issuesCount} issues, rate its performance on a scale of 0 to 100. Consider aspects such as activity levels, issue resolution speed, and overall engagement.`}],
+            messages: [{ role: 'user', content: `Given a project with ${commitsCount} commits, ${prsCount} pull requests, and ${issuesCount} issues, rate its performance on a scale of 0 to 100. Consider aspects such as activity levels, issue resolution speed, and overall engagement. You have to give an exact number. Nothing else.`}],
             max_tokens: 100
         });
         return analysisResponse.choices[0]?.message?.content;
