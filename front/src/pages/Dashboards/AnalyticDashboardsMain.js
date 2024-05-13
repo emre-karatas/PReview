@@ -14,7 +14,7 @@ import {
     fetchTotalLinesOfCodes,
     fetchAllPRCount,
     fetchPRCompletionRate,
-    fetchTickets,
+    fetchAnnualTickets,
     fetchPerformance
 } from "../../api/connector";
 import axios from 'axios';
@@ -40,12 +40,13 @@ export const AnalyticDashboardsMain = () => {
     const [performanceScore, setPerformanceScore] = useState(null);
     const [error, setError] = useState(null);
     const [year, setYear] = useState(null);
+    const [averagePRTime, setAveragePRTime] = useState(null);
 
-        useEffect(() => {
+    useEffect(() => {
         const fetchProductivityData = async () => {
             try {
                 const response = await fetchProductivity(owner, repo, authToken, openaiApiKey);
-                console.log("Signup Response:", response);
+                console.log("Productivity Response:", response);
                 setProductivity(response.title);
             } catch (error) {
                 console.error('Error:', error);
@@ -120,9 +121,9 @@ export const AnalyticDashboardsMain = () => {
             setYear(2024);
 
             try {
-                const response = await fetchTickets(owner, repo, authToken, year);
+                const response = await fetchAnnualTickets(owner, repo, authToken, year);
                 console.log("Ticket Response:", response);
-                setAnnualTickets(response.title);
+                setAnnualTickets(response.totalIssues);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -143,13 +144,25 @@ export const AnalyticDashboardsMain = () => {
             }
         };
 
+        const fetchAveragePRTime = async () => {
+            try {
+                const response = await axios.post('http://localhost:8080/api/algos/average-pr-time', { owner, repo });
+                console.log("Average PR Time Response:", response.data);
+                // Assuming the response contains averageDays and count
+                setAveragePRTime(response.data.averageDays);
+            } catch (error) {
+                console.error('Error fetching average PR time:', error);
+            }
+        };
 
+
+        fetchAveragePRTime();
         fetchCompletionRate();
-        //fetchTickets();
-        fetchPerformanceScore();
+        fetchTickets();
+        //fetchPerformanceScore();
         fetchPRCNT();
         fetchCommitCNT();
-        fetchProductivityData();
+        //fetchProductivityData();
         fetchLOC();
     }, []);
     
@@ -163,7 +176,7 @@ export const AnalyticDashboardsMain = () => {
                     <div className="dashboard-main-content">
                         <TotalPRChart/>
                         <PRTable/>
-tab
+table
                     </div>
                     <div className="dashboard-stats">
                         <StatBox title="Total PR Created" number={totalPRCount}/>
@@ -171,7 +184,7 @@ tab
                         <StatBox title="Commit" number={totalCommitCount}/>
                         <StatBox title="Line of Code" number={totalLOC}/>
                     </div>
-                    <ProjectSummary ticketsCreated= {annualTickets} avgPRTime="4" completionRate={completionRate}/>
+                    <ProjectSummary ticketsCreated= {annualTickets} avgPRTime={averagePRTime} completionRate={completionRate}/>
                     <PerformanceScore score={performanceScore} />
                 </div>
             </div>
