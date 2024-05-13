@@ -51,22 +51,13 @@ router.post('/getAllDeveloperss', async (req, res) => {
 
 // API route for fetching repodashboard
 router.post('/getrepodashboard', async (req, res) => {
-    const { org, username, prNumber, authToken } = req.body;
-        console.log("inside getrepodashboard " );
+    const { owner, repo, prNumber, githubToken } = req.body;
 
-    console.log("req.body.repoOwner " , req.body.repoOwner);
-    console.log("req " , req.body);
-
-    console.log("req.body.repoName " , req.body.repoName);
-    console.log("prNumber " , prNumber);
-
-    console.log("authToken " , authToken);
-
-    if (!req.body.repoOwner || !req.body.repoName || !authToken || !prNumber) {
-        return res.status(400).send('Missing required parameters: org, username, authToken');
+    if (!owner || !repo || !githubToken || !prNumber) {
+        return res.status(400).send('Missing required parameters: owner, repo, prNumber, githubToken');
     }
     try {
-        const teams = await fetchAndAnalyzeComments(req.body.repoOwner, req.body.repoName, prNumber, authToken);
+        const teams = await fetchAndAnalyzeComments(owner, repo, prNumber, githubToken);
         res.status(200).json({ teams });
     } catch (error) {
         console.error('Error fetching repodashboard:', error);

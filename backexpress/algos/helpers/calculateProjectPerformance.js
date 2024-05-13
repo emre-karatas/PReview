@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Configuration, OpenAIApi, OpenAI } = require('openai');
+const { OpenAI } = require('openai');
 
 /**
  * Calculates the performance score of a project using activity data from a GitHub repository and analysis by OpenAI.
