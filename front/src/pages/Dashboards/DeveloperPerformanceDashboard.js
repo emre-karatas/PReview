@@ -41,6 +41,8 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [developerActivity, setDeveloperActivity] = useState()
 
     const handleChange = (event) => {
+      console.log('handleChange triggered');
+
         setSelectedDeveloper(event.x);
         fetchPRCountByTheDeveloper();
         fetchReviewedCommitsCount();
@@ -56,6 +58,7 @@ const [selectedDeveloper, setSelectedDeveloper] = useState('');
     const [devList, setDevList] = useState([])
     const [theRows, setRows] = useState([])
 
+    
     
     
     
@@ -161,6 +164,7 @@ const fetchfetchPRCommentFrequency = async () => {
 };  
 
 
+
 const getTotalPRCommentsByDeveloper = async () => {
   try {
       //console.log("inside fetchgetAllPullRequests");
@@ -171,6 +175,7 @@ const getTotalPRCommentsByDeveloper = async () => {
       console.error('Error:', error);
   }
 };  
+
 
 const fetchDeveloperPRActivities = async () => {
   try {
@@ -199,7 +204,7 @@ const fetchDeveloperPRActivities = async () => {
 const getLatestPRComments = async () => {
   try {
     // Fetch data from the backend
-    const response = await getLatestPRComments("EvanLi", "Github-Ranking", "EvanLi", "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");
+    const response = await fetchLatestPRComments("EvanLi", "Github-Ranking", "EvanLi", "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");
     console.log("getLatestPRComments:", response);
 
   
@@ -211,8 +216,8 @@ const getLatestPRComments = async () => {
 
 const fetchgetProductivity = async () => {
   try {
-      //console.log("inside fetchgetAllPullRequests");
-      const response = await fetchcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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");
+      //console.log("inside fetchgetAllPullRequests");owner, repo, githubToken, openaiApiKey
+      const response = await fetchcalculateDeveloperProductivity("EvanLi", "Github-Ranking", "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", "sk-proj-VT8BmgapacHnj7sYNHKST3BlbkFJUt4qjX2xhGYvKzPonbLn");
       console.log("fetchgetProductivity:", response);
       
   } catch (error) {
